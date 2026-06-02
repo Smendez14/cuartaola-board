@@ -3,7 +3,7 @@
 // Proxies Claude API calls to avoid CORS issues in the browser
 // Deploy this to Vercel alongside index.html
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   // Allow CORS from your domain
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
