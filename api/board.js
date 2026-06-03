@@ -20,8 +20,7 @@ export default async function handler(req, res) {
     const { system, messages, model, max_tokens } = req.body;
 
     // API key stored as Vercel environment variable (never in frontend code)
-    const apiKey = process.env.ANTHROPIC_API_KEY;
-
+const apiKey = req.headers['x-api-key'] || process.env.ANTHROPIC_API_KEY;
     if (!apiKey) {
       return res.status(500).json({ error: 'API key not configured on server' });
     }
