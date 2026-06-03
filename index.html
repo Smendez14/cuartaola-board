@@ -18,7 +18,6 @@
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--white);font-family:'Space Grotesk',sans-serif;min-height:100vh;overflow-x:hidden}
 
-/* Ambient background */
 .ambient{position:fixed;inset:0;pointer-events:none;z-index:0}
 .orb{position:absolute;border-radius:50%;filter:blur(180px);opacity:.08}
 .orb1{width:600px;height:600px;background:var(--cyan);top:-10%;left:-5%;animation:drift1 20s ease-in-out infinite}
@@ -28,12 +27,10 @@ body{background:var(--bg);color:var(--white);font-family:'Space Grotesk',sans-se
 @keyframes drift2{0%,100%{transform:translate(0,0)}50%{transform:translate(-40px,-50px)}}
 @keyframes drift3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(30px,-30px) scale(1.2)}}
 
-/* Grain */
 body::after{content:'';position:fixed;inset:0;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:.6}
 
 main{position:relative;z-index:1;max-width:1400px;margin:0 auto;padding:0 32px}
 
-/* ===== HEADER ===== */
 header{display:flex;align-items:center;justify-content:space-between;padding:32px 0 24px}
 .logo{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;letter-spacing:-1px}
 .logo span{background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
@@ -41,21 +38,18 @@ header{display:flex;align-items:center;justify-content:space-between;padding:32p
 .live-dot{width:7px;height:7px;background:var(--green);border-radius:50%;animation:blink 2s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 
-/* ===== HERO ===== */
 .hero{padding:48px 0 40px;text-align:center}
 .hero-eyebrow{font-size:11px;letter-spacing:6px;text-transform:uppercase;color:var(--cyan);margin-bottom:20px;opacity:.8}
 .hero-title{font-family:'Syne',sans-serif;font-size:clamp(40px,6vw,72px);font-weight:800;letter-spacing:-3px;line-height:.95;margin-bottom:16px}
 .hero-title em{font-style:normal;background:linear-gradient(135deg,var(--cyan),var(--purple),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .hero-sub{font-size:16px;color:var(--gray);max-width:600px;margin:0 auto 40px}
 
-/* ===== INPUT AREA ===== */
 .input-section{max-width:860px;margin:0 auto 56px}
 .input-label{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gray);margin-bottom:12px}
 .context-area{background:var(--bg3);border:1px solid var(--border2);border-radius:16px;padding:20px;margin-bottom:12px;transition:border-color .3s}
 .context-area:focus-within{border-color:rgba(0,212,255,.3)}
 .context-area textarea{width:100%;background:transparent;border:none;outline:none;color:var(--light);font-family:'Space Grotesk',sans-serif;font-size:14px;resize:none;min-height:60px;line-height:1.6}
 .context-area textarea::placeholder{color:var(--dark)}
-.divider-line{height:1px;background:var(--border);margin:12px 0}
 .question-wrap{display:flex;gap:12px;align-items:flex-end}
 .question-input{flex:1;background:var(--bg3);border:1px solid var(--border2);border-radius:16px;padding:20px 24px;font-family:'Space Grotesk',sans-serif;font-size:16px;color:var(--white);outline:none;resize:none;min-height:80px;line-height:1.6;transition:border-color .3s}
 .question-input::placeholder{color:var(--dark)}
@@ -65,12 +59,10 @@ header{display:flex;align-items:center;justify-content:space-between;padding:32p
 .submit-btn:active{transform:translateY(0)}
 .submit-btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
 
-/* ===== MESA GRID ===== */
 .mesas-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:48px}
 @media(max-width:1100px){.mesas-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:680px){.mesas-grid{grid-template-columns:1fr}}
 
-/* ===== MESA CARD ===== */
 .mesa{background:var(--bg2);border:1px solid var(--border);border-radius:20px;overflow:hidden;transition:all .4s;display:flex;flex-direction:column}
 .mesa.active{border-color:var(--mesa-color,var(--cyan));box-shadow:0 0 40px -10px var(--mesa-color,var(--cyan))}
 .mesa-header{padding:20px 24px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border)}
@@ -81,13 +73,11 @@ header{display:flex;align-items:center;justify-content:space-between;padding:32p
 .mesa-status{flex-shrink:0}
 .verdict-badge{font-size:18px;line-height:1}
 
-/* Mesa content */
 .mesa-body{padding:20px 24px;flex:1;min-height:200px;position:relative}
 .mesa-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;height:180px;gap:12px;opacity:.3}
 .mesa-placeholder .icon{font-size:32px}
 .mesa-placeholder p{font-size:12px;color:var(--gray);text-align:center}
 
-/* Loading */
 .mesa-loading{display:none;padding:16px 0}
 .loading-line{height:12px;background:linear-gradient(90deg,var(--bg4) 0%,var(--bg5) 50%,var(--bg4) 100%);border-radius:6px;margin-bottom:10px;animation:shimmer 1.5s infinite}
 .loading-line:nth-child(2){width:85%}
@@ -96,7 +86,6 @@ header{display:flex;align-items:center;justify-content:space-between;padding:32p
 .loading-line:nth-child(5){width:60%}
 @keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0};background-size:800px 100%}
 
-/* Voices */
 .voices{display:none;flex-direction:column;gap:0}
 .voice{padding:14px 0;border-bottom:1px solid var(--border)}
 .voice:last-child{border-bottom:none}
@@ -105,13 +94,10 @@ header{display:flex;align-items:center;justify-content:space-between;padding:32p
 .voice-name{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;opacity:.7}
 .voice-text{font-size:13px;color:var(--light);line-height:1.7}
 
-/* Special blocks */
 .verdict-block{margin-top:16px;padding:12px 16px;border-radius:10px;background:var(--bg4);display:flex;align-items:center;gap:10px}
-.verdict-label{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500}
 .action-block{margin-top:10px;padding:12px 16px;border-radius:10px;border:1px solid var(--border2);font-size:13px;color:var(--light);line-height:1.6}
 .action-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);margin-bottom:6px}
 
-/* Mesa colors */
 .m1{--mesa-color:#00d4ff}.m2{--mesa-color:#7c3aed}.m3{--mesa-color:#ef4444}.m4{--mesa-color:#f59e0b}.m5{--mesa-color:#ec4899}.m6{--mesa-color:#10b981}
 .m1 .mesa-name{color:#00d4ff}.m2 .mesa-name{color:#7c3aed}.m3 .mesa-name{color:#ef4444}.m4 .mesa-name{color:#f59e0b}.m5 .mesa-name{color:#ec4899}.m6 .mesa-name{color:#10b981}
 .m1 .voice-avatar{background:rgba(0,212,255,.15);color:#00d4ff}
@@ -121,7 +107,6 @@ header{display:flex;align-items:center;justify-content:space-between;padding:32p
 .m5 .voice-avatar{background:rgba(236,72,153,.15);color:#ec4899}
 .m6 .voice-avatar{background:rgba(16,185,129,.15);color:#10b981}
 
-/* ===== HISTORY ===== */
 .history-section{margin-bottom:80px}
 .section-label{font-family:'Syne',sans-serif;font-size:11px;letter-spacing:5px;text-transform:uppercase;color:var(--gray);margin-bottom:20px;display:flex;align-items:center;gap:12px}
 .section-label::after{content:'';flex:1;height:1px;background:var(--border)}
@@ -131,7 +116,6 @@ header{display:flex;align-items:center;justify-content:space-between;padding:32p
 .history-q{flex:1;font-size:14px;color:var(--light);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .history-time{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--dark)}
 
-/* ===== API CONFIG ===== */
 .api-config{position:fixed;bottom:24px;right:24px;z-index:100}
 .api-btn{background:var(--bg3);border:1px solid var(--border2);border-radius:12px;padding:10px 16px;font-size:12px;color:var(--gray);cursor:pointer;display:flex;align-items:center;gap:8px;transition:all .3s}
 .api-btn:hover{border-color:var(--border2);color:var(--white)}
@@ -147,11 +131,8 @@ header{display:flex;align-items:center;justify-content:space-between;padding:32p
 .modal-cancel{background:transparent;border:1px solid var(--border2);border-radius:12px;padding:14px 20px;font-size:14px;color:var(--gray);cursor:pointer;transition:all .3s}
 .modal-cancel:hover{color:var(--white)}
 .warning{font-size:12px;color:var(--amber);margin-top:12px;line-height:1.5}
-
-/* Error state */
 .error-msg{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:10px;padding:12px 16px;font-size:13px;color:#fca5a5;margin-bottom:16px;display:none}
 
-/* Footer */
 footer{text-align:center;padding:40px 0;border-top:1px solid var(--border)}
 .footer-logo{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;letter-spacing:-1px;margin-bottom:4px}
 .footer-credit{font-size:12px;color:var(--dark)}
@@ -162,21 +143,17 @@ footer{text-align:center;padding:40px 0;border-top:1px solid var(--border)}
 <div class="ambient"><div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div></div>
 
 <main>
-
-<!-- HEADER -->
 <header>
 <div class="logo">Cuarta<span>Ola</span></div>
 <div class="header-badge"><div class="live-dot"></div>Board Directivo · 6 Mesas Activas</div>
 </header>
 
-<!-- HERO -->
 <div class="hero">
 <div class="hero-eyebrow">Consejo Estratégico de IA</div>
 <h1 class="hero-title">Tu Board.<br><em>Siempre disponible.</em></h1>
 <p class="hero-sub">14 mentes extraordinarias. 6 mesas especializadas. Una sola pregunta tuya.</p>
 </div>
 
-<!-- INPUT -->
 <div class="input-section">
 <div class="input-label">Contexto semanal (opcional)</div>
 <div class="context-area">
@@ -190,7 +167,6 @@ footer{text-align:center;padding:40px 0;border-top:1px solid var(--border)}
 <div class="error-msg" id="errorMsg"></div>
 </div>
 
-<!-- MESAS GRID -->
 <div class="mesas-grid" id="mesasGrid">
 
 <div class="mesa m1" id="mesa-0">
@@ -309,21 +285,17 @@ footer{text-align:center;padding:40px 0;border-top:1px solid var(--border)}
 
 </div>
 
-<!-- HISTORY -->
 <div class="history-section" id="historySection" style="display:none">
 <div class="section-label">Sesiones anteriores</div>
 <div class="history-list" id="historyList"></div>
 </div>
 
-<!-- FOOTER -->
 <footer>
 <div class="footer-logo">Cuarta<span style="background:linear-gradient(135deg,#00d4ff,#7c3aed);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Ola</span></div>
 <div class="footer-credit">Diseñado por Salvador Mendez · AI Systems Designer · <a href="https://www.somoseva.com">somoseva.com</a></div>
 </footer>
-
 </main>
 
-<!-- API KEY CONFIG -->
 <div class="api-config">
 <button class="api-btn" onclick="openApiModal()">⚙ API Key</button>
 </div>
@@ -342,11 +314,6 @@ footer{text-align:center;padding:40px 0;border-top:1px solid var(--border)}
 
 <script>
 // ============================================================
-// SYSTEM PROMPTS — 6 MESAS
-// ============================================================
-const MESAS = [
-{
- // ============================================================
 // SYSTEM PROMPTS — 6 MESAS (ARQUITECTURA "MODELO ICEBERG")
 // ============================================================
 const MESAS = [
@@ -363,16 +330,16 @@ Debes "pensar en voz alta" dentro de una etiqueta <[nombre]_laboratorio> oculta,
 
 REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
 <suleyman_laboratorio>Tu análisis profundo</suleyman_laboratorio>
-<suleyman_diagnostico>1 oración cruda y directa</suleyman_diagnostico>
+<suleyman_diagnostico>MÁXIMO 20 PALABRAS. 1 oración cruda y directa.</suleyman_diagnostico>
 
 <thompson_laboratorio>Tu análisis profundo</thompson_laboratorio>
-<thompson_diagnostico>1 oración cruda y directa</thompson_diagnostico>
+<thompson_diagnostico>MÁXIMO 20 PALABRAS. 1 oración cruda y directa.</thompson_diagnostico>
 
 <mollick_laboratorio>Tu análisis profundo</mollick_laboratorio>
-<mollick_diagnostico>1 oración cruda y directa</mollick_diagnostico>
+<mollick_diagnostico>MÁXIMO 20 PALABRAS. 1 oración cruda y directa.</mollick_diagnostico>
 
 <rumelt_laboratorio>Auditoría de los 3 anteriores</rumelt_laboratorio>
-<rumelt_diagnostico>1 oración con el DIAGNÓSTICO real</rumelt_diagnostico>
+<rumelt_diagnostico>MÁXIMO 20 PALABRAS. 1 oración con el DIAGNÓSTICO real.</rumelt_diagnostico>
 
 <veredicto_estrategia>🟢 KERNEL SÓLIDO | 🟡 RUIDO TÁCTICO | 🔴 FANTASÍA</veredicto_estrategia>
 <accion_renuncia>1 bullet point de acción o renuncia inmediata.</accion_renuncia>`,
@@ -390,15 +357,15 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
   systemPrompt: `Eres la "Mesa de Capital" de CuartaOla.
 ESTRUCTURA ICEBERG (OBLIGATORIA): Razona en <_laboratorio>, escupe la conclusión en <_diagnostico>.
 
-- Tavel (Benchmark): Odia servicios pesados. Habla de LTV/CAC, retención y qué startups de IA ya murieron en USA.
-- Casares: Constructor LATAM. Contradice a Tavel: asume que la fricción técnica y operativa en LATAM es justamente nuestro foso defensivo a 20 años.
+- Tavel (Benchmark): Odia servicios pesados. Habla de LTV/CAC, retención y startups muertas.
+- Casares: Constructor LATAM. Contradice a Tavel: asume que la fricción técnica/operativa en LATAM es nuestro foso defensivo a 20 años.
 
 REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
 <tavel_laboratorio>Razonamiento VC profundo</tavel_laboratorio>
-<tavel_diagnostico>1 oración fría sobre márgenes o startups muertas</tavel_diagnostico>
+<tavel_diagnostico>MÁXIMO 20 PALABRAS. 1 oración fría sobre márgenes o startups muertas.</tavel_diagnostico>
 
 <casares_laboratorio>Razonamiento estratégico LATAM</casares_laboratorio>
-<casares_diagnostico>1 oración defendiendo la fricción local como ventaja</casares_diagnostico>
+<casares_diagnostico>MÁXIMO 20 PALABRAS. 1 oración defendiendo la fricción local como ventaja.</casares_diagnostico>
 
 <veredicto_capital>🟢 LEVANTAR CAPITAL | 🟡 BOOTSTRAP OBLIGATORIO | 🔴 DESTRUCTOR DE VALOR</veredicto_capital>
 <mecanismo_financiamiento>1 bala accionable sobre cómo fondear o cobrar esto mañana.</mecanismo_financiamiento>`,
@@ -415,18 +382,18 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
 ESTRUCTURA ICEBERG (OBLIGATORIA): Piensa en el <_laboratorio> y escupe una orden en el <_diagnostico>.
 
 - Carlsen ("Presión Acumulada"): Analiza el software/IA como un tablero. ¿Cómo esta herramienta asfixia el negocio de la competencia lentamente?
-- Gengis Kan ("Velocidad"): Analiza la ejecución técnica. Exige lanzar MVPs agresivos hoy mismo y destrozar la burocracia corporativa del cliente.
+- Gengis Kan ("Velocidad"): Analiza la ejecución técnica. Exige lanzar MVPs agresivos hoy mismo y destrozar la burocracia corporativa.
 - Churchill ("Resiliencia"): Analiza la narrativa B2B. ¿Cuál es el discurso de PR en el mercado para mantener a las empresas atadas a CuartaOla?
 
 REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
 <carlsen_laboratorio>Razonamiento técnico/ajedrecístico</carlsen_laboratorio>
-<carlsen_diagnostico>1 oración tajante (Ej: "Su API es el rey, asfixiemos sus bases de datos").</carlsen_diagnostico>
+<carlsen_diagnostico>MÁXIMO 20 PALABRAS. 1 oración tajante.</carlsen_diagnostico>
 
 <gengis_laboratorio>Razonamiento operativo táctico</gengis_laboratorio>
-<gengis_diagnostico>1 oración tajante exigiendo despliegue o ataque rápido.</gengis_diagnostico>
+<gengis_diagnostico>MÁXIMO 20 PALABRAS. 1 oración tajante exigiendo despliegue rápido.</gengis_diagnostico>
 
 <churchill_laboratorio>Razonamiento político-corporativo</churchill_laboratorio>
-<churchill_diagnostico>1 oración sobre el discurso exacto que mantendrá la coalición B2B.</churchill_diagnostico>
+<churchill_diagnostico>MÁXIMO 20 PALABRAS. 1 oración con el discurso para la coalición B2B.</churchill_diagnostico>
 
 <veredicto_sangre>🟢 DESPLIEGUE TOTAL | 🟡 ASEDIO LENTO | 🔴 RETIRADA ABSOLUTA</veredicto_sangre>
 <milagro_guerra>1 bullet point con el movimiento corporativo letal y definitivo.</milagro_guerra>`,
@@ -445,7 +412,7 @@ ESTRUCTURA ICEBERG: Razonas cruzando modelos (biología, física, incentivos) en
 
 REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
 <munger_laboratorio>Análisis cruzado (incentivos, fosos, matemáticas)</munger_laboratorio>
-<munger_diagnostico>1 oración cínica usando una metáfora biológica, física o psicológica.</munger_diagnostico>
+<munger_diagnostico>MÁXIMO 20 PALABRAS. 1 oración cínica usando una metáfora biológica, física o psicológica.</munger_diagnostico>
 
 <veredicto_monetizacion>🟢 FINANCIABLE | 🟡 REQUIERE PIVOTE | 🔴 AUTOENGAÑO ABSOLUTO</veredicto_monetizacion>
 <pivote_munger>1 bullet point con el pivote exacto de precio o modelo de negocio.</pivote_munger>`,
@@ -464,10 +431,10 @@ ESTRUCTURA ICEBERG:
 
 REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
 <godin_laboratorio>Análisis profundo de la Tribu</godin_laboratorio>
-<godin_diagnostico>1 oración definiendo el nicho exacto y a quién rechazar.</godin_diagnostico>
+<godin_diagnostico>MÁXIMO 20 PALABRAS. 1 oración definiendo el nicho exacto y a quién rechazar.</godin_diagnostico>
 
 <ab_laboratorio>Ideación de pensamiento lateral</ab_laboratorio>
-<ab_diagnostico>1 oración ácida y disruptiva que rompa el estándar de las consultoras B2B.</ab_diagnostico>
+<ab_diagnostico>MÁXIMO 20 PALABRAS. 1 oración ácida y disruptiva que rompa el estándar B2B.</ab_diagnostico>
 
 <veredicto_marketing>🟢 VACA PÚRPURA | 🟡 RUIDO B2B | 🔴 INVISIBLE</veredicto_marketing>
 <sintesis_3s>Slogan o titular crudo y callejero (La regla publicitaria de los 3 segundos).</sintesis_3s>`,
@@ -483,14 +450,14 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
   systemPrompt: `Eres la "Mesa de Síntesis y Tech" de CuartaOla.
 ESTRUCTURA ICEBERG:
 - Karpathy: Auditoría anti-humo. Evalúa latencia, alucinaciones y compute HOY.
-- Bezos: Working Backwards. Construye el "Flywheel". Si Karpathy avisa que la IA falla, Bezos exige inventar un workaround humano (ej: Human-in-the-loop) para venderlo igual.
+- Bezos: Working Backwards. Construye el "Flywheel". Si Karpathy avisa que la IA falla, Bezos exige inventar un workaround humano.
 
 REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
 <karpathy_laboratorio>Auditoría de arquitectura técnica</karpathy_laboratorio>
-<karpathy_diagnostico>1 oración cruda sobre la viabilidad de la infraestructura de IA hoy.</karpathy_diagnostico>
+<karpathy_diagnostico>MÁXIMO 20 PALABRAS. 1 oración cruda sobre la viabilidad hoy.</karpathy_diagnostico>
 
 <bezos_laboratorio>Análisis de mecanismos y Working Backwards</bezos_laboratorio>
-<bezos_diagnostico>1 oración sobre el mecanismo sistémico (o el workaround necesario).</bezos_diagnostico>
+<bezos_diagnostico>MÁXIMO 20 PALABRAS. 1 oración sobre el mecanismo o el workaround necesario.</bezos_diagnostico>
 
 <veredicto_tech>🟢 LISTO PARA INGENIERÍA | 🟡 REQUIERE WORKAROUND | 🔴 FICCIÓN TÉCNICA</veredicto_tech>
 <press_release>1 titular (Press Release interno) estilo Amazon anunciando el lanzamiento.</press_release>`,
@@ -533,7 +500,6 @@ async function consultBoard(){
   btn.disabled = true;
   document.getElementById('errorMsg').style.display='none';
 
-  // Reset all mesas
   MESAS.forEach((_,i)=>{
     document.getElementById(`mesa-${i}`).classList.add('active');
     document.querySelector(`#mesa-${i} .mesa-placeholder`).style.display='none';
@@ -543,10 +509,8 @@ async function consultBoard(){
     document.getElementById(`verdict-${i}`).textContent='⏳';
   });
 
-  // Build user message
   const userMsg = `${context ? `CONTEXTO DEL RADAR SEMANAL:\n${context}\n\n` : ''}CONSULTA DEL CEO:\n${question}`;
 
-  // Fire all 6 in parallel
   const promises = MESAS.map((mesa,i) => callClaude(mesa.systemPrompt, userMsg, i));
   const results = await Promise.allSettled(promises);
 
@@ -561,7 +525,6 @@ async function consultBoard(){
     }
   });
 
-  // Save to history
   const entry = {q:question,time:new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'})};
   history.unshift(entry);
   if(history.length>10)history.pop();
@@ -575,9 +538,6 @@ async function consultBoard(){
 // CLAUDE API CALL
 // ============================================================
 async function callClaude(systemPrompt, userMessage, mesaIndex){
-  // NOTE: Direct browser calls to Anthropic API require a CORS proxy.
-  // For deployment, use a Vercel serverless function as proxy.
-  // See /api/board.js for the server-side implementation.
   const endpoint = window.location.origin + '/api/board';
 
   const response = await fetch(endpoint, {
@@ -615,7 +575,6 @@ function renderMesa(mesaIndex, rawText){
     if(!content) return;
 
     if(voice.isVerdict){
-      // Show verdict in header
       const verdictEl = document.getElementById(`verdict-${mesaIndex}`);
       if(content.includes('🟢'))verdictEl.textContent='🟢';
       else if(content.includes('🟡'))verdictEl.textContent='🟡';
@@ -649,7 +608,7 @@ function extractXML(text, tag){
 }
 
 // ============================================================
-// HISTORY
+// HISTORY & INIT
 // ============================================================
 function renderHistory(){
   if(!history.length)return;
@@ -667,7 +626,6 @@ function loadQuery(q){
   document.getElementById('questionInput').scrollIntoView({behavior:'smooth'});
 }
 
-// Init
 renderHistory();
 if(!apiKey) setTimeout(openApiModal, 800);
 </script>
