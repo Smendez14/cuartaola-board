@@ -64,6 +64,45 @@ header{display:flex;align-items:center;justify-content:space-between;padding:32p
 .orchestrator-badge::before{content:'';width:8px;height:8px;background:var(--amber);border-radius:50%;box-shadow:0 0 10px var(--amber);}
 .orchestrator-content{font-size:16px;line-height:1.7;color:var(--white);}
 
+/* --- ESTILOS DEBATE INTER-MESAS --- */
+.debate-section{display:none;background:linear-gradient(180deg, var(--bg2), var(--bg));border:1px solid var(--border);border-top:2px solid var(--red);border-radius:20px;padding:32px;margin-bottom:40px;position:relative;overflow:hidden;}
+.debate-section::before{content:'';position:absolute;top:0;left:0;right:0;height:100px;background:linear-gradient(180deg, rgba(239,68,68,0.04), transparent);pointer-events:none;}
+
+.debate-trigger{display:none;text-align:center;margin-bottom:40px;}
+.debate-btn{background:transparent;border:1px solid rgba(239,68,68,.4);border-radius:14px;padding:16px 36px;color:var(--red);font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:1px;transition:all .3s;position:relative;overflow:hidden;}
+.debate-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg, rgba(239,68,68,.08), rgba(124,58,237,.08));opacity:0;transition:opacity .3s;}
+.debate-btn:hover::before{opacity:1;}
+.debate-btn:hover{border-color:var(--red);box-shadow:0 0 30px rgba(239,68,68,.15);transform:translateY(-1px);}
+.debate-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none;}
+
+.debate-header{display:flex;align-items:center;gap:10px;margin-bottom:24px;}
+.debate-header-dot{width:8px;height:8px;background:var(--red);border-radius:50%;box-shadow:0 0 10px var(--red);animation:blink 2s infinite;}
+.debate-header-text{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;color:var(--red);text-transform:uppercase;}
+
+.debate-exchange{margin-bottom:28px;padding-bottom:28px;border-bottom:1px solid var(--border);}
+.debate-exchange:last-of-type{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+
+.debate-voice-entry{padding:14px 0;border-bottom:1px solid rgba(255,255,255,.03);}
+.debate-voice-entry:last-child{border-bottom:none;}
+.debate-voice-label{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.debate-voice-tag{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:4px;display:inline-block;}
+.debate-voice-mesa{font-size:10px;color:var(--dark);letter-spacing:.5px;}
+.debate-voice-text{font-size:14px;color:var(--light);line-height:1.75;}
+
+.tag-rumelt{background:rgba(0,212,255,.1);color:var(--cyan);}
+.tag-munger{background:rgba(245,158,11,.1);color:var(--amber);}
+.tag-gengis{background:rgba(239,68,68,.1);color:var(--red);}
+.tag-karpathy{background:rgba(16,185,129,.1);color:var(--green);}
+.tag-godin{background:rgba(236,72,153,.1);color:var(--pink);}
+
+.debate-convergence{margin-top:28px;padding:20px 24px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:14px;}
+.debate-convergence-label{font-size:10px;letter-spacing:2px;color:var(--gray);margin-bottom:12px;font-weight:600;}
+.debate-convergence-text{font-size:14px;color:var(--light);line-height:1.75;}
+
+.debate-final{margin-top:24px;padding:20px 24px;background:rgba(239,68,68,.04);border:1px solid rgba(239,68,68,.15);border-radius:14px;}
+.debate-final-label{font-size:10px;letter-spacing:2px;color:var(--red);margin-bottom:12px;font-weight:700;}
+.debate-final-text{font-size:16px;color:var(--white);line-height:1.7;font-weight:500;}
+
 .mesas-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:48px}
 @media(max-width:1100px){.mesas-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:680px){.mesas-grid{grid-template-columns:1fr}}
@@ -137,7 +176,6 @@ header{display:flex;align-items:center;justify-content:space-between;padding:32p
 .modal-cancel:hover{color:var(--white)}
 .warning{font-size:12px;color:var(--amber);margin-top:12px;line-height:1.5}
 .error-msg{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:10px;padding:12px 16px;font-size:13px;color:#fca5a5;margin-bottom:16px;display:none}
-
 footer{text-align:center;padding:40px 0;border-top:1px solid var(--border)}
 .footer-logo{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;letter-spacing:-1px;margin-bottom:4px}
 .footer-credit{font-size:12px;color:var(--dark)}
@@ -172,10 +210,27 @@ footer{text-align:center;padding:40px 0;border-top:1px solid var(--border)}
 <div class="error-msg" id="errorMsg"></div>
 </div>
 
+<!-- ORQUESTADOR BEZOS -->
 <div class="orchestrator-section" id="orchestratorSection">
   <div class="orchestrator-badge">DIRECCIÓN GENERAL (ORQUESTADO POR BEZOS)</div>
   <div class="orchestrator-content" id="orchestratorContent">
     <div class="loading-line"></div><div class="loading-line" style="width: 70%;"></div>
+  </div>
+</div>
+
+<!-- BOTÓN DEBATE -->
+<div class="debate-trigger" id="debateTrigger">
+  <button class="debate-btn" id="debateBtn" onclick="startDebate()">Convocar Debate Inter-Mesas →</button>
+</div>
+
+<!-- DEBATE INTER-MESAS -->
+<div class="debate-section" id="debateSection">
+  <div class="debate-header">
+    <div class="debate-header-dot"></div>
+    <div class="debate-header-text">Debate Inter-Mesas — Confrontación de Posiciones</div>
+  </div>
+  <div id="debateContent">
+    <div class="loading-line"></div><div class="loading-line" style="width:80%"></div><div class="loading-line" style="width:65%"></div>
   </div>
 </div>
 
@@ -326,37 +381,44 @@ footer{text-align:center;padding:40px 0;border-top:1px solid var(--border)}
 
 <script>
 // ============================================================
-// SYSTEM PROMPTS — CON PRESUPUESTOS INDIVIDUALES PARA NO ROMPER LA API
+// SYSTEM PROMPTS — 6 MESAS (ARQUITECTURA "MODELO ICEBERG")
 // ============================================================
+
+// Token limits por mesa: mesas con más voces necesitan más espacio
+// para que Claude genere TODOS los bloques XML sin cortarse.
+const MESA_TOKENS = [2500, 1500, 2200, 1500, 1500, 1500];
+
 const MESAS = [
 {
   name: 'Estrategia & IA',
-  tokens: 2200, // <--- PRESUPUESTO ALTO PARA QUE ENTREN LOS 4 SIN CORTARSE
   systemPrompt: `Eres la "Mesa de Estrategia & IA" de CuartaOla (agencia líder de IA en LATAM).
 ESTRUCTURA ICEBERG (OBLIGATORIA):
 Debes "pensar en voz alta" dentro de una etiqueta <[nombre]_laboratorio> oculta. Luego, extrae una sola oración letal para la etiqueta _diagnostico visible.
 
-REGLA ESTRICTA: Tienes que procesar y generar el output para TODOS LOS 4 EXPERTOS sin omitir a ninguno. Sigue este orden exacto:
-1. Suleyman: Piensa en "The Coming Wave".
-2. Thompson: Aggregation Theory. 
-3. Mollick: Co-Intelligence. 
-4. Rumelt: Modera y exige el "Kernel" estratégico.
+Hay 4 miembros en esta mesa. LOS 4 DEBEN HABLAR OBLIGATORIAMENTE. Si falta uno, la respuesta es inválida.
 
-REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML (Genera los 4 completos):
-<suleyman_laboratorio>Tu análisis</suleyman_laboratorio>
-<suleyman_diagnostico>MÁXIMO 20 PALABRAS. 1 oración cruda.</suleyman_diagnostico>
+- Suleyman: Piensa en "The Coming Wave". ¿Nos comoditizará la IA en 3 años?
+- Thompson: Aggregation Theory. ¿De qué API dependemos y cómo capturamos margen?
+- Mollick: Co-Intelligence. ¿Cómo adopta esto mañana el cliente corporativo?
+- Rumelt: Modera. Destruye el ruido y exige el "Kernel" estratégico.
 
-<thompson_laboratorio>Tu análisis</thompson_laboratorio>
-<thompson_diagnostico>MÁXIMO 20 PALABRAS. 1 oración cruda.</thompson_diagnostico>
+REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML (LOS 4 BLOQUES SON OBLIGATORIOS):
+<suleyman_laboratorio>Tu análisis profundo (breve, 2-3 oraciones)</suleyman_laboratorio>
+<suleyman_diagnostico>MÁXIMO 20 PALABRAS. 1 oración cruda y directa.</suleyman_diagnostico>
 
-<mollick_laboratorio>Tu análisis</mollick_laboratorio>
-<mollick_diagnostico>MÁXIMO 20 PALABRAS. 1 oración cruda.</mollick_diagnostico>
+<thompson_laboratorio>Tu análisis profundo (breve, 2-3 oraciones)</thompson_laboratorio>
+<thompson_diagnostico>MÁXIMO 20 PALABRAS. 1 oración cruda y directa.</thompson_diagnostico>
 
-<rumelt_laboratorio>Tu análisis</rumelt_laboratorio>
-<rumelt_diagnostico>MÁXIMO 20 PALABRAS. 1 oración cruda.</rumelt_diagnostico>
+<mollick_laboratorio>Tu análisis profundo (breve, 2-3 oraciones)</mollick_laboratorio>
+<mollick_diagnostico>MÁXIMO 20 PALABRAS. 1 oración cruda y directa.</mollick_diagnostico>
+
+<rumelt_laboratorio>Auditoría de los 3 anteriores (breve, 2-3 oraciones)</rumelt_laboratorio>
+<rumelt_diagnostico>MÁXIMO 20 PALABRAS. 1 oración con el DIAGNÓSTICO real.</rumelt_diagnostico>
 
 <veredicto_estrategia>🟢 KERNEL SÓLIDO | 🟡 RUIDO TÁCTICO | 🔴 FANTASÍA</veredicto_estrategia>
-<accion_renuncia>1 bullet point de acción.</accion_renuncia>`,
+<accion_renuncia>1 bullet point de acción o renuncia inmediata.</accion_renuncia>
+
+RECUERDA: Los laboratorios deben ser BREVES (2-3 oraciones máximo cada uno). Lo importante es que LOS 4 MIEMBROS aparezcan.`,
   voices: [
     {tag:'suleyman_diagnostico', name:'Suleyman', initials:'MS'},
     {tag:'thompson_diagnostico', name:'Thompson', initials:'BT'},
@@ -368,7 +430,6 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML (Genera los 4 completos):
 },
 {
   name: 'Capital & Mercados',
-  tokens: 800,
   systemPrompt: `Eres la "Mesa de Capital" de CuartaOla.
 ESTRUCTURA ICEBERG (OBLIGATORIA): Razona en <_laboratorio>, escupe la conclusión en <_diagnostico>.
 
@@ -393,26 +454,29 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
 },
 {
   name: 'Estrategia Pura',
-  tokens: 1000,
-  systemPrompt: `Eres la "Mesa de Estrategia Pura" de CuartaOla. Tu rol es desarmar problemas tecnológicos modernos (SaaS, APIs, IA B2B) aplicando los marcos mentales de dominación absoluta y supervivencia de líderes históricos.
+  systemPrompt: `Eres la "Mesa de Estrategia Pura" de CuartaOla. Tu rol es desarmar problemas tecnológicos modernos (SaaS, APIs, IA B2B) aplicando los marcos mentales de dominación absoluta y supervivencia extrema de líderes históricos. 
 ESTRUCTURA ICEBERG (OBLIGATORIA): Piensa en el <_laboratorio> y escupe una orden en el <_diagnostico>.
+
+Hay 3 miembros en esta mesa. LOS 3 DEBEN HABLAR OBLIGATORIAMENTE.
 
 - Carlsen ("Presión Acumulada"): Analiza el software/IA como un tablero. ¿Cómo esta herramienta asfixia el negocio de la competencia lentamente?
 - Gengis Kan ("Velocidad"): Analiza la ejecución técnica. Exige lanzar MVPs implacables hoy mismo y destrozar la burocracia corporativa.
 - Churchill ("Resiliencia"): Analiza la narrativa B2B. ¿Cuál es el discurso de PR en el mercado para mantener a las empresas atadas a CuartaOla?
 
-REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
-<carlsen_laboratorio>Razonamiento técnico/ajedrecístico</carlsen_laboratorio>
+REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML (LOS 3 BLOQUES SON OBLIGATORIOS):
+<carlsen_laboratorio>Razonamiento técnico/ajedrecístico (breve, 2-3 oraciones)</carlsen_laboratorio>
 <carlsen_diagnostico>MÁXIMO 20 PALABRAS. 1 oración tajante.</carlsen_diagnostico>
 
-<gengis_laboratorio>Razonamiento operativo táctico</gengis_laboratorio>
+<gengis_laboratorio>Razonamiento operativo táctico (breve, 2-3 oraciones)</gengis_laboratorio>
 <gengis_diagnostico>MÁXIMO 20 PALABRAS. 1 oración tajante exigiendo despliegue rápido.</gengis_diagnostico>
 
-<churchill_laboratorio>Razonamiento político-corporativo</churchill_laboratorio>
+<churchill_laboratorio>Razonamiento político-corporativo (breve, 2-3 oraciones)</churchill_laboratorio>
 <churchill_diagnostico>MÁXIMO 20 PALABRAS. 1 oración con el discurso para la coalición B2B.</churchill_diagnostico>
 
 <veredicto_sangre>🟢 DESPLIEGUE TOTAL | 🟡 ASEDIO LENTO | 🔴 RETIRADA ABSOLUTA</veredicto_sangre>
-<milagro_guerra>1 bullet point con el movimiento corporativo táctico definitivo.</milagro_guerra>`,
+<milagro_guerra>1 bullet point con el movimiento corporativo letal y definitivo.</milagro_guerra>
+
+RECUERDA: Los laboratorios deben ser BREVES (2-3 oraciones máximo). Lo importante es que LOS 3 MIEMBROS aparezcan.`,
   voices: [
     {tag:'carlsen_diagnostico', name:'Carlsen', initials:'MC'},
     {tag:'gengis_diagnostico', name:'Gengis Kan', initials:'GK'},
@@ -423,7 +487,6 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
 },
 {
   name: 'Monetización',
-  tokens: 600,
   systemPrompt: `Eres Charlie Munger, Mesa de Monetización de CuartaOla.
 ESTRUCTURA ICEBERG: Razonas cruzando modelos (biología, física, incentivos) en la etiqueta oculta, y escupes tu cinismo en la visible. Buscas ventajas compuestas; odias el autoengaño del software libre sin modelo de retención.
 
@@ -441,7 +504,6 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
 },
 {
   name: 'Marketing & Creatividad',
-  tokens: 800,
   systemPrompt: `Eres la "Mesa de Marketing" de CuartaOla. 
 ESTRUCTURA ICEBERG: 
 - Seth Godin: Define el posicionamiento. ¿Para qué tribu B2B es esto y para quién NO ES?
@@ -465,7 +527,6 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
 },
 {
   name: 'Síntesis & Tech',
-  tokens: 800,
   systemPrompt: `Eres la "Mesa de Síntesis y Tech" de CuartaOla.
 ESTRUCTURA ICEBERG:
 - Karpathy: Auditoría anti-humo. Evalúa latencia, alucinaciones y compute HOY.
@@ -494,6 +555,8 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
 // ============================================================
 let apiKey = localStorage.getItem('co_api_key') || '';
 let history = JSON.parse(localStorage.getItem('co_history') || '[]');
+let lastQuestion = '';
+let lastRecopilacion = '';
 
 function openApiModal(){
   document.getElementById('apiKeyInput').value = apiKey;
@@ -507,7 +570,7 @@ function saveApiKey(){
 }
 
 // ============================================================
-// MAIN: CONSULT BOARD
+// MAIN: CONSULT BOARD (LLAMADAS EN PARALELO)
 // ============================================================
 async function consultBoard(){
   const question = document.getElementById('questionInput').value.trim();
@@ -519,10 +582,12 @@ async function consultBoard(){
   btn.disabled = true;
   document.getElementById('errorMsg').style.display='none';
   
-  // Ocultar orquestador al inicio
+  // Ocultar orquestador, debate y botón al inicio
   const orchestratorSection = document.getElementById('orchestratorSection');
   const orchestratorContent = document.getElementById('orchestratorContent');
   orchestratorSection.style.display = 'none';
+  document.getElementById('debateTrigger').style.display = 'none';
+  document.getElementById('debateSection').style.display = 'none';
 
   // Reset mesas
   MESAS.forEach((_,i)=>{
@@ -536,8 +601,11 @@ async function consultBoard(){
 
   const userMsg = `${context ? `CONTEXTO DEL RADAR SEMANAL:\n${context}\n\n` : ''}CONSULTA DEL CEO:\n${question}`;
 
-  // 1. Llamar a las 6 mesas en paralelo, usando su PRESUPUESTO individual de tokens
-  const promises = MESAS.map((mesa,i) => callClaude(mesa.systemPrompt, userMsg, mesa.tokens));
+  // Guardar para el debate
+  lastQuestion = question;
+
+  // 1. Llamar a las 6 mesas en paralelo con tokens dinámicos
+  const promises = MESAS.map((mesa,i) => callClaude(mesa.systemPrompt, userMsg, MESA_TOKENS[i]));
   const results = await Promise.allSettled(promises);
 
   let recopilacionParaOrquestador = "";
@@ -547,7 +615,6 @@ async function consultBoard(){
     if(result.status==='fulfilled'){
       renderMesa(i, result.value);
       
-      // Recopilar lo que dijo esta mesa visiblemente
       recopilacionParaOrquestador += `\n--- MESA: ${MESAS[i].name} ---\n`;
       MESAS[i].voices.forEach(v => {
         const val = extractXML(result.value, v.tag);
@@ -561,37 +628,43 @@ async function consultBoard(){
     }
   });
 
-  // 2. Ejecutar al Orquestador Supremo (Síntesis Estratégica REAL, no ficción)
+  // 2. Ejecutar al Orquestador Supremo
   if(recopilacionParaOrquestador.trim() !== ""){
+    lastRecopilacion = recopilacionParaOrquestador;
+
     orchestratorSection.style.display = 'block';
     orchestratorContent.innerHTML = '<div class="loading-line"></div><div class="loading-line" style="width:70%"></div>';
 
-    const bezosSystemPrompt = `Eres Jeff Bezos, CEO Orquestador del Board de CuartaOla (agencia líder de Marketing Predictivo en LATAM).
-Tu objetivo es realizar una SÍNTESIS ESTRATÉGICA DE ALTO NIVEL cruzando los diagnósticos de las 6 mesas:
-1) Cruce de Modelos: Analiza cómo las perspectivas se complementan. Descubre el punto ciego y la ventaja competitiva cruzando las tensiones de las mesas (ej. agresividad comercial vs riesgo técnico). No simules una pelea teatral, entrega inteligencia de negocios real para el CEO.
+    const bezosSystemPrompt = `Eres Jeff Bezos, CEO Orquestador del Board de CuartaOla (la futura agencia líder de Marketing Predictivo en LATAM).
+Tu trabajo es realizar una SÍNTESIS ESTRATÉGICA DE ALTO NIVEL cruzando los diagnósticos de las 6 mesas:
+1) Cruce de Modelos: Analiza cómo las perspectivas se complementan. Si una mesa exige agresividad comercial y otra detecta un riesgo técnico/financiero, encuentra el MECANISMO ESTRATÉGICO que resuelve el dilema.
 2) Decisión Final Absoluta: Define la dirección corporativa innegociable.
 
 REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
-<sintesis_directiva>2 párrafos de análisis cruzado profundo. Destila el valor real de las opiniones, identifica el punto de apalancamiento y genera una estrategia superior para LATAM.</sintesis_directiva>
+<sintesis_directiva>2 párrafos de análisis cruzado profundo. Destila el valor real de las opiniones de la junta, identifica el punto de apalancamiento y genera una estrategia superior para LATAM.</sintesis_directiva>
 <orquestador_decision>1 párrafo ejecutivo y brutalmente claro (máx 60 palabras) con la decisión final del Board y el primer paso innegociable a ejecutar en la agencia mañana a las 8 AM.</orquestador_decision>`;
 
     const bezosUserMsg = `El CEO de CuartaOla propuso esto:\n"${question}"\n\nAquí están los dictámenes de las mesas tras su análisis:\n${recopilacionParaOrquestador}\n\nJeff, realiza la síntesis estratégica cruzada y danos el dictamen final.`;
 
     try {
-      const orquestadorResponse = await callClaude(bezosSystemPrompt, bezosUserMsg, 1000);
+      const orquestadorResponse = await callClaude(bezosSystemPrompt, bezosUserMsg, 1500);
       const sintesis = extractXML(orquestadorResponse, 'sintesis_directiva') || 'No se pudo generar la síntesis.';
-      const decisionFinal = extractXML(orquestadorResponse, 'orquestador_decision') || 'El orquestador no pudo generar el dictamen. Revisa los logs.';
+      const decisionFinal = extractXML(orquestadorResponse, 'orquestador_decision') || 'El orquestador no pudo generar el dictamen.';
       
       orchestratorContent.innerHTML = `
         <div style="margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.06);">
-          <div style="font-size:10px; letter-spacing:2px; color:var(--amber); margin-bottom:12px; font-weight:700;">🧠 SÍNTESIS ESTRATÉGICA DEL BOARD</div>
+          <div style="font-size:10px; letter-spacing:2px; color:var(--amber); margin-bottom:12px; font-weight:700;">SÍNTESIS ESTRATÉGICA DEL BOARD</div>
           <div style="font-size:14px; color:var(--light); line-height:1.7;">${sintesis.replace(/\n/g, '<br><br>')}</div>
         </div>
         <div>
-          <div style="font-size:10px; letter-spacing:2px; color:var(--cyan); margin-bottom:12px; font-weight:700;">🎯 DICTAMEN FINAL DEL CEO</div>
+          <div style="font-size:10px; letter-spacing:2px; color:var(--cyan); margin-bottom:12px; font-weight:700;">DICTAMEN FINAL DEL CEO</div>
           <div style="font-size:16px; color:var(--white); line-height:1.7;">${decisionFinal}</div>
         </div>
       `;
+
+      // Mostrar botón de debate después de la síntesis
+      document.getElementById('debateTrigger').style.display = 'block';
+
     } catch(e) {
       orchestratorContent.innerHTML = `<span style="color:#fca5a5">Error al orquestar: ${e.message}</span>`;
     }
@@ -608,9 +681,103 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
 }
 
 // ============================================================
-// CLAUDE API CALL (Recibe el presupuesto de tokens como parámetro)
+// DEBATE INTER-MESAS
 // ============================================================
-async function callClaude(systemPrompt, userMessage, maxTokens = 1000){
+async function startDebate(){
+  const debateBtn = document.getElementById('debateBtn');
+  const debateSection = document.getElementById('debateSection');
+  const debateContent = document.getElementById('debateContent');
+
+  debateBtn.disabled = true;
+  debateBtn.textContent = 'Debate en curso...';
+  debateSection.style.display = 'block';
+  debateContent.innerHTML = '<div class="loading-line"></div><div class="loading-line" style="width:80%"></div><div class="loading-line" style="width:65%"></div><div class="loading-line" style="width:90%"></div>';
+  debateSection.scrollIntoView({behavior:'smooth'});
+
+  const debateSystemPrompt = `Eres el moderador de una sesión de confrontación estratégica entre 5 directores del Board de CuartaOla. Esta NO es una conversación cordial. Es un debate real donde cada director defiende su posición y ataca las debilidades de los demás.
+
+PARTICIPANTES Y SUS SESGOS:
+- RUMELT (Mesa Estrategia & IA): Auditor estratégico. Destruye ideas sin kernel claro. Exige coherencia lógica.
+- MUNGER (Mesa Monetización): Inversor cínico. Solo le importan los incentivos económicos y los fosos defensivos. Desprecia el optimismo sin números.
+- GENGIS (Mesa Estrategia Pura): Operador implacable. Quiere ejecución inmediata. Desprecia la parálisis por análisis.
+- KARPATHY (Mesa Síntesis & Tech): Ingeniero realista. Evalúa viabilidad técnica. Destruye promesas que la tecnología actual no puede cumplir.
+- GODIN (Mesa Marketing): Estratega de posicionamiento. Le importa para quién es esto y si el mercado lo va a notar.
+
+REGLAS DEL DEBATE:
+1. Cada director DEBE referirse directamente a lo que dijo otro y explicar por qué está equivocado o incompleto.
+2. Los desacuerdos deben ser sobre sustancia: datos, lógica, viabilidad, timing. No retórica vacía.
+3. Después de la confrontación, identificar dónde convergen y dónde la tensión es irresoluble.
+4. El veredicto final debe ser MÁS PRECISO que el de cualquier mesa individual porque incorpora las objeciones.
+
+FORMATO XML OBLIGATORIO:
+<rumelt_debate>2-3 oraciones. Ataca la posición más débil de otra mesa. Nombra a quién ataca.</rumelt_debate>
+<munger_debate>2-3 oraciones. Ataca desde los incentivos económicos. Nombra a quién contradice.</munger_debate>
+<gengis_debate>2-3 oraciones. Exige acción concreta y ataca a quien propone esperar. Nombra a quién.</gengis_debate>
+<karpathy_debate>2-3 oraciones. Evalúa qué es técnicamente posible HOY y qué es fantasía. Nombra a quién corrige.</karpathy_debate>
+<godin_debate>2-3 oraciones. Juzga si el mercado va a notar esto o no. Nombra a quién desafía.</godin_debate>
+<convergencia>1 párrafo: los 2-3 puntos donde TODOS coinciden y la 1 tensión principal que no se resuelve.</convergencia>
+<veredicto_debate>1 párrafo ejecutivo (máx 80 palabras): la conclusión estratégica refinada que incorpora las objeciones del debate. Debe ser más precisa y accionable que la síntesis inicial de Bezos.</veredicto_debate>`;
+
+  const debateUserMsg = `PREGUNTA ORIGINAL DEL CEO:\n"${lastQuestion}"\n\nPOSICIONES DE LAS 6 MESAS:\n${lastRecopilacion}\n\nInicia el debate. Cada director debe atacar directamente la posición de otro basándose en los dictámenes anteriores.`;
+
+  try {
+    const response = await callClaude(debateSystemPrompt, debateUserMsg, 2500);
+
+    const debateVoices = [
+      {tag:'rumelt_debate', name:'Rumelt', mesa:'Estrategia & IA', cssClass:'tag-rumelt'},
+      {tag:'munger_debate', name:'Munger', mesa:'Monetización', cssClass:'tag-munger'},
+      {tag:'gengis_debate', name:'Gengis Kan', mesa:'Estrategia Pura', cssClass:'tag-gengis'},
+      {tag:'karpathy_debate', name:'Karpathy', mesa:'Síntesis & Tech', cssClass:'tag-karpathy'},
+      {tag:'godin_debate', name:'Godin', mesa:'Marketing', cssClass:'tag-godin'},
+    ];
+
+    let html = '<div class="debate-exchange">';
+    debateVoices.forEach(v => {
+      const text = extractXML(response, v.tag);
+      if(!text) return;
+      html += `
+        <div class="debate-voice-entry">
+          <div class="debate-voice-label">
+            <span class="debate-voice-tag ${v.cssClass}">${v.name}</span>
+            <span class="debate-voice-mesa">${v.mesa}</span>
+          </div>
+          <div class="debate-voice-text">${text}</div>
+        </div>`;
+    });
+    html += '</div>';
+
+    const convergencia = extractXML(response, 'convergencia');
+    if(convergencia){
+      html += `
+        <div class="debate-convergence">
+          <div class="debate-convergence-label">CONVERGENCIA Y TENSIONES</div>
+          <div class="debate-convergence-text">${convergencia}</div>
+        </div>`;
+    }
+
+    const veredictoDebate = extractXML(response, 'veredicto_debate');
+    if(veredictoDebate){
+      html += `
+        <div class="debate-final">
+          <div class="debate-final-label">VEREDICTO POST-DEBATE</div>
+          <div class="debate-final-text">${veredictoDebate}</div>
+        </div>`;
+    }
+
+    debateContent.innerHTML = html;
+
+  } catch(e) {
+    debateContent.innerHTML = `<span style="color:#fca5a5">Error en el debate: ${e.message}</span>`;
+  }
+
+  debateBtn.disabled = false;
+  debateBtn.textContent = 'Convocar Debate Inter-Mesas →';
+}
+
+// ============================================================
+// CLAUDE API CALL (tokens dinámicos por mesa)
+// ============================================================
+async function callClaude(systemPrompt, userMessage, maxTokens = 1500){
   const endpoint = window.location.origin + '/api/board';
 
   const response = await fetch(endpoint, {
@@ -621,7 +788,7 @@ async function callClaude(systemPrompt, userMessage, maxTokens = 1000){
       'anthropic-version':'2023-06-01'
     },
     body: JSON.stringify({
-      model:'claude-3-5-sonnet-20240620',
+      model:'claude-sonnet-4-6',
       max_tokens: maxTokens,
       system: systemPrompt,
       messages:[{role:'user',content:userMessage}]
