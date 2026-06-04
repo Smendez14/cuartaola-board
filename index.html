@@ -67,42 +67,36 @@ header{display:flex;align-items:center;justify-content:space-between;padding:32p
 /* --- ESTILOS DEBATE INTER-MESAS --- */
 .debate-section{display:none;background:linear-gradient(180deg, var(--bg2), var(--bg));border:1px solid var(--border);border-top:2px solid var(--red);border-radius:20px;padding:32px;margin-bottom:40px;position:relative;overflow:hidden;}
 .debate-section::before{content:'';position:absolute;top:0;left:0;right:0;height:100px;background:linear-gradient(180deg, rgba(239,68,68,0.04), transparent);pointer-events:none;}
-
 .debate-trigger{display:none;text-align:center;margin-bottom:40px;}
 .debate-btn{background:transparent;border:1px solid rgba(239,68,68,.4);border-radius:14px;padding:16px 36px;color:var(--red);font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:1px;transition:all .3s;position:relative;overflow:hidden;}
 .debate-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg, rgba(239,68,68,.08), rgba(124,58,237,.08));opacity:0;transition:opacity .3s;}
 .debate-btn:hover::before{opacity:1;}
 .debate-btn:hover{border-color:var(--red);box-shadow:0 0 30px rgba(239,68,68,.15);transform:translateY(-1px);}
 .debate-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none;}
-
 .debate-header{display:flex;align-items:center;gap:10px;margin-bottom:24px;}
 .debate-header-dot{width:8px;height:8px;background:var(--red);border-radius:50%;box-shadow:0 0 10px var(--red);animation:blink 2s infinite;}
 .debate-header-text{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;color:var(--red);text-transform:uppercase;}
-
 .debate-exchange{margin-bottom:28px;padding-bottom:28px;border-bottom:1px solid var(--border);}
 .debate-exchange:last-of-type{border-bottom:none;margin-bottom:0;padding-bottom:0;}
-
 .debate-voice-entry{padding:14px 0;border-bottom:1px solid rgba(255,255,255,.03);}
 .debate-voice-entry:last-child{border-bottom:none;}
 .debate-voice-label{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
 .debate-voice-tag{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:4px;display:inline-block;}
 .debate-voice-mesa{font-size:10px;color:var(--dark);letter-spacing:.5px;}
 .debate-voice-text{font-size:14px;color:var(--light);line-height:1.75;}
-
 .tag-rumelt{background:rgba(0,212,255,.1);color:var(--cyan);}
 .tag-munger{background:rgba(245,158,11,.1);color:var(--amber);}
 .tag-gengis{background:rgba(239,68,68,.1);color:var(--red);}
 .tag-karpathy{background:rgba(16,185,129,.1);color:var(--green);}
 .tag-godin{background:rgba(236,72,153,.1);color:var(--pink);}
-
 .debate-convergence{margin-top:28px;padding:20px 24px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:14px;}
 .debate-convergence-label{font-size:10px;letter-spacing:2px;color:var(--gray);margin-bottom:12px;font-weight:600;}
 .debate-convergence-text{font-size:14px;color:var(--light);line-height:1.75;}
-
 .debate-final{margin-top:24px;padding:20px 24px;background:rgba(239,68,68,.04);border:1px solid rgba(239,68,68,.15);border-radius:14px;}
 .debate-final-label{font-size:10px;letter-spacing:2px;color:var(--red);margin-bottom:12px;font-weight:700;}
 .debate-final-text{font-size:16px;color:var(--white);line-height:1.7;font-weight:500;}
 
+/* --- ESTILOS MESAS --- */
 .mesas-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:48px}
 @media(max-width:1100px){.mesas-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:680px){.mesas-grid{grid-template-columns:1fr}}
@@ -117,7 +111,7 @@ header{display:flex;align-items:center;justify-content:space-between;padding:32p
 .mesa-status{flex-shrink:0}
 .verdict-badge{font-size:18px;line-height:1}
 
-.mesa-body{padding:20px 24px;flex:1;min-height:200px;position:relative}
+.mesa-body{padding:20px 24px;flex:1;min-height:200px;position:relative; display:flex; flex-direction:column;}
 .mesa-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;height:180px;gap:12px;opacity:.3}
 .mesa-placeholder .icon{font-size:32px}
 .mesa-placeholder p{font-size:12px;color:var(--gray);text-align:center}
@@ -130,7 +124,7 @@ header{display:flex;align-items:center;justify-content:space-between;padding:32p
 .loading-line:nth-child(5){width:60%}
 @keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0};background-size:800px 100%}
 
-.voices{display:none;flex-direction:column;gap:0}
+.voices{display:none;flex-direction:column;gap:0; margin-bottom: 20px;}
 .voice{padding:14px 0;border-bottom:1px solid var(--border)}
 .voice:last-child{border-bottom:none}
 .voice-header{display:flex;align-items:center;gap:8px;margin-bottom:8px}
@@ -142,6 +136,11 @@ header{display:flex;align-items:center;justify-content:space-between;padding:32p
 .action-block{margin-top:10px;padding:12px 16px;border-radius:10px;border:1px solid var(--border2);font-size:13px;color:var(--light);line-height:1.6}
 .action-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);margin-bottom:6px}
 
+/* --- BOTÓN PROFUNDIZAR --- */
+.profundizar-btn-container { text-align: center; margin-top: auto; padding-top: 16px; display: none;}
+.profundizar-btn { background: transparent; border: 1px solid var(--border2); border-radius: 8px; padding: 10px 16px; color: var(--light); font-family: 'Space Grotesk', sans-serif; font-size: 13px; cursor: pointer; transition: all .3s; width: 100%; letter-spacing: 0.5px;}
+.profundizar-btn:hover { border-color: var(--cyan); color: var(--cyan); background: rgba(0,212,255,.05); }
+
 .m1{--mesa-color:#00d4ff}.m2{--mesa-color:#7c3aed}.m3{--mesa-color:#ef4444}.m4{--mesa-color:#f59e0b}.m5{--mesa-color:#ec4899}.m6{--mesa-color:#10b981}
 .m1 .mesa-name{color:#00d4ff}.m2 .mesa-name{color:#7c3aed}.m3 .mesa-name{color:#ef4444}.m4 .mesa-name{color:#f59e0b}.m5 .mesa-name{color:#ec4899}.m6 .mesa-name{color:#10b981}
 .m1 .voice-avatar{background:rgba(0,212,255,.15);color:#00d4ff}
@@ -150,6 +149,39 @@ header{display:flex;align-items:center;justify-content:space-between;padding:32p
 .m4 .voice-avatar{background:rgba(245,158,11,.15);color:#f59e0b}
 .m5 .voice-avatar{background:rgba(236,72,153,.15);color:#ec4899}
 .m6 .voice-avatar{background:rgba(16,185,129,.15);color:#10b981}
+
+/* --- ESTILOS PANEL LATERAL (SIDEBAR) --- */
+.sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 999; display: none; opacity: 0; transition: opacity 0.3s ease; }
+.sidebar-overlay.open { display: block; opacity: 1; }
+
+.sidebar { position: fixed; top: 0; right: -500px; width: 480px; max-width: 100vw; height: 100vh; background: var(--bg2); border-left: 1px solid var(--border); box-shadow: -10px 0 30px rgba(0,0,0,0.8); z-index: 1000; transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1); display: flex; flex-direction: column; }
+.sidebar.open { right: 0; }
+
+.sidebar-header { padding: 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--bg3); }
+.sidebar-title-wrap { display: flex; flex-direction: column; }
+.sidebar-eyebrow { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--cyan); margin-bottom: 4px; font-weight: 700;}
+.sidebar-title { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; color: var(--white); }
+.sidebar-close { background: transparent; border: none; color: var(--gray); font-size: 28px; cursor: pointer; transition: color 0.2s; padding: 0 10px;}
+.sidebar-close:hover { color: var(--white); }
+
+.sidebar-chat { flex: 1; padding: 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; scroll-behavior: smooth; }
+.chat-bubble { padding: 16px; border-radius: 12px; font-size: 14px; line-height: 1.6; max-width: 90%; word-wrap: break-word;}
+.chat-bubble.user { background: var(--bg4); align-self: flex-end; border-bottom-right-radius: 4px; color: var(--white); }
+.chat-bubble.ai { background: rgba(0,212,255,.05); border: 1px solid rgba(0,212,255,.1); align-self: flex-start; border-bottom-left-radius: 4px; color: var(--light); }
+.chat-bubble.ai strong { color: var(--cyan); }
+.chat-bubble.ai ul, .chat-bubble.ai ol { margin-left: 20px; margin-top: 8px; margin-bottom: 8px; }
+.chat-bubble.ai li { margin-bottom: 4px; }
+
+.chat-loading { display: none; align-self: flex-start; padding: 16px; }
+.chat-loading .loading-line { height: 8px; width: 60px; margin-bottom: 0; background: linear-gradient(90deg,var(--cyan) 0%,var(--purple) 50%,var(--cyan) 100%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 4px;}
+
+.sidebar-input-area { padding: 20px; border-top: 1px solid var(--border); background: var(--bg3); }
+.sidebar-input-wrap { display: flex; gap: 12px; }
+.sidebar-input { flex: 1; background: var(--bg); border: 1px solid var(--border2); border-radius: 12px; padding: 16px; color: var(--white); font-family: 'Space Grotesk', sans-serif; font-size: 14px; outline: none; transition: border-color 0.2s; resize: none; height: 56px; }
+.sidebar-input:focus { border-color: rgba(0,212,255,.4); }
+.sidebar-send-btn { background: linear-gradient(135deg,var(--cyan),var(--purple)); color: white; border: none; border-radius: 12px; width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer; transition: all 0.2s; }
+.sidebar-send-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,212,255,.2); }
+.sidebar-send-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
 
 .history-section{margin-bottom:80px}
 .section-label{font-family:'Syne',sans-serif;font-size:11px;letter-spacing:5px;text-transform:uppercase;color:var(--gray);margin-bottom:20px;display:flex;align-items:center;gap:12px}
@@ -174,8 +206,7 @@ header{display:flex;align-items:center;justify-content:space-between;padding:32p
 .modal-save{flex:1;background:linear-gradient(135deg,var(--cyan),var(--purple));border:none;border-radius:12px;padding:14px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:white;cursor:pointer;transition:all .3s}
 .modal-cancel{background:transparent;border:1px solid var(--border2);border-radius:12px;padding:14px 20px;font-size:14px;color:var(--gray);cursor:pointer;transition:all .3s}
 .modal-cancel:hover{color:var(--white)}
-.warning{font-size:12px;color:var(--amber);margin-top:12px;line-height:1.5}
-.error-msg{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:10px;padding:12px 16px;font-size:13px;color:#fca5a5;margin-bottom:16px;display:none}
+
 footer{text-align:center;padding:40px 0;border-top:1px solid var(--border)}
 .footer-logo{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;letter-spacing:-1px;margin-bottom:4px}
 .footer-credit{font-size:12px;color:var(--dark)}
@@ -210,7 +241,6 @@ footer{text-align:center;padding:40px 0;border-top:1px solid var(--border)}
 <div class="error-msg" id="errorMsg"></div>
 </div>
 
-<!-- ORQUESTADOR BEZOS -->
 <div class="orchestrator-section" id="orchestratorSection">
   <div class="orchestrator-badge">DIRECCIÓN GENERAL (ORQUESTADO POR BEZOS)</div>
   <div class="orchestrator-content" id="orchestratorContent">
@@ -218,12 +248,10 @@ footer{text-align:center;padding:40px 0;border-top:1px solid var(--border)}
   </div>
 </div>
 
-<!-- BOTÓN DEBATE -->
 <div class="debate-trigger" id="debateTrigger">
   <button class="debate-btn" id="debateBtn" onclick="startDebate()">Convocar Debate Inter-Mesas →</button>
 </div>
 
-<!-- DEBATE INTER-MESAS -->
 <div class="debate-section" id="debateSection">
   <div class="debate-header">
     <div class="debate-header-dot"></div>
@@ -252,6 +280,7 @@ footer{text-align:center;padding:40px 0;border-top:1px solid var(--border)}
 <div class="loading-line"></div><div class="loading-line"></div>
 </div>
 <div class="voices" id="voices-0"></div>
+<div class="profundizar-btn-container" id="profundizar-0"><button class="profundizar-btn" onclick="openSidebar(0)">🔬 Profundizar con la Mesa</button></div>
 </div>
 </div>
 
@@ -271,6 +300,7 @@ footer{text-align:center;padding:40px 0;border-top:1px solid var(--border)}
 <div class="loading-line"></div><div class="loading-line"></div>
 </div>
 <div class="voices" id="voices-1"></div>
+<div class="profundizar-btn-container" id="profundizar-1"><button class="profundizar-btn" onclick="openSidebar(1)">🔬 Profundizar con la Mesa</button></div>
 </div>
 </div>
 
@@ -290,6 +320,7 @@ footer{text-align:center;padding:40px 0;border-top:1px solid var(--border)}
 <div class="loading-line"></div><div class="loading-line"></div>
 </div>
 <div class="voices" id="voices-2"></div>
+<div class="profundizar-btn-container" id="profundizar-2"><button class="profundizar-btn" onclick="openSidebar(2)">🔬 Profundizar con la Mesa</button></div>
 </div>
 </div>
 
@@ -309,6 +340,7 @@ footer{text-align:center;padding:40px 0;border-top:1px solid var(--border)}
 <div class="loading-line"></div><div class="loading-line"></div>
 </div>
 <div class="voices" id="voices-3"></div>
+<div class="profundizar-btn-container" id="profundizar-3"><button class="profundizar-btn" onclick="openSidebar(3)">🔬 Profundizar con la Mesa</button></div>
 </div>
 </div>
 
@@ -328,6 +360,7 @@ footer{text-align:center;padding:40px 0;border-top:1px solid var(--border)}
 <div class="loading-line"></div><div class="loading-line"></div>
 </div>
 <div class="voices" id="voices-4"></div>
+<div class="profundizar-btn-container" id="profundizar-4"><button class="profundizar-btn" onclick="openSidebar(4)">🔬 Profundizar con la Mesa</button></div>
 </div>
 </div>
 
@@ -347,6 +380,7 @@ footer{text-align:center;padding:40px 0;border-top:1px solid var(--border)}
 <div class="loading-line"></div><div class="loading-line"></div>
 </div>
 <div class="voices" id="voices-5"></div>
+<div class="profundizar-btn-container" id="profundizar-5"><button class="profundizar-btn" onclick="openSidebar(5)">🔬 Profundizar con la Mesa</button></div>
 </div>
 </div>
 
@@ -379,13 +413,33 @@ footer{text-align:center;padding:40px 0;border-top:1px solid var(--border)}
 </div>
 </div>
 
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-title-wrap">
+      <div class="sidebar-eyebrow">INTERROGATORIO EN PROFUNDIDAD</div>
+      <div class="sidebar-title" id="sidebarTitle">Mesa de Estrategia</div>
+    </div>
+    <button class="sidebar-close" onclick="closeSidebar()">×</button>
+  </div>
+  <div class="sidebar-chat" id="sidebarChat">
+    </div>
+  <div class="chat-loading" id="sidebarLoading">
+    <div class="loading-line"></div>
+  </div>
+  <div class="sidebar-input-area">
+    <div class="sidebar-input-wrap">
+      <textarea class="sidebar-input" id="sidebarInput" placeholder="Ej: Desarrollame el Excel de pricing o el email paso a paso..." rows="1" onkeydown="handleSidebarEnter(event)"></textarea>
+      <button class="sidebar-send-btn" id="sidebarSendBtn" onclick="sendSidebarMessage()">➤</button>
+    </div>
+  </div>
+</div>
+
 <script>
 // ============================================================
 // SYSTEM PROMPTS — 6 MESAS (ARQUITECTURA "MODELO ICEBERG")
 // ============================================================
 
-// Token limits por mesa: mesas con más voces necesitan más espacio
-// para que Claude genere TODOS los bloques XML sin cortarse.
 const MESA_TOKENS = [2500, 1500, 2200, 1500, 1500, 1500];
 
 const MESAS = [
@@ -416,9 +470,7 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML (LOS 4 BLOQUES SON OBLIGATORIOS):
 <rumelt_diagnostico>MÁXIMO 20 PALABRAS. 1 oración con el DIAGNÓSTICO real.</rumelt_diagnostico>
 
 <veredicto_estrategia>🟢 KERNEL SÓLIDO | 🟡 RUIDO TÁCTICO | 🔴 FANTASÍA</veredicto_estrategia>
-<accion_renuncia>1 bullet point de acción o renuncia inmediata.</accion_renuncia>
-
-RECUERDA: Los laboratorios deben ser BREVES (2-3 oraciones máximo cada uno). Lo importante es que LOS 4 MIEMBROS aparezcan.`,
+<accion_renuncia>1 bullet point de acción o renuncia inmediata.</accion_renuncia>`,
   voices: [
     {tag:'suleyman_diagnostico', name:'Suleyman', initials:'MS'},
     {tag:'thompson_diagnostico', name:'Thompson', initials:'BT'},
@@ -474,9 +526,7 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML (LOS 3 BLOQUES SON OBLIGATORIOS):
 <churchill_diagnostico>MÁXIMO 20 PALABRAS. 1 oración con el discurso para la coalición B2B.</churchill_diagnostico>
 
 <veredicto_sangre>🟢 DESPLIEGUE TOTAL | 🟡 ASEDIO LENTO | 🔴 RETIRADA ABSOLUTA</veredicto_sangre>
-<milagro_guerra>1 bullet point con el movimiento corporativo letal y definitivo.</milagro_guerra>
-
-RECUERDA: Los laboratorios deben ser BREVES (2-3 oraciones máximo). Lo importante es que LOS 3 MIEMBROS aparezcan.`,
+<milagro_guerra>1 bullet point con el movimiento corporativo letal y definitivo.</milagro_guerra>`,
   voices: [
     {tag:'carlsen_diagnostico', name:'Carlsen', initials:'MC'},
     {tag:'gengis_diagnostico', name:'Gengis Kan', initials:'GK'},
@@ -558,6 +608,12 @@ let history = JSON.parse(localStorage.getItem('co_history') || '[]');
 let lastQuestion = '';
 let lastRecopilacion = '';
 
+// MEMORIA SECUESTRADA PARA CADA MESA (RAG LOCAL)
+let mesasMemory = [null, null, null, null, null, null]; 
+// HISTORIAL DEL CHAT POR MESA
+let sidebarChats = [[], [], [], [], [], []];
+let currentSidebarMesa = null;
+
 function openApiModal(){
   document.getElementById('apiKeyInput').value = apiKey;
   document.getElementById('apiModal').classList.add('open');
@@ -589,6 +645,10 @@ async function consultBoard(){
   document.getElementById('debateTrigger').style.display = 'none';
   document.getElementById('debateSection').style.display = 'none';
 
+  // Limpiar memoria de chats anteriores
+  mesasMemory = [null, null, null, null, null, null];
+  sidebarChats = [[], [], [], [], [], []];
+
   // Reset mesas
   MESAS.forEach((_,i)=>{
     document.getElementById(`mesa-${i}`).classList.add('active');
@@ -597,11 +657,10 @@ async function consultBoard(){
     document.getElementById(`voices-${i}`).style.display='none';
     document.getElementById(`voices-${i}`).innerHTML='';
     document.getElementById(`verdict-${i}`).textContent='⏳';
+    document.getElementById(`profundizar-${i}`).style.display='none';
   });
 
   const userMsg = `${context ? `CONTEXTO DEL RADAR SEMANAL:\n${context}\n\n` : ''}CONSULTA DEL CEO:\n${question}`;
-
-  // Guardar para el debate
   lastQuestion = question;
 
   // 1. Llamar a las 6 mesas en paralelo con tokens dinámicos
@@ -614,7 +673,19 @@ async function consultBoard(){
     document.getElementById(`loading-${i}`).style.display='none';
     if(result.status==='fulfilled'){
       renderMesa(i, result.value);
+      document.getElementById(`profundizar-${i}`).style.display='inline-block'; // Activar Botón Fase 3
       
+      // GUARDAR EL RAZONAMIENTO OCULTO PARA EL CHAT LATERAL (Secuestro de Memoria)
+      let memoryDump = `--- RAZONAMIENTO ORIGINAL DE LA MESA ---\n`;
+      MESAS[i].voices.forEach(v => {
+        if(!v.isVerdict && !v.isAction) {
+          let labTag = v.tag.replace('_diagnostico', '_laboratorio');
+          const labContent = extractXML(result.value, labTag);
+          if(labContent) memoryDump += `Análisis de ${v.name}: ${labContent}\n`;
+        }
+      });
+      mesasMemory[i] = memoryDump;
+
       recopilacionParaOrquestador += `\n--- MESA: ${MESAS[i].name} ---\n`;
       MESAS[i].voices.forEach(v => {
         const val = extractXML(result.value, v.tag);
@@ -635,10 +706,11 @@ async function consultBoard(){
     orchestratorSection.style.display = 'block';
     orchestratorContent.innerHTML = '<div class="loading-line"></div><div class="loading-line" style="width:70%"></div>';
 
+    // FIX ANTI-PESIMISMO APLICADO ACÁ:
     const bezosSystemPrompt = `Eres Jeff Bezos, CEO Orquestador del Board de CuartaOla (la futura agencia líder de Marketing Predictivo en LATAM).
 Tu trabajo es realizar una SÍNTESIS ESTRATÉGICA DE ALTO NIVEL cruzando los diagnósticos de las 6 mesas:
 1) Cruce de Modelos: Analiza cómo las perspectivas se complementan. Si una mesa exige agresividad comercial y otra detecta un riesgo técnico/financiero, encuentra el MECANISMO ESTRATÉGICO que resuelve el dilema.
-2) Decisión Final Absoluta: Define la dirección corporativa innegociable.
+2) Decisión Final Absoluta: Define la dirección corporativa innegociable. IMPORTANTE: Si el Board destruye la idea por riesgos técnicos o financieros, tu obligación como Orquestador es proponer un Plan B viable y agresivo que SÍ funcione. No te quedes en el pesimismo.
 
 REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
 <sintesis_directiva>2 párrafos de análisis cruzado profundo. Destila el valor real de las opiniones de la junta, identifica el punto de apalancamiento y genera una estrategia superior para LATAM.</sintesis_directiva>
@@ -681,7 +753,104 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
 }
 
 // ============================================================
-// DEBATE INTER-MESAS
+// FASE 3: PANEL LATERAL (SIDEBAR) - LÓGICA DE CHAT PROFUNDO
+// ============================================================
+function openSidebar(mesaIndex) {
+  currentSidebarMesa = mesaIndex;
+  document.getElementById('sidebarTitle').textContent = MESAS[mesaIndex].name;
+  
+  const chatContainer = document.getElementById('sidebarChat');
+  chatContainer.innerHTML = '';
+  
+  if (sidebarChats[mesaIndex].length === 0) {
+    chatContainer.innerHTML = `<div class="chat-bubble ai">Hazme cualquier pregunta sobre nuestro dictamen o pídeme el detalle de la ejecución. <strong>Ahora no tengo límite de palabras.</strong></div>`;
+  } else {
+    sidebarChats[mesaIndex].forEach(msg => {
+      chatContainer.innerHTML += `<div class="chat-bubble ${msg.role === 'user' ? 'user' : 'ai'}">${msg.contentHtml || msg.content}</div>`;
+    });
+  }
+
+  document.getElementById('sidebarOverlay').classList.add('open');
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('sidebarInput').focus();
+}
+
+function closeSidebar() {
+  document.getElementById('sidebarOverlay').classList.remove('open');
+  document.getElementById('sidebar').classList.remove('open');
+}
+
+function handleSidebarEnter(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendSidebarMessage();
+  }
+}
+
+// Micro-Traductor de Markdown para que las listas y negritas se vean bien en el panel
+function parseMarkdownToHtml(text) {
+  let html = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
+  html = html.replace(/\n/g, '<br>');
+  return html;
+}
+
+async function sendSidebarMessage() {
+  const inputEl = document.getElementById('sidebarInput');
+  const msg = inputEl.value.trim();
+  if(!msg || currentSidebarMesa === null) return;
+
+  const chatContainer = document.getElementById('sidebarChat');
+  const btn = document.getElementById('sidebarSendBtn');
+  const loading = document.getElementById('sidebarLoading');
+
+  const safeMsg = msg.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  chatContainer.innerHTML += `<div class="chat-bubble user">${safeMsg.replace(/\n/g, '<br>')}</div>`;
+  sidebarChats[currentSidebarMesa].push({role: 'user', content: msg, contentHtml: safeMsg.replace(/\n/g, '<br>')});
+  
+  inputEl.value = '';
+  btn.disabled = true;
+  loading.style.display = 'block';
+  chatContainer.scrollTop = chatContainer.scrollHeight;
+
+  const mesa = MESAS[currentSidebarMesa];
+  const systemPrompt = `Eres la "${mesa.name}" del Board de CuartaOla.
+El CEO te está interrogando sobre el dictamen que acabas de dar.
+A diferencia del dictamen inicial, AHORA NO TIENES LÍMITE DE PALABRAS.
+Responde de forma detallada, cruda y ejecutiva. Si te pide un excel, arma la estructura. Si te pide un mail, redáctalo.
+Actúa en personaje representando las voces de tu mesa: ${mesa.voices.filter(v=>!v.isVerdict && !v.isAction).map(v=>v.name).join(', ')}.
+
+INFORMACIÓN CLAVE (TU MEMORIA):
+Pregunta original del CEO: "${lastQuestion}"
+Este fue tu razonamiento interno oculto que te llevó al veredicto:
+${mesasMemory[currentSidebarMesa]}
+
+Responde directamente en formato Markdown sin etiquetas XML. No saludes con "Hola", ve directo a la estrategia.`;
+
+  // Construir historial de mensajes en el formato exacto que pide la API de Claude
+  const messages = sidebarChats[currentSidebarMesa].map(m => ({
+    role: m.role === 'ai' ? 'assistant' : 'user',
+    content: m.content
+  }));
+
+  try {
+    const rawAiResponse = await callClaudeChat(systemPrompt, messages, 2000);
+    const htmlAiResponse = parseMarkdownToHtml(rawAiResponse);
+    
+    chatContainer.innerHTML += `<div class="chat-bubble ai">${htmlAiResponse}</div>`;
+    sidebarChats[currentSidebarMesa].push({role: 'ai', content: rawAiResponse, contentHtml: htmlAiResponse});
+
+  } catch(e) {
+    chatContainer.innerHTML += `<div class="chat-bubble ai" style="color:#fca5a5">Error de conexión: ${e.message}</div>`;
+  }
+
+  loading.style.display = 'none';
+  btn.disabled = false;
+  chatContainer.scrollTop = chatContainer.scrollHeight;
+}
+
+// ============================================================
+// DEBATE INTER-MESAS (ORIGINAL INTACTO)
 // ============================================================
 async function startDebate(){
   const debateBtn = document.getElementById('debateBtn');
@@ -707,7 +876,7 @@ REGLAS DEL DEBATE:
 1. Cada director DEBE referirse directamente a lo que dijo otro y explicar por qué está equivocado o incompleto.
 2. Los desacuerdos deben ser sobre sustancia: datos, lógica, viabilidad, timing. No retórica vacía.
 3. Después de la confrontación, identificar dónde convergen y dónde la tensión es irresoluble.
-4. El veredicto final debe ser MÁS PRECISO que el de cualquier mesa individual porque incorpora las objeciones.
+4. El veredicto final debe ser MÁS PRECISO que el de cualquier mesa individual y debe orientarse a un Plan B ejecutable si la idea inicial es rechazada.
 
 FORMATO XML OBLIGATORIO:
 <rumelt_debate>2-3 oraciones. Ataca la posición más débil de otra mesa. Nombra a quién ataca.</rumelt_debate>
@@ -716,7 +885,7 @@ FORMATO XML OBLIGATORIO:
 <karpathy_debate>2-3 oraciones. Evalúa qué es técnicamente posible HOY y qué es fantasía. Nombra a quién corrige.</karpathy_debate>
 <godin_debate>2-3 oraciones. Juzga si el mercado va a notar esto o no. Nombra a quién desafía.</godin_debate>
 <convergencia>1 párrafo: los 2-3 puntos donde TODOS coinciden y la 1 tensión principal que no se resuelve.</convergencia>
-<veredicto_debate>1 párrafo ejecutivo (máx 80 palabras): la conclusión estratégica refinada que incorpora las objeciones del debate. Debe ser más precisa y accionable que la síntesis inicial de Bezos.</veredicto_debate>`;
+<veredicto_debate>1 párrafo ejecutivo (máx 80 palabras): la conclusión estratégica refinada que incorpora las objeciones del debate y plantea una solución real.</veredicto_debate>`;
 
   const debateUserMsg = `PREGUNTA ORIGINAL DEL CEO:\n"${lastQuestion}"\n\nPOSICIONES DE LAS 6 MESAS:\n${lastRecopilacion}\n\nInicia el debate. Cada director debe atacar directamente la posición de otro basándose en los dictámenes anteriores.`;
 
@@ -775,11 +944,10 @@ FORMATO XML OBLIGATORIO:
 }
 
 // ============================================================
-// CLAUDE API CALL (tokens dinámicos por mesa)
+// CLAUDE API CALLS (RESPETANDO EL MODELO EXACTO DE VERCEL)
 // ============================================================
 async function callClaude(systemPrompt, userMessage, maxTokens = 1500){
   const endpoint = window.location.origin + '/api/board';
-
   const response = await fetch(endpoint, {
     method:'POST',
     headers:{
@@ -788,10 +956,35 @@ async function callClaude(systemPrompt, userMessage, maxTokens = 1500){
       'anthropic-version':'2023-06-01'
     },
     body: JSON.stringify({
-      model:'claude-sonnet-4-6',
+      model:'claude-sonnet-4-6', // EL CONTRATO INTACTO DE VERCEL
       max_tokens: maxTokens,
       system: systemPrompt,
       messages:[{role:'user',content:userMessage}]
+    })
+  });
+  if(!response.ok){
+    const err = await response.json();
+    throw new Error(err.error?.message || 'API Error');
+  }
+  const data = await response.json();
+  return data.content[0].text;
+}
+
+// Nueva función separada para el Chat Lateral (Mantiene el historial)
+async function callClaudeChat(systemPrompt, messagesArray, maxTokens = 2000){
+  const endpoint = window.location.origin + '/api/board';
+  const response = await fetch(endpoint, {
+    method:'POST',
+    headers:{
+      'content-type':'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version':'2023-06-01'
+    },
+    body: JSON.stringify({
+      model:'claude-sonnet-4-6', // EL CONTRATO INTACTO DE VERCEL
+      max_tokens: maxTokens,
+      system: systemPrompt,
+      messages: messagesArray
     })
   });
   if(!response.ok){
