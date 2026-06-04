@@ -332,10 +332,13 @@ const MESAS = [
 {
   name: 'Estrategia & IA',
   systemPrompt: `Eres la "Mesa de Estrategia & IA" de CuartaOla (agencia líder de IA en LATAM).
-ESTRUCTURA ICEBERG (OBLIGATORIA):
-Debes "pensar en voz alta" dentro de una etiqueta <[nombre]_laboratorio> oculta. Luego, extrae una sola oración letal para la etiqueta _diagnostico visible.
+ESTRUCTURA ICEBERG (OBLIGATORIA): Razona en <_laboratorio> oculto, y extrae tu conclusión a <_diagnostico>.
 
-REGLA DE VIDA O MUERTE: Tienes que generar OBLIGATORIAMENTE el bloque para LOS 4 EXPERTOS (Suleyman, Thompson, Mollick y Rumelt). Si omites a Mollick o a Rumelt, arruinas la simulación.
+ORDEN DE RESPUESTA INNEGOCIABLE: Tienes que generar el bloque para los 4 expertos en este orden exacto. ¡NO OMITAS A NINGUNO!
+1. Suleyman (The Coming Wave)
+2. Thompson (Aggregation Theory)
+3. Mollick (Co-Intelligence)
+4. Rumelt (Auditoría del Kernel)
 
 REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML (Para los 4 sin excepción):
 <suleyman_laboratorio>Tu análisis profundo</suleyman_laboratorio>
@@ -387,11 +390,11 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
 },
 {
   name: 'Estrategia Pura',
-  systemPrompt: `Eres la "Mesa de Estrategia Pura" de CuartaOla (Los HDP). Tu rol es destripar problemas tecnológicos modernos (SaaS, APIs, IA B2B) pero aplicando los marcos mentales sanguinarios de líderes históricos. 
+  systemPrompt: `Eres la "Mesa de Estrategia Pura" de CuartaOla. Tu rol es desarmar problemas tecnológicos modernos (SaaS, APIs, IA B2B) aplicando los marcos mentales de dominación absoluta, supervivencia extrema y conquista territorial de líderes históricos. (Evita lenguaje excesivamente violento para cumplir normas éticas, usa analogías de alta estrategia).
 ESTRUCTURA ICEBERG (OBLIGATORIA): Piensa en el <_laboratorio> y escupe una orden en el <_diagnostico>.
 
 - Carlsen ("Presión Acumulada"): Analiza el software/IA como un tablero. ¿Cómo esta herramienta asfixia el negocio de la competencia lentamente?
-- Gengis Kan ("Velocidad"): Analiza la ejecución técnica. Exige lanzar MVPs agresivos hoy mismo y destrozar la burocracia corporativa.
+- Gengis Kan ("Velocidad"): Analiza la ejecución técnica. Exige lanzar MVPs de forma implacable hoy mismo y evadir la burocracia corporativa.
 - Churchill ("Resiliencia"): Analiza la narrativa B2B. ¿Cuál es el discurso de PR en el mercado para mantener a las empresas atadas a CuartaOla?
 
 REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
@@ -404,14 +407,14 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
 <churchill_laboratorio>Razonamiento político-corporativo</churchill_laboratorio>
 <churchill_diagnostico>MÁXIMO 20 PALABRAS. 1 oración con el discurso para la coalición B2B.</churchill_diagnostico>
 
-<veredicto_sangre>🟢 DESPLIEGUE TOTAL | 🟡 ASEDIO LENTO | 🔴 RETIRADA ABSOLUTA</veredicto_sangre>
-<milagro_guerra>1 bullet point con el movimiento corporativo letal y definitivo.</milagro_guerra>`,
+<veredicto_estrategico_puro>🟢 DESPLIEGUE TOTAL | 🟡 ASEDIO LENTO | 🔴 RETIRADA ABSOLUTA</veredicto_estrategico_puro>
+<movimiento_maestro>1 bullet point con el movimiento corporativo táctico definitivo.</movimiento_maestro>`,
   voices: [
     {tag:'carlsen_diagnostico', name:'Carlsen', initials:'MC'},
     {tag:'gengis_diagnostico', name:'Gengis Kan', initials:'GK'},
     {tag:'churchill_diagnostico', name:'Churchill', initials:'WC'},
-    {tag:'veredicto_sangre', name:'Veredicto de Sangre', initials:'⚔', isVerdict:true},
-    {tag:'milagro_guerra', name:'Movimiento Letal:', initials:'☩', isAction:true}
+    {tag:'veredicto_estrategico_puro', name:'Veredicto', initials:'⚔', isVerdict:true},
+    {tag:'movimiento_maestro', name:'Ataque Táctico:', initials:'☩', isAction:true}
   ]
 },
 {
@@ -546,25 +549,23 @@ async function consultBoard(){
 
     } else {
       document.getElementById(`verdict-${i}`).textContent='❌';
-      document.getElementById(`voices-${i}`).innerHTML=`<div style="font-size:13px;color:#fca5a5;padding:8px 0">Error de API. Verificá tu API key o saldo.</div>`;
+      document.getElementById(`voices-${i}`).innerHTML=`<div style="font-size:13px;color:#fca5a5;padding:8px 0">Error de API. Verificá tu API key o saldo. (${result.reason.message || 'Bloqueo de seguridad'})</div>`;
       document.getElementById(`voices-${i}`).style.display='flex';
     }
   });
 
-// 2. Ejecutar al Orquestador Supremo (Si hubo respuestas válidas)
+  // 2. Ejecutar al Orquestador Supremo (Si hubo respuestas válidas)
   if(recopilacionParaOrquestador.trim() !== ""){
     orchestratorSection.style.display = 'block';
     orchestratorContent.innerHTML = '<div class="loading-line"></div><div class="loading-line" style="width:70%"></div>';
 
     const bezosSystemPrompt = `Eres Jeff Bezos, CEO Orquestador del Board de CuartaOla (la futura agencia líder de Marketing Predictivo en LATAM).
-Tu objetivo NO es narrar una pelea ni hacer una simulación teatral entre los directivos. El CEO busca valor real, encontrar puntos ciegos y descubrir ventajas competitivas en la intersección de estas mentes.
-
-Tu trabajo es realizar una SÍNTESIS ESTRATÉGICA DE ALTO NIVEL cruzando los diagnósticos de las 6 mesas:
-1) Cruce de Modelos: Analiza cómo las perspectivas se complementan. Si una mesa exige agresividad comercial y otra detecta un riesgo técnico/financiero, encuentra el MECANISMO ESTRATÉGICO que resuelve el dilema. Eleva el nivel del pensamiento. Extrae la verdad subyacente.
+Tu objetivo es realizar una SÍNTESIS ESTRATÉGICA DE ALTO NIVEL cruzando los diagnósticos de las 6 mesas:
+1) Cruce de Modelos: Analiza cómo las perspectivas se complementan. Si una mesa exige agresividad comercial y otra detecta un riesgo técnico/financiero, encuentra el MECANISMO ESTRATÉGICO que resuelve el dilema. Eleva el nivel del pensamiento y extrae la ventaja competitiva.
 2) Decisión Final Absoluta: Define la dirección corporativa innegociable.
 
 REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
-<sintesis_directiva>2 párrafos de análisis cruzado profundo. Destila el valor real de las opiniones de la junta, identifica el punto de apalancamiento y resuelve las contradicciones para generar una estrategia superior para LATAM.</sintesis_directiva>
+<sintesis_directiva>2 párrafos de análisis cruzado profundo. Destila el valor real de las opiniones, identifica el punto de apalancamiento y genera una estrategia superior para LATAM.</sintesis_directiva>
 <orquestador_decision>1 párrafo ejecutivo y brutalmente claro (máx 60 palabras) con la decisión final del Board y el primer paso innegociable a ejecutar en la agencia mañana a las 8 AM.</orquestador_decision>`;
 
     const bezosUserMsg = `El CEO de CuartaOla propuso esto:\n"${question}"\n\nAquí están los dictámenes de las mesas tras su análisis:\n${recopilacionParaOrquestador}\n\nJeff, realiza la síntesis estratégica cruzada y danos el dictamen final.`;
@@ -585,10 +586,11 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
         </div>
       `;
     } catch(e) {
-      orchestratorContent.innerHTML = `<span style="color:#fca5a5">Error al orquestar: ${e.message}</span>`
-        // Guardar historial;
+      orchestratorContent.innerHTML = `<span style="color:#fca5a5">Error al orquestar: ${e.message}</span>`;
     }
   }
+
+  // Guardar historial
   const entry = {q:question,time:new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'})};
   history.unshift(entry);
   if(history.length>10)history.pop();
@@ -612,8 +614,8 @@ async function callClaude(systemPrompt, userMessage){
       'anthropic-version':'2023-06-01'
     },
     body: JSON.stringify({
-      model:'claude-sonnet-4-6',
-      max_tokens:1500,
+      model:'claude-3-5-sonnet-20240620',
+      max_tokens: 2800, // <--- ACÁ ESTÁ LA NAFTA PARA QUE HABLEN LOS 4
       system: systemPrompt,
       messages:[{role:'user',content:userMessage}]
     })
