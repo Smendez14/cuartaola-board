@@ -10,11 +10,6 @@
       "use": "@vercel/static"
     }
   ],
-  "functions": {
-    "api/board.js": {
-      "maxDuration": 60
-    }
-  },
   "routes": [
     {
       "src": "/api/board",
