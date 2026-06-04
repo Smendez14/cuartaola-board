@@ -326,35 +326,37 @@ footer{text-align:center;padding:40px 0;border-top:1px solid var(--border)}
 
 <script>
 // ============================================================
-// SYSTEM PROMPTS — 6 MESAS (ARQUITECTURA "MODELO ICEBERG")
+// SYSTEM PROMPTS — CON PRESUPUESTOS INDIVIDUALES PARA NO ROMPER LA API
 // ============================================================
 const MESAS = [
 {
   name: 'Estrategia & IA',
+  tokens: 2200, // <--- PRESUPUESTO ALTO PARA QUE ENTREN LOS 4 SIN CORTARSE
   systemPrompt: `Eres la "Mesa de Estrategia & IA" de CuartaOla (agencia líder de IA en LATAM).
 ESTRUCTURA ICEBERG (OBLIGATORIA):
 Debes "pensar en voz alta" dentro de una etiqueta <[nombre]_laboratorio> oculta. Luego, extrae una sola oración letal para la etiqueta _diagnostico visible.
 
-- Suleyman: Piensa en "The Coming Wave". ¿Nos comoditizará la IA en 3 años?
-- Thompson: Aggregation Theory. ¿De qué API dependemos y cómo capturamos margen?
-- Mollick: Co-Intelligence. ¿Cómo adopta esto mañana el cliente corporativo?
-- Rumelt: Modera. Destruye el ruido y exige el "Kernel" estratégico.
+REGLA ESTRICTA: Tienes que procesar y generar el output para TODOS LOS 4 EXPERTOS sin omitir a ninguno. Sigue este orden exacto:
+1. Suleyman: Piensa en "The Coming Wave".
+2. Thompson: Aggregation Theory. 
+3. Mollick: Co-Intelligence. 
+4. Rumelt: Modera y exige el "Kernel" estratégico.
 
-REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
-<suleyman_laboratorio>Tu análisis profundo</suleyman_laboratorio>
-<suleyman_diagnostico>MÁXIMO 20 PALABRAS. 1 oración cruda y directa.</suleyman_diagnostico>
+REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML (Genera los 4 completos):
+<suleyman_laboratorio>Tu análisis</suleyman_laboratorio>
+<suleyman_diagnostico>MÁXIMO 20 PALABRAS. 1 oración cruda.</suleyman_diagnostico>
 
-<thompson_laboratorio>Tu análisis profundo</thompson_laboratorio>
-<thompson_diagnostico>MÁXIMO 20 PALABRAS. 1 oración cruda y directa.</thompson_diagnostico>
+<thompson_laboratorio>Tu análisis</thompson_laboratorio>
+<thompson_diagnostico>MÁXIMO 20 PALABRAS. 1 oración cruda.</thompson_diagnostico>
 
-<mollick_laboratorio>Tu análisis profundo</mollick_laboratorio>
-<mollick_diagnostico>MÁXIMO 20 PALABRAS. 1 oración cruda y directa.</mollick_diagnostico>
+<mollick_laboratorio>Tu análisis</mollick_laboratorio>
+<mollick_diagnostico>MÁXIMO 20 PALABRAS. 1 oración cruda.</mollick_diagnostico>
 
-<rumelt_laboratorio>Auditoría de los 3 anteriores</rumelt_laboratorio>
-<rumelt_diagnostico>MÁXIMO 20 PALABRAS. 1 oración con el DIAGNÓSTICO real.</rumelt_diagnostico>
+<rumelt_laboratorio>Tu análisis</rumelt_laboratorio>
+<rumelt_diagnostico>MÁXIMO 20 PALABRAS. 1 oración cruda.</rumelt_diagnostico>
 
 <veredicto_estrategia>🟢 KERNEL SÓLIDO | 🟡 RUIDO TÁCTICO | 🔴 FANTASÍA</veredicto_estrategia>
-<accion_renuncia>1 bullet point de acción o renuncia inmediata.</accion_renuncia>`,
+<accion_renuncia>1 bullet point de acción.</accion_renuncia>`,
   voices: [
     {tag:'suleyman_diagnostico', name:'Suleyman', initials:'MS'},
     {tag:'thompson_diagnostico', name:'Thompson', initials:'BT'},
@@ -366,6 +368,7 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
 },
 {
   name: 'Capital & Mercados',
+  tokens: 800,
   systemPrompt: `Eres la "Mesa de Capital" de CuartaOla.
 ESTRUCTURA ICEBERG (OBLIGATORIA): Razona en <_laboratorio>, escupe la conclusión en <_diagnostico>.
 
@@ -390,7 +393,8 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
 },
 {
   name: 'Estrategia Pura',
-  systemPrompt: `Eres la "Mesa de Estrategia Pura" de CuartaOla. Tu rol es desarmar problemas tecnológicos modernos (SaaS, APIs, IA B2B) aplicando los marcos mentales de dominación absoluta y supervivencia extrema de líderes históricos. 
+  tokens: 1000,
+  systemPrompt: `Eres la "Mesa de Estrategia Pura" de CuartaOla. Tu rol es desarmar problemas tecnológicos modernos (SaaS, APIs, IA B2B) aplicando los marcos mentales de dominación absoluta y supervivencia de líderes históricos.
 ESTRUCTURA ICEBERG (OBLIGATORIA): Piensa en el <_laboratorio> y escupe una orden en el <_diagnostico>.
 
 - Carlsen ("Presión Acumulada"): Analiza el software/IA como un tablero. ¿Cómo esta herramienta asfixia el negocio de la competencia lentamente?
@@ -408,7 +412,7 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
 <churchill_diagnostico>MÁXIMO 20 PALABRAS. 1 oración con el discurso para la coalición B2B.</churchill_diagnostico>
 
 <veredicto_sangre>🟢 DESPLIEGUE TOTAL | 🟡 ASEDIO LENTO | 🔴 RETIRADA ABSOLUTA</veredicto_sangre>
-<milagro_guerra>1 bullet point con el movimiento corporativo letal y definitivo.</milagro_guerra>`,
+<milagro_guerra>1 bullet point con el movimiento corporativo táctico definitivo.</milagro_guerra>`,
   voices: [
     {tag:'carlsen_diagnostico', name:'Carlsen', initials:'MC'},
     {tag:'gengis_diagnostico', name:'Gengis Kan', initials:'GK'},
@@ -419,6 +423,7 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
 },
 {
   name: 'Monetización',
+  tokens: 600,
   systemPrompt: `Eres Charlie Munger, Mesa de Monetización de CuartaOla.
 ESTRUCTURA ICEBERG: Razonas cruzando modelos (biología, física, incentivos) en la etiqueta oculta, y escupes tu cinismo en la visible. Buscas ventajas compuestas; odias el autoengaño del software libre sin modelo de retención.
 
@@ -436,6 +441,7 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
 },
 {
   name: 'Marketing & Creatividad',
+  tokens: 800,
   systemPrompt: `Eres la "Mesa de Marketing" de CuartaOla. 
 ESTRUCTURA ICEBERG: 
 - Seth Godin: Define el posicionamiento. ¿Para qué tribu B2B es esto y para quién NO ES?
@@ -459,6 +465,7 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
 },
 {
   name: 'Síntesis & Tech',
+  tokens: 800,
   systemPrompt: `Eres la "Mesa de Síntesis y Tech" de CuartaOla.
 ESTRUCTURA ICEBERG:
 - Karpathy: Auditoría anti-humo. Evalúa latencia, alucinaciones y compute HOY.
@@ -500,7 +507,7 @@ function saveApiKey(){
 }
 
 // ============================================================
-// MAIN: CONSULT BOARD (LLAMADAS EN PARALELO ORIGINAL)
+// MAIN: CONSULT BOARD
 // ============================================================
 async function consultBoard(){
   const question = document.getElementById('questionInput').value.trim();
@@ -529,8 +536,8 @@ async function consultBoard(){
 
   const userMsg = `${context ? `CONTEXTO DEL RADAR SEMANAL:\n${context}\n\n` : ''}CONSULTA DEL CEO:\n${question}`;
 
-  // 1. Llamar a las 6 mesas en paralelo (Versión estable)
-  const promises = MESAS.map((mesa,i) => callClaude(mesa.systemPrompt, userMsg));
+  // 1. Llamar a las 6 mesas en paralelo, usando su PRESUPUESTO individual de tokens
+  const promises = MESAS.map((mesa,i) => callClaude(mesa.systemPrompt, userMsg, mesa.tokens));
   const results = await Promise.allSettled(promises);
 
   let recopilacionParaOrquestador = "";
@@ -554,24 +561,24 @@ async function consultBoard(){
     }
   });
 
-  // 2. Ejecutar al Orquestador Supremo (Síntesis Estratégica original)
+  // 2. Ejecutar al Orquestador Supremo (Síntesis Estratégica REAL, no ficción)
   if(recopilacionParaOrquestador.trim() !== ""){
     orchestratorSection.style.display = 'block';
     orchestratorContent.innerHTML = '<div class="loading-line"></div><div class="loading-line" style="width:70%"></div>';
 
-    const bezosSystemPrompt = `Eres Jeff Bezos, CEO Orquestador del Board de CuartaOla (la futura agencia líder de Marketing Predictivo en LATAM).
-Tu trabajo es realizar una SÍNTESIS ESTRATÉGICA DE ALTO NIVEL cruzando los diagnósticos de las 6 mesas:
-1) Cruce de Modelos: Analiza cómo las perspectivas se complementan. Si una mesa exige agresividad comercial y otra detecta un riesgo técnico/financiero, encuentra el MECANISMO ESTRATÉGICO que resuelve el dilema.
+    const bezosSystemPrompt = `Eres Jeff Bezos, CEO Orquestador del Board de CuartaOla (agencia líder de Marketing Predictivo en LATAM).
+Tu objetivo es realizar una SÍNTESIS ESTRATÉGICA DE ALTO NIVEL cruzando los diagnósticos de las 6 mesas:
+1) Cruce de Modelos: Analiza cómo las perspectivas se complementan. Descubre el punto ciego y la ventaja competitiva cruzando las tensiones de las mesas (ej. agresividad comercial vs riesgo técnico). No simules una pelea teatral, entrega inteligencia de negocios real para el CEO.
 2) Decisión Final Absoluta: Define la dirección corporativa innegociable.
 
 REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
-<sintesis_directiva>2 párrafos de análisis cruzado profundo. Destila el valor real de las opiniones de la junta, identifica el punto de apalancamiento y genera una estrategia superior para LATAM.</sintesis_directiva>
+<sintesis_directiva>2 párrafos de análisis cruzado profundo. Destila el valor real de las opiniones, identifica el punto de apalancamiento y genera una estrategia superior para LATAM.</sintesis_directiva>
 <orquestador_decision>1 párrafo ejecutivo y brutalmente claro (máx 60 palabras) con la decisión final del Board y el primer paso innegociable a ejecutar en la agencia mañana a las 8 AM.</orquestador_decision>`;
 
     const bezosUserMsg = `El CEO de CuartaOla propuso esto:\n"${question}"\n\nAquí están los dictámenes de las mesas tras su análisis:\n${recopilacionParaOrquestador}\n\nJeff, realiza la síntesis estratégica cruzada y danos el dictamen final.`;
 
     try {
-      const orquestadorResponse = await callClaude(bezosSystemPrompt, bezosUserMsg);
+      const orquestadorResponse = await callClaude(bezosSystemPrompt, bezosUserMsg, 1000);
       const sintesis = extractXML(orquestadorResponse, 'sintesis_directiva') || 'No se pudo generar la síntesis.';
       const decisionFinal = extractXML(orquestadorResponse, 'orquestador_decision') || 'El orquestador no pudo generar el dictamen. Revisa los logs.';
       
@@ -601,9 +608,9 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
 }
 
 // ============================================================
-// CLAUDE API CALL (Límite original 1500 tokens)
+// CLAUDE API CALL (Recibe el presupuesto de tokens como parámetro)
 // ============================================================
-async function callClaude(systemPrompt, userMessage){
+async function callClaude(systemPrompt, userMessage, maxTokens = 1000){
   const endpoint = window.location.origin + '/api/board';
 
   const response = await fetch(endpoint, {
@@ -614,8 +621,8 @@ async function callClaude(systemPrompt, userMessage){
       'anthropic-version':'2023-06-01'
     },
     body: JSON.stringify({
-      model:'claude-sonnet-4-6',
-      max_tokens:1500,
+      model:'claude-3-5-sonnet-20240620',
+      max_tokens: maxTokens,
       system: systemPrompt,
       messages:[{role:'user',content:userMessage}]
     })
