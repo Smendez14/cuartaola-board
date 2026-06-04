@@ -13,7 +13,6 @@
 --cyan:#00d4ff;--purple:#7c3aed;--red:#ef4444;--amber:#f59e0b;
 --green:#10b981;--pink:#ec4899;--orange:#f97316;
 --white:#ffffff;--light:#d1d5e8;--gray:#6b7280;--dark:#374151;
---m1:#00d4ff;--m2:#7c3aed;--m3:#ef4444;--m4:#f59e0b;--m5:#ec4899;--m6:#10b981;
 }
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--white);font-family:'Space Grotesk',sans-serif;min-height:100vh;overflow-x:hidden}
@@ -56,8 +55,15 @@ header{display:flex;align-items:center;justify-content:space-between;padding:32p
 .question-input:focus{border-color:rgba(0,212,255,.4)}
 .submit-btn{background:linear-gradient(135deg,var(--cyan),var(--purple));border:none;border-radius:16px;padding:20px 32px;color:white;font-family:'Syne',sans-serif;font-size:15px;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .3s;letter-spacing:.5px}
 .submit-btn:hover{transform:translateY(-2px);box-shadow:0 20px 40px rgba(0,212,255,.2)}
-.submit-btn:active{transform:translateY(0)}
 .submit-btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+
+/* --- ESTILOS ORQUESTADOR (NUEVO) --- */
+.orchestrator-section{display:none; background:linear-gradient(180deg, var(--bg2), var(--bg)); border:1px solid var(--border); border-top:2px solid var(--amber); border-radius:20px; padding:32px; margin-bottom:40px; position:relative; overflow:hidden;}
+.orchestrator-section::before{content:'';position:absolute;top:0;left:0;right:0;height:100px;background:linear-gradient(180deg, rgba(245,158,11,0.05), transparent);pointer-events:none;}
+.orchestrator-badge{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;color:var(--amber);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.orchestrator-badge::before{content:'';width:8px;height:8px;background:var(--amber);border-radius:50%;box-shadow:0 0 10px var(--amber);}
+.orchestrator-content{font-size:16px;line-height:1.7;color:var(--white);}
+.orchestrator-content strong{color:var(--amber); font-family:'Syne', sans-serif;}
 
 .mesas-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:48px}
 @media(max-width:1100px){.mesas-grid{grid-template-columns:repeat(2,1fr)}}
@@ -165,6 +171,13 @@ footer{text-align:center;padding:40px 0;border-top:1px solid var(--border)}
 <button class="submit-btn" id="submitBtn" onclick="consultBoard()">Convocar<br>al Board →</button>
 </div>
 <div class="error-msg" id="errorMsg"></div>
+</div>
+
+<div class="orchestrator-section" id="orchestratorSection">
+  <div class="orchestrator-badge">DIRECCIÓN GENERAL (ORQUESTADO POR BEZOS)</div>
+  <div class="orchestrator-content" id="orchestratorContent">
+    <div class="loading-line"></div><div class="loading-line" style="width: 70%;"></div>
+  </div>
 </div>
 
 <div class="mesas-grid" id="mesasGrid">
@@ -319,9 +332,9 @@ footer{text-align:center;padding:40px 0;border-top:1px solid var(--border)}
 const MESAS = [
 {
   name: 'Estrategia & IA',
-  systemPrompt: `Eres la "Mesa de Estrategia & IA" de CuartaOla (agencia líder de IA en LATAM, en proceso de fusión con Meduzia).
+  systemPrompt: `Eres la "Mesa de Estrategia & IA" de CuartaOla (agencia líder de IA en LATAM).
 ESTRUCTURA ICEBERG (OBLIGATORIA):
-Debes "pensar en voz alta" dentro de una etiqueta <[nombre]_laboratorio> oculta, cruzando tu framework con la realidad de LATAM. Luego, extrae una sola oración letal para la etiqueta _diagnostico visible.
+Debes "pensar en voz alta" dentro de una etiqueta <[nombre]_laboratorio> oculta. Luego, extrae una sola oración letal para la etiqueta _diagnostico visible.
 
 - Suleyman: Piensa en "The Coming Wave". ¿Nos comoditizará la IA en 3 años?
 - Thompson: Aggregation Theory. ¿De qué API dependemos y cómo capturamos margen?
@@ -499,7 +512,13 @@ async function consultBoard(){
   const btn = document.getElementById('submitBtn');
   btn.disabled = true;
   document.getElementById('errorMsg').style.display='none';
+  
+  // Ocultar orquestador al inicio
+  const orchestratorSection = document.getElementById('orchestratorSection');
+  const orchestratorContent = document.getElementById('orchestratorContent');
+  orchestratorSection.style.display = 'none';
 
+  // Reset mesas
   MESAS.forEach((_,i)=>{
     document.getElementById(`mesa-${i}`).classList.add('active');
     document.querySelector(`#mesa-${i} .mesa-placeholder`).style.display='none';
@@ -511,20 +530,55 @@ async function consultBoard(){
 
   const userMsg = `${context ? `CONTEXTO DEL RADAR SEMANAL:\n${context}\n\n` : ''}CONSULTA DEL CEO:\n${question}`;
 
-  const promises = MESAS.map((mesa,i) => callClaude(mesa.systemPrompt, userMsg, i));
+  // 1. Llamar a las 6 mesas en paralelo
+  const promises = MESAS.map((mesa,i) => callClaude(mesa.systemPrompt, userMsg));
   const results = await Promise.allSettled(promises);
+
+  let recopilacionParaOrquestador = "";
 
   results.forEach((result,i)=>{
     document.getElementById(`loading-${i}`).style.display='none';
     if(result.status==='fulfilled'){
       renderMesa(i, result.value);
+      
+      // Recopilar lo que dijo esta mesa visiblemente
+      recopilacionParaOrquestador += `\n--- MESA: ${MESAS[i].name} ---\n`;
+      MESAS[i].voices.forEach(v => {
+        const val = extractXML(result.value, v.tag);
+        if(val) recopilacionParaOrquestador += `${v.name}: ${val}\n`;
+      });
+
     } else {
       document.getElementById(`verdict-${i}`).textContent='❌';
-      document.getElementById(`voices-${i}`).innerHTML=`<div style="font-size:13px;color:#fca5a5;padding:8px 0">Error al conectar con la API. Verificá tu API key.</div>`;
+      document.getElementById(`voices-${i}`).innerHTML=`<div style="font-size:13px;color:#fca5a5;padding:8px 0">Error de API. Verificá tu API key o saldo.</div>`;
       document.getElementById(`voices-${i}`).style.display='flex';
     }
   });
 
+  // 2. Ejecutar al Orquestador Supremo (Si hubo respuestas válidas)
+  if(recopilacionParaOrquestador.trim() !== ""){
+    orchestratorSection.style.display = 'block';
+    orchestratorContent.innerHTML = '<div class="loading-line"></div><div class="loading-line" style="width:70%"></div>';
+
+    const bezosSystemPrompt = `Eres Jeff Bezos, actuando como CEO Orquestador de CuartaOla. Tu trabajo es leer los diagnósticos crudos de tus 6 mesas directivas y tomar la DECISIÓN FINAL ABSOLUTA.
+No filosofes. Escribe 1 solo párrafo ejecutivo y brutalmente claro (máximo 60 palabras) que contenga:
+1) La decisión final (Ej: Avanzar, Pivotar, o Descartar idea).
+2) El paso 1 innegociable a ejecutar hoy mismo en la agencia.
+
+REGLA DE SALIDA: Usa EXCLUSIVAMENTE la etiqueta <orquestador_decision>Tu párrafo</orquestador_decision>`;
+
+    const bezosUserMsg = `El fundador de la agencia propuso esto:\n"${question}"\n\nAquí están los dictámenes de las mesas tras su análisis:\n${recopilacionParaOrquestador}\n\nJeff, danos la decisión final.`;
+
+    try {
+      const orquestadorResponse = await callClaude(bezosSystemPrompt, bezosUserMsg);
+      const decisionFinal = extractXML(orquestadorResponse, 'orquestador_decision') || 'El orquestador no pudo generar una síntesis. Revisa los logs.';
+      orchestratorContent.innerHTML = `<strong>El Dictamen:</strong> ${decisionFinal}`;
+    } catch(e) {
+      orchestratorContent.innerHTML = `<span style="color:#fca5a5">Error al orquestar: ${e.message}</span>`;
+    }
+  }
+
+  // Guardar historial
   const entry = {q:question,time:new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'})};
   history.unshift(entry);
   if(history.length>10)history.pop();
@@ -537,7 +591,7 @@ async function consultBoard(){
 // ============================================================
 // CLAUDE API CALL
 // ============================================================
-async function callClaude(systemPrompt, userMessage, mesaIndex){
+async function callClaude(systemPrompt, userMessage){
   const endpoint = window.location.origin + '/api/board';
 
   const response = await fetch(endpoint, {
