@@ -502,6 +502,9 @@ function saveApiKey(){
 // ============================================================
 // MAIN: CONSULT BOARD
 // ============================================================
+// ============================================================
+// MAIN: CONSULT BOARD (AGORA EM SEQUÊNCIA ANTI-BLOQUEIO)
+// ============================================================
 async function consultBoard(){
   const question = document.getElementById('questionInput').value.trim();
   const context = document.getElementById('contextInput').value.trim();
@@ -529,32 +532,31 @@ async function consultBoard(){
 
   const userMsg = `${context ? `CONTEXTO DEL RADAR SEMANAL:\n${context}\n\n` : ''}CONSULTA DEL CEO:\n${question}`;
 
-  // 1. Llamar a las 6 mesas en paralelo
-  const promises = MESAS.map((mesa,i) => callClaude(mesa.systemPrompt, userMsg));
-  const results = await Promise.allSettled(promises);
-
   let recopilacionParaOrquestador = "";
 
-  results.forEach((result,i)=>{
-    document.getElementById(`loading-${i}`).style.display='none';
-    if(result.status==='fulfilled'){
-      renderMesa(i, result.value);
+  // 1. Chamar as 6 mesas de forma SECUENCIAL (uma por uma) para evitar Rate Limit
+  for (let i = 0; i < MESAS.length; i++) {
+    try {
+      // O código espera esta mesa terminar antes de enviar a próxima
+      const text = await callClaude(MESAS[i].systemPrompt, userMsg);
+      document.getElementById(`loading-${i}`).style.display='none';
+      renderMesa(i, text);
       
-      // Recopilar lo que dijo esta mesa visiblemente
+      // Coletar o que foi dito para o Orquestador
       recopilacionParaOrquestador += `\n--- MESA: ${MESAS[i].name} ---\n`;
       MESAS[i].voices.forEach(v => {
-        const val = extractXML(result.value, v.tag);
+        const val = extractXML(text, v.tag);
         if(val) recopilacionParaOrquestador += `${v.name}: ${val}\n`;
       });
-
-    } else {
+    } catch (err) {
+      document.getElementById(`loading-${i}`).style.display='none';
       document.getElementById(`verdict-${i}`).textContent='❌';
-      document.getElementById(`voices-${i}`).innerHTML=`<div style="font-size:13px;color:#fca5a5;padding:8px 0">Error de API. Verificá tu API key o saldo. (${result.reason.message || 'Bloqueo de seguridad'})</div>`;
+      document.getElementById(`voices-${i}`).innerHTML=`<div style="font-size:13px;color:#fca5a5;padding:8px 0">Error API: ${err.message}. Verificá saldo.</div>`;
       document.getElementById(`voices-${i}`).style.display='flex';
     }
-  });
+  }
 
-  // 2. Ejecutar al Orquestador Supremo (Si hubo respuestas válidas)
+  // 2. Executar o Orquestador Supremo (Bezos)
   if(recopilacionParaOrquestador.trim() !== ""){
     orchestratorSection.style.display = 'block';
     orchestratorContent.innerHTML = '<div class="loading-line"></div><div class="loading-line" style="width:70%"></div>';
@@ -590,7 +592,7 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
     }
   }
 
-  // Guardar historial
+  // Guardar no Histórico
   const entry = {q:question,time:new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'})};
   history.unshift(entry);
   if(history.length>10)history.pop();
