@@ -326,11 +326,12 @@ footer{text-align:center;padding:40px 0;border-top:1px solid var(--border)}
 
 <script>
 // ============================================================
-// SYSTEM PROMPTS — 6 MESAS (ARQUITECTURA "MODELO ICEBERG")
+// SYSTEM PROMPTS — 6 MESAS CON PRESUPUESTO DE TOKENS (NUEVO)
 // ============================================================
 const MESAS = [
 {
   name: 'Estrategia & IA',
+  tokens: 1500, // <--- Presupuesto alto para 4 personas
   systemPrompt: `Eres la "Mesa de Estrategia & IA" de CuartaOla (agencia líder de IA en LATAM).
 ESTRUCTURA ICEBERG (OBLIGATORIA): Razona en <_laboratorio> oculto, y extrae tu conclusión a <_diagnostico>.
 
@@ -340,7 +341,7 @@ ORDEN DE RESPUESTA INNEGOCIABLE: Tienes que generar el bloque para los 4 experto
 3. Mollick (Co-Intelligence)
 4. Rumelt (Auditoría del Kernel)
 
-REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML (Para los 4 sin excepción):
+REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
 <suleyman_laboratorio>Tu análisis profundo</suleyman_laboratorio>
 <suleyman_diagnostico>MÁXIMO 20 PALABRAS. 1 oración cruda y directa.</suleyman_diagnostico>
 
@@ -366,6 +367,7 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML (Para los 4 sin excepción):
 },
 {
   name: 'Capital & Mercados',
+  tokens: 800, // <--- Presupuesto ajustado
   systemPrompt: `Eres la "Mesa de Capital" de CuartaOla.
 ESTRUCTURA ICEBERG (OBLIGATORIA): Razona en <_laboratorio>, escupe la conclusión en <_diagnostico>.
 
@@ -390,6 +392,7 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
 },
 {
   name: 'Estrategia Pura',
+  tokens: 1000,
   systemPrompt: `Eres la "Mesa de Estrategia Pura" de CuartaOla. Tu rol es desarmar problemas tecnológicos modernos (SaaS, APIs, IA B2B) aplicando los marcos mentales de dominación absoluta, supervivencia extrema y conquista territorial de líderes históricos. (Evita lenguaje excesivamente violento para cumplir normas éticas, usa analogías de alta estrategia).
 ESTRUCTURA ICEBERG (OBLIGATORIA): Piensa en el <_laboratorio> y escupe una orden en el <_diagnostico>.
 
@@ -419,6 +422,7 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
 },
 {
   name: 'Monetización',
+  tokens: 600,
   systemPrompt: `Eres Charlie Munger, Mesa de Monetización de CuartaOla.
 ESTRUCTURA ICEBERG: Razonas cruzando modelos (biología, física, incentivos) en la etiqueta oculta, y escupes tu cinismo en la visible. Buscas ventajas compuestas; odias el autoengaño del software libre sin modelo de retención.
 
@@ -436,6 +440,7 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
 },
 {
   name: 'Marketing & Creatividad',
+  tokens: 800,
   systemPrompt: `Eres la "Mesa de Marketing" de CuartaOla. 
 ESTRUCTURA ICEBERG: 
 - Seth Godin: Define el posicionamiento. ¿Para qué tribu B2B es esto y para quién NO ES?
@@ -459,6 +464,7 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
 },
 {
   name: 'Síntesis & Tech',
+  tokens: 800,
   systemPrompt: `Eres la "Mesa de Síntesis y Tech" de CuartaOla.
 ESTRUCTURA ICEBERG:
 - Karpathy: Auditoría anti-humo. Evalúa latencia, alucinaciones y compute HOY.
@@ -500,7 +506,7 @@ function saveApiKey(){
 }
 
 // ============================================================
-// MAIN: CONSULT BOARD (AHORA EN FILA SECUENCIAL)
+// MAIN: CONSULT BOARD (EN SECUENCIA)
 // ============================================================
 async function consultBoard(){
   const question = document.getElementById('questionInput').value.trim();
@@ -512,7 +518,6 @@ async function consultBoard(){
   btn.disabled = true;
   document.getElementById('errorMsg').style.display='none';
   
-  // Ocultar orquestador al inicio
   const orchestratorSection = document.getElementById('orchestratorSection');
   const orchestratorContent = document.getElementById('orchestratorContent');
   orchestratorSection.style.display = 'none';
@@ -531,16 +536,14 @@ async function consultBoard(){
 
   let recopilacionParaOrquestador = "";
 
-  // 1. Llamar a las 6 mesas EN FILA (una tras otra)
+  // 1. Llamar a las 6 mesas EN FILA respetando el presupuesto exacto de tokens de cada una
   for (let i = 0; i < MESAS.length; i++) {
     try {
-      // El "await" acá es la magia: no avanza a la siguiente mesa hasta que esta termina
-      const text = await callClaude(MESAS[i].systemPrompt, userMsg);
+      const text = await callClaude(MESAS[i].systemPrompt, userMsg, MESAS[i].tokens);
       
       document.getElementById(`loading-${i}`).style.display='none';
       renderMesa(i, text);
       
-      // Recopilar lo que dijo para el Orquestador
       recopilacionParaOrquestador += `\n--- MESA: ${MESAS[i].name} ---\n`;
       MESAS[i].voices.forEach(v => {
         const val = extractXML(text, v.tag);
@@ -549,7 +552,7 @@ async function consultBoard(){
     } catch (err) {
       document.getElementById(`loading-${i}`).style.display='none';
       document.getElementById(`verdict-${i}`).textContent='❌';
-      document.getElementById(`voices-${i}`).innerHTML=`<div style="font-size:13px;color:#fca5a5;padding:8px 0">Error API: ${err.message}. Límite de tráfico o saldo.</div>`;
+      document.getElementById(`voices-${i}`).innerHTML=`<div style="font-size:13px;color:#fca5a5;padding:8px 0">Error: Límite de tráfico superado. Reintentá en 1 min.</div>`;
       document.getElementById(`voices-${i}`).style.display='flex';
     }
   }
@@ -571,7 +574,7 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
     const bezosUserMsg = `El CEO de CuartaOla propuso esto:\n"${question}"\n\nAquí están los dictámenes de las mesas tras su análisis:\n${recopilacionParaOrquestador}\n\nJeff, realiza la síntesis estratégica cruzada y danos el dictamen final.`;
 
     try {
-      const orquestadorResponse = await callClaude(bezosSystemPrompt, bezosUserMsg);
+      const orquestadorResponse = await callClaude(bezosSystemPrompt, bezosUserMsg, 1000);
       const sintesis = extractXML(orquestadorResponse, 'sintesis_directiva') || 'No se pudo generar la síntesis.';
       const decisionFinal = extractXML(orquestadorResponse, 'orquestador_decision') || 'El orquestador no pudo generar el dictamen. Revisa los logs.';
       
@@ -586,7 +589,7 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
         </div>
       `;
     } catch(e) {
-      orchestratorContent.innerHTML = `<span style="color:#fca5a5">Error al orquestar: ${e.message}</span>`;
+      orchestratorContent.innerHTML = `<span style="color:#fca5a5">Error al orquestar: Límite de tráfico superado.</span>`;
     }
   }
 
@@ -601,9 +604,9 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
 }
 
 // ============================================================
-// CLAUDE API CALL
+// CLAUDE API CALL (CON PRESUPUESTO DINÁMICO)
 // ============================================================
-async function callClaude(systemPrompt, userMessage){
+async function callClaude(systemPrompt, userMessage, maxTokens){
   const endpoint = window.location.origin + '/api/board';
 
   const response = await fetch(endpoint, {
@@ -614,8 +617,8 @@ async function callClaude(systemPrompt, userMessage){
       'anthropic-version':'2023-06-01'
     },
     body: JSON.stringify({
-      model: 'claude-3-haiku-20240307', // <-- MODELO ULTRARRÁPIDO PARA SECUENCIAS
-      max_tokens: 2800,
+      model: 'claude-3-5-sonnet-20240620', // VOLVEMOS AL MOTOR MÁS INTELIGENTE
+      max_tokens: maxTokens, // CADA MESA TIENE SU PRESUPUESTO
       system: systemPrompt,
       messages:[{role:'user',content:userMessage}]
     })
