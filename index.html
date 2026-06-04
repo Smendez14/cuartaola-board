@@ -437,9 +437,18 @@ footer{text-align:center;padding:40px 0;border-top:1px solid var(--border)}
 
 <script>
 // ============================================================
+// ADN CORPORATIVO (FASE 4 - INYECCIÓN INSTITUCIONAL)
+// ============================================================
+const ADN_CORPORATIVO = `[ADN CORPORATIVO - CONTEXTO OBLIGATORIO]
+Actúas como el Board Directivo de un ecosistema empresarial top en LATAM liderado por un CEO ex-WPP (fundador de la primera agencia digital de la región con marcas como Adidas y Santander).
+El grupo tiene dos brazos ejecutores:
+1. WAVE (Lanza en Julio 2026): Agencia pionera de Agentic Marketing. Productos clave: Predictive campaign modeler, Autonomous Campaign Agent, Cognition campaign, Observatorio trends, Research Sintético, Agentic Marketing Hub. Target: Marcas top regionales y globales.
+2. EVA (Evolution Agency): Consultoría estratégica e integración técnica. Diseña arquitecturas de agentes autónomos, integraciones RAG/LLM en CRMs/ERPs, y marcos de Gobernanza de IA. Son independientes de vendors y ejecutan sprints concretos, no consultoría genérica.
+REGLA DE ORO: Todos tus consejos, críticas y estrategias DEBEN anclarse en este ecosistema. Si sugieres soluciones, usa las capacidades de WAVE o EVA. Conoces el negocio desde adentro.`;
+
+// ============================================================
 // SYSTEM PROMPTS — 6 MESAS (ARQUITECTURA "MODELO ICEBERG")
 // ============================================================
-
 const MESA_TOKENS = [2500, 1500, 2200, 1500, 1500, 1500];
 
 const MESAS = [
@@ -472,10 +481,10 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML (LOS 4 BLOQUES SON OBLIGATORIOS):
 <veredicto_estrategia>🟢 KERNEL SÓLIDO | 🟡 RUIDO TÁCTICO | 🔴 FANTASÍA</veredicto_estrategia>
 <accion_renuncia>1 bullet point de acción o renuncia inmediata.</accion_renuncia>`,
   voices: [
-    {tag:'suleyman_diagnostico', name:'Suleyman', initials:'MS'},
-    {tag:'thompson_diagnostico', name:'Thompson', initials:'BT'},
-    {tag:'mollick_diagnostico', name:'Mollick', initials:'EM'},
-    {tag:'rumelt_diagnostico', name:'Rumelt', initials:'RR'},
+    {tag:'suleyman_diagnostico', name:'Suleyman', initials:'MS', labTag:'suleyman_laboratorio'},
+    {tag:'thompson_diagnostico', name:'Thompson', initials:'BT', labTag:'thompson_laboratorio'},
+    {tag:'mollick_diagnostico', name:'Mollick', initials:'EM', labTag:'mollick_laboratorio'},
+    {tag:'rumelt_diagnostico', name:'Rumelt', initials:'RR', labTag:'rumelt_laboratorio'},
     {tag:'veredicto_estrategia', name:'Veredicto', initials:'⚖️', isVerdict:true},
     {tag:'accion_renuncia', name:'Renunciar a:', initials:'↯', isAction:true}
   ]
@@ -498,8 +507,8 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
 <veredicto_capital>🟢 LEVANTAR CAPITAL | 🟡 BOOTSTRAP OBLIGATORIO | 🔴 DESTRUCTOR DE VALOR</veredicto_capital>
 <mecanismo_financiamiento>1 bala accionable sobre cómo fondear o cobrar esto mañana.</mecanismo_financiamiento>`,
   voices: [
-    {tag:'tavel_diagnostico', name:'Tavel', initials:'ST'},
-    {tag:'casares_diagnostico', name:'Casares', initials:'WC'},
+    {tag:'tavel_diagnostico', name:'Tavel', initials:'ST', labTag:'tavel_laboratorio'},
+    {tag:'casares_diagnostico', name:'Casares', initials:'WC', labTag:'casares_laboratorio'},
     {tag:'veredicto_capital', name:'Veredicto Capital', initials:'$', isVerdict:true},
     {tag:'mecanismo_financiamiento', name:'Financiar así:', initials:'→', isAction:true}
   ]
@@ -528,9 +537,9 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML (LOS 3 BLOQUES SON OBLIGATORIOS):
 <veredicto_sangre>🟢 DESPLIEGUE TOTAL | 🟡 ASEDIO LENTO | 🔴 RETIRADA ABSOLUTA</veredicto_sangre>
 <milagro_guerra>1 bullet point con el movimiento corporativo letal y definitivo.</milagro_guerra>`,
   voices: [
-    {tag:'carlsen_diagnostico', name:'Carlsen', initials:'MC'},
-    {tag:'gengis_diagnostico', name:'Gengis Kan', initials:'GK'},
-    {tag:'churchill_diagnostico', name:'Churchill', initials:'WC'},
+    {tag:'carlsen_diagnostico', name:'Carlsen', initials:'MC', labTag:'carlsen_laboratorio'},
+    {tag:'gengis_diagnostico', name:'Gengis Kan', initials:'GK', labTag:'gengis_laboratorio'},
+    {tag:'churchill_diagnostico', name:'Churchill', initials:'WC', labTag:'churchill_laboratorio'},
     {tag:'veredicto_sangre', name:'Veredicto', initials:'⚔', isVerdict:true},
     {tag:'milagro_guerra', name:'Movimiento Letal:', initials:'☩', isAction:true}
   ]
@@ -547,7 +556,7 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
 <veredicto_monetizacion>🟢 FINANCIABLE | 🟡 REQUIERE PIVOTE | 🔴 AUTOENGAÑO ABSOLUTO</veredicto_monetizacion>
 <pivote_munger>1 bullet point con el pivote exacto de precio o modelo de negocio.</pivote_munger>`,
   voices: [
-    {tag:'munger_diagnostico', name:'Munger', initials:'CM'},
+    {tag:'munger_diagnostico', name:'Munger', initials:'CM', labTag:'munger_laboratorio'},
     {tag:'veredicto_monetizacion', name:'Veredicto', initials:'$', isVerdict:true},
     {tag:'pivote_munger', name:'El movimiento:', initials:'→', isAction:true}
   ]
@@ -569,8 +578,8 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
 <veredicto_marketing>🟢 VACA PÚRPURA | 🟡 RUIDO B2B | 🔴 INVISIBLE</veredicto_marketing>
 <sintesis_3s>Slogan o titular crudo y callejero (La regla publicitaria de los 3 segundos).</sintesis_3s>`,
   voices: [
-    {tag:'godin_diagnostico', name:'Seth Godin', initials:'SG'},
-    {tag:'ab_diagnostico', name:'Agulla & Baccetti', initials:'A&B'},
+    {tag:'godin_diagnostico', name:'Seth Godin', initials:'SG', labTag:'godin_laboratorio'},
+    {tag:'ab_diagnostico', name:'Agulla & Baccetti', initials:'A&B', labTag:'ab_laboratorio'},
     {tag:'veredicto_marketing', name:'Veredicto', initials:'★', isVerdict:true},
     {tag:'sintesis_3s', name:'3 segundos:', initials:'»', isAction:true}
   ]
@@ -592,8 +601,8 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
 <veredicto_tech>🟢 LISTO PARA INGENIERÍA | 🟡 REQUIERE WORKAROUND | 🔴 FICCIÓN TÉCNICA</veredicto_tech>
 <press_release>1 titular (Press Release interno) estilo Amazon anunciando el lanzamiento.</press_release>`,
   voices: [
-    {tag:'karpathy_diagnostico', name:'Karpathy', initials:'AK'},
-    {tag:'bezos_diagnostico', name:'Bezos', initials:'JB'},
+    {tag:'karpathy_diagnostico', name:'Karpathy', initials:'AK', labTag:'karpathy_laboratorio'},
+    {tag:'bezos_diagnostico', name:'Bezos', initials:'JB', labTag:'bezos_laboratorio'},
     {tag:'veredicto_tech', name:'Veredicto Técnico', initials:'⚙', isVerdict:true},
     {tag:'press_release', name:'Press Release:', initials:'📰', isAction:true}
   ]
@@ -606,6 +615,7 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
 let apiKey = localStorage.getItem('co_api_key') || '';
 let history = JSON.parse(localStorage.getItem('co_history') || '[]');
 let lastQuestion = '';
+let lastFullContext = '';
 let lastRecopilacion = '';
 
 // MEMORIA SECUESTRADA PARA CADA MESA (RAG LOCAL)
@@ -660,8 +670,11 @@ async function consultBoard(){
     document.getElementById(`profundizar-${i}`).style.display='none';
   });
 
-  const userMsg = `${context ? `CONTEXTO DEL RADAR SEMANAL:\n${context}\n\n` : ''}CONSULTA DEL CEO:\n${question}`;
+  // APLICACIÓN DEL ADN: Construimos el "Super Prompt" que será el userMessage
+  const userMsg = `${ADN_CORPORATIVO}\n\n${context ? `[CONTEXTO DEL RADAR SEMANAL]\n${context}\n\n` : ''}[CONSULTA DEL CEO]\n${question}`;
+  
   lastQuestion = question;
+  lastFullContext = userMsg;
 
   // 1. Llamar a las 6 mesas en paralelo con tokens dinámicos
   const promises = MESAS.map((mesa,i) => callClaude(mesa.systemPrompt, userMsg, MESA_TOKENS[i]));
@@ -707,16 +720,16 @@ async function consultBoard(){
     orchestratorContent.innerHTML = '<div class="loading-line"></div><div class="loading-line" style="width:70%"></div>';
 
     // FIX ANTI-PESIMISMO APLICADO ACÁ:
-    const bezosSystemPrompt = `Eres Jeff Bezos, CEO Orquestador del Board de CuartaOla (la futura agencia líder de Marketing Predictivo en LATAM).
-Tu trabajo es realizar una SÍNTESIS ESTRATÉGICA DE ALTO NIVEL cruzando los diagnósticos de las 6 mesas:
-1) Cruce de Modelos: Analiza cómo las perspectivas se complementan. Si una mesa exige agresividad comercial y otra detecta un riesgo técnico/financiero, encuentra el MECANISMO ESTRATÉGICO que resuelve el dilema.
-2) Decisión Final Absoluta: Define la dirección corporativa innegociable. IMPORTANTE: Si el Board destruye la idea por riesgos técnicos o financieros, tu obligación como Orquestador es proponer un Plan B viable y agresivo que SÍ funcione. No te quedes en el pesimismo.
+    const bezosSystemPrompt = `Eres Jeff Bezos, CEO Orquestador del Board de CuartaOla/WAVE.
+Tu trabajo es realizar una SÍNTESIS ESTRATÉGICA DE ALTO NIVEL cruzando los diagnósticos de las 6 mesas y anclándote en el ADN Corporativo.
+1) Cruce de Modelos: Analiza cómo las perspectivas se complementan.
+2) Decisión Final Absoluta: Define la dirección corporativa. IMPORTANTE: Si el Board destruye la idea por riesgos técnicos o financieros, tu obligación como Orquestador es proponer un Plan B viable y agresivo que SÍ funcione y use las capacidades de WAVE/EVA. No te quedes en el pesimismo.
 
 REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
 <sintesis_directiva>2 párrafos de análisis cruzado profundo. Destila el valor real de las opiniones de la junta, identifica el punto de apalancamiento y genera una estrategia superior para LATAM.</sintesis_directiva>
 <orquestador_decision>1 párrafo ejecutivo y brutalmente claro (máx 60 palabras) con la decisión final del Board y el primer paso innegociable a ejecutar en la agencia mañana a las 8 AM.</orquestador_decision>`;
 
-    const bezosUserMsg = `El CEO de CuartaOla propuso esto:\n"${question}"\n\nAquí están los dictámenes de las mesas tras su análisis:\n${recopilacionParaOrquestador}\n\nJeff, realiza la síntesis estratégica cruzada y danos el dictamen final.`;
+    const bezosUserMsg = `INFORMACIÓN CORPORATIVA Y CONSULTA:\n${lastFullContext}\n\nAquí están los dictámenes de las mesas tras su análisis:\n${recopilacionParaOrquestador}\n\nJeff, realiza la síntesis estratégica cruzada y danos el dictamen final.`;
 
     try {
       const orquestadorResponse = await callClaude(bezosSystemPrompt, bezosUserMsg, 1500);
@@ -821,13 +834,12 @@ Responde de forma detallada, cruda y ejecutiva. Si te pide un excel, arma la est
 Actúa en personaje representando las voces de tu mesa: ${mesa.voices.filter(v=>!v.isVerdict && !v.isAction).map(v=>v.name).join(', ')}.
 
 INFORMACIÓN CLAVE (TU MEMORIA):
-Pregunta original del CEO: "${lastQuestion}"
-Este fue tu razonamiento interno oculto que te llevó al veredicto:
+${lastFullContext}
+Este fue tu razonamiento interno oculto que te llevó al veredicto original:
 ${mesasMemory[currentSidebarMesa]}
 
 Responde directamente en formato Markdown sin etiquetas XML. No saludes con "Hola", ve directo a la estrategia.`;
 
-  // Construir historial de mensajes en el formato exacto que pide la API de Claude
   const messages = sidebarChats[currentSidebarMesa].map(m => ({
     role: m.role === 'ai' ? 'assistant' : 'user',
     content: m.content
@@ -850,7 +862,7 @@ Responde directamente en formato Markdown sin etiquetas XML. No saludes con "Hol
 }
 
 // ============================================================
-// DEBATE INTER-MESAS (ORIGINAL INTACTO)
+// DEBATE INTER-MESAS 
 // ============================================================
 async function startDebate(){
   const debateBtn = document.getElementById('debateBtn');
@@ -876,7 +888,7 @@ REGLAS DEL DEBATE:
 1. Cada director DEBE referirse directamente a lo que dijo otro y explicar por qué está equivocado o incompleto.
 2. Los desacuerdos deben ser sobre sustancia: datos, lógica, viabilidad, timing. No retórica vacía.
 3. Después de la confrontación, identificar dónde convergen y dónde la tensión es irresoluble.
-4. El veredicto final debe ser MÁS PRECISO que el de cualquier mesa individual y debe orientarse a un Plan B ejecutable si la idea inicial es rechazada.
+4. El veredicto final debe ser MÁS PRECISO que el de cualquier mesa individual y debe orientarse a un Plan B ejecutable si la idea inicial es rechazada, utilizando las herramientas de WAVE y EVA.
 
 FORMATO XML OBLIGATORIO:
 <rumelt_debate>2-3 oraciones. Ataca la posición más débil de otra mesa. Nombra a quién ataca.</rumelt_debate>
@@ -887,7 +899,7 @@ FORMATO XML OBLIGATORIO:
 <convergencia>1 párrafo: los 2-3 puntos donde TODOS coinciden y la 1 tensión principal que no se resuelve.</convergencia>
 <veredicto_debate>1 párrafo ejecutivo (máx 80 palabras): la conclusión estratégica refinada que incorpora las objeciones del debate y plantea una solución real.</veredicto_debate>`;
 
-  const debateUserMsg = `PREGUNTA ORIGINAL DEL CEO:\n"${lastQuestion}"\n\nPOSICIONES DE LAS 6 MESAS:\n${lastRecopilacion}\n\nInicia el debate. Cada director debe atacar directamente la posición de otro basándose en los dictámenes anteriores.`;
+  const debateUserMsg = `CONTEXTO DE LA EMPRESA Y PREGUNTA DEL CEO:\n"${lastFullContext}"\n\nPOSICIONES DE LAS 6 MESAS:\n${lastRecopilacion}\n\nInicia el debate. Cada director debe atacar directamente la posición de otro basándose en los dictámenes anteriores.`;
 
   try {
     const response = await callClaude(debateSystemPrompt, debateUserMsg, 2500);
@@ -944,7 +956,7 @@ FORMATO XML OBLIGATORIO:
 }
 
 // ============================================================
-// CLAUDE API CALLS (RESPETANDO EL MODELO EXACTO DE VERCEL)
+// CLAUDE API CALLS 
 // ============================================================
 async function callClaude(systemPrompt, userMessage, maxTokens = 1500){
   const endpoint = window.location.origin + '/api/board';
@@ -970,7 +982,6 @@ async function callClaude(systemPrompt, userMessage, maxTokens = 1500){
   return data.content[0].text;
 }
 
-// Nueva función separada para el Chat Lateral (Mantiene el historial)
 async function callClaudeChat(systemPrompt, messagesArray, maxTokens = 2000){
   const endpoint = window.location.origin + '/api/board';
   const response = await fetch(endpoint, {
@@ -981,7 +992,7 @@ async function callClaudeChat(systemPrompt, messagesArray, maxTokens = 2000){
       'anthropic-version':'2023-06-01'
     },
     body: JSON.stringify({
-      model:'claude-sonnet-4-6', // EL CONTRATO INTACTO DE VERCEL
+      model:'claude-sonnet-4-6', 
       max_tokens: maxTokens,
       system: systemPrompt,
       messages: messagesArray
