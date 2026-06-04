@@ -57,13 +57,12 @@ header{display:flex;align-items:center;justify-content:space-between;padding:32p
 .submit-btn:hover{transform:translateY(-2px);box-shadow:0 20px 40px rgba(0,212,255,.2)}
 .submit-btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
 
-/* --- ESTILOS ORQUESTADOR (NUEVO) --- */
+/* --- ESTILOS ORQUESTADOR --- */
 .orchestrator-section{display:none; background:linear-gradient(180deg, var(--bg2), var(--bg)); border:1px solid var(--border); border-top:2px solid var(--amber); border-radius:20px; padding:32px; margin-bottom:40px; position:relative; overflow:hidden;}
 .orchestrator-section::before{content:'';position:absolute;top:0;left:0;right:0;height:100px;background:linear-gradient(180deg, rgba(245,158,11,0.05), transparent);pointer-events:none;}
 .orchestrator-badge{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;color:var(--amber);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
 .orchestrator-badge::before{content:'';width:8px;height:8px;background:var(--amber);border-radius:50%;box-shadow:0 0 10px var(--amber);}
 .orchestrator-content{font-size:16px;line-height:1.7;color:var(--white);}
-.orchestrator-content strong{color:var(--amber); font-family:'Syne', sans-serif;}
 
 .mesas-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:48px}
 @media(max-width:1100px){.mesas-grid{grid-template-columns:repeat(2,1fr)}}
@@ -336,12 +335,9 @@ const MESAS = [
 ESTRUCTURA ICEBERG (OBLIGATORIA):
 Debes "pensar en voz alta" dentro de una etiqueta <[nombre]_laboratorio> oculta. Luego, extrae una sola oración letal para la etiqueta _diagnostico visible.
 
-- Suleyman: Piensa en "The Coming Wave". ¿Nos comoditizará la IA en 3 años?
-- Thompson: Aggregation Theory. ¿De qué API dependemos y cómo capturamos margen?
-- Mollick: Co-Intelligence. ¿Cómo adopta esto mañana el cliente corporativo?
-- Rumelt: Modera. Destruye el ruido y exige el "Kernel" estratégico.
+REGLA DE VIDA O MUERTE: Tienes que generar OBLIGATORIAMENTE el bloque para LOS 4 EXPERTOS (Suleyman, Thompson, Mollick y Rumelt). Si omites a Mollick o a Rumelt, arruinas la simulación.
 
-REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
+REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML (Para los 4 sin excepción):
 <suleyman_laboratorio>Tu análisis profundo</suleyman_laboratorio>
 <suleyman_diagnostico>MÁXIMO 20 PALABRAS. 1 oración cruda y directa.</suleyman_diagnostico>
 
@@ -555,30 +551,44 @@ async function consultBoard(){
     }
   });
 
-  // 2. Ejecutar al Orquestador Supremo (Si hubo respuestas válidas)
+// 2. Ejecutar al Orquestador Supremo (Si hubo respuestas válidas)
   if(recopilacionParaOrquestador.trim() !== ""){
     orchestratorSection.style.display = 'block';
     orchestratorContent.innerHTML = '<div class="loading-line"></div><div class="loading-line" style="width:70%"></div>';
 
-    const bezosSystemPrompt = `Eres Jeff Bezos, actuando como CEO Orquestador de CuartaOla. Tu trabajo es leer los diagnósticos crudos de tus 6 mesas directivas y tomar la DECISIÓN FINAL ABSOLUTA.
-No filosofes. Escribe 1 solo párrafo ejecutivo y brutalmente claro (máximo 60 palabras) que contenga:
-1) La decisión final (Ej: Avanzar, Pivotar, o Descartar idea).
-2) El paso 1 innegociable a ejecutar hoy mismo en la agencia.
+    const bezosSystemPrompt = `Eres Jeff Bezos, CEO Orquestador del Board de CuartaOla (la futura agencia líder de Marketing Predictivo en LATAM).
+Tu objetivo NO es narrar una pelea ni hacer una simulación teatral entre los directivos. El CEO busca valor real, encontrar puntos ciegos y descubrir ventajas competitivas en la intersección de estas mentes.
 
-REGLA DE SALIDA: Usa EXCLUSIVAMENTE la etiqueta <orquestador_decision>Tu párrafo</orquestador_decision>`;
+Tu trabajo es realizar una SÍNTESIS ESTRATÉGICA DE ALTO NIVEL cruzando los diagnósticos de las 6 mesas:
+1) Cruce de Modelos: Analiza cómo las perspectivas se complementan. Si una mesa exige agresividad comercial y otra detecta un riesgo técnico/financiero, encuentra el MECANISMO ESTRATÉGICO que resuelve el dilema. Eleva el nivel del pensamiento. Extrae la verdad subyacente.
+2) Decisión Final Absoluta: Define la dirección corporativa innegociable.
 
-    const bezosUserMsg = `El fundador de la agencia propuso esto:\n"${question}"\n\nAquí están los dictámenes de las mesas tras su análisis:\n${recopilacionParaOrquestador}\n\nJeff, danos la decisión final.`;
+REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
+<sintesis_directiva>2 párrafos de análisis cruzado profundo. Destila el valor real de las opiniones de la junta, identifica el punto de apalancamiento y resuelve las contradicciones para generar una estrategia superior para LATAM.</sintesis_directiva>
+<orquestador_decision>1 párrafo ejecutivo y brutalmente claro (máx 60 palabras) con la decisión final del Board y el primer paso innegociable a ejecutar en la agencia mañana a las 8 AM.</orquestador_decision>`;
+
+    const bezosUserMsg = `El CEO de CuartaOla propuso esto:\n"${question}"\n\nAquí están los dictámenes de las mesas tras su análisis:\n${recopilacionParaOrquestador}\n\nJeff, realiza la síntesis estratégica cruzada y danos el dictamen final.`;
 
     try {
       const orquestadorResponse = await callClaude(bezosSystemPrompt, bezosUserMsg);
-      const decisionFinal = extractXML(orquestadorResponse, 'orquestador_decision') || 'El orquestador no pudo generar una síntesis. Revisa los logs.';
-      orchestratorContent.innerHTML = `<strong>El Dictamen:</strong> ${decisionFinal}`;
+      const sintesis = extractXML(orquestadorResponse, 'sintesis_directiva') || 'No se pudo generar la síntesis.';
+      const decisionFinal = extractXML(orquestadorResponse, 'orquestador_decision') || 'El orquestador no pudo generar el dictamen. Revisa los logs.';
+      
+      orchestratorContent.innerHTML = `
+        <div style="margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.06);">
+          <div style="font-size:10px; letter-spacing:2px; color:var(--amber); margin-bottom:12px; font-weight:700;">🧠 SÍNTESIS ESTRATÉGICA DEL BOARD</div>
+          <div style="font-size:14px; color:var(--light); line-height:1.7;">${sintesis.replace(/\n/g, '<br><br>')}</div>
+        </div>
+        <div>
+          <div style="font-size:10px; letter-spacing:2px; color:var(--cyan); margin-bottom:12px; font-weight:700;">🎯 DICTAMEN FINAL DEL CEO</div>
+          <div style="font-size:16px; color:var(--white); line-height:1.7;">${decisionFinal}</div>
+        </div>
+      `;
     } catch(e) {
-      orchestratorContent.innerHTML = `<span style="color:#fca5a5">Error al orquestar: ${e.message}</span>`;
+      orchestratorContent.innerHTML = `<span style="color:#fca5a5">Error al orquestar: ${e.message}</span>`
+        // Guardar historial;
     }
   }
-
-  // Guardar historial
   const entry = {q:question,time:new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'})};
   history.unshift(entry);
   if(history.length>10)history.pop();
