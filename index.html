@@ -616,8 +616,8 @@ async function callClaude(systemPrompt, userMessage){
       'anthropic-version':'2023-06-01'
     },
     body: JSON.stringify({
-      model:'claude-3-5-sonnet-20240620',
-      max_tokens: 2800, // <--- ACÁ ESTÁ LA NAFTA PARA QUE HABLEN LOS 4
+      model: 'claude-3-haiku-20240307', // <--- LA MAGIA ESTÁ ACÁ (Modelo más rápido y barato)
+      max_tokens: 2800,
       system: systemPrompt,
       messages:[{role:'user',content:userMessage}]
     })
