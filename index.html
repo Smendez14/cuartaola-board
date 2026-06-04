@@ -130,7 +130,7 @@ header{display:flex;align-items:center;justify-content:space-between;padding:32p
 .loading-line:nth-child(5){width:60%}
 @keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0};background-size:800px 100%}
 
-.voices{display:none;flex-direction:column;gap:0}
+.voices{display:none;flex-direction:column;gap:0; margin-bottom: 20px;}
 .voice{padding:14px 0;border-bottom:1px solid var(--border)}
 .voice:last-child{border-bottom:none}
 .voice-header{display:flex;align-items:center;gap:8px;margin-bottom:8px}
@@ -141,6 +141,11 @@ header{display:flex;align-items:center;justify-content:space-between;padding:32p
 .verdict-block{margin-top:16px;padding:12px 16px;border-radius:10px;background:var(--bg4);display:flex;align-items:center;gap:10px}
 .action-block{margin-top:10px;padding:12px 16px;border-radius:10px;border:1px solid var(--border2);font-size:13px;color:var(--light);line-height:1.6}
 .action-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);margin-bottom:6px}
+
+/* --- BOTÓN PROFUNDIZAR --- */
+.profundizar-btn-container { text-align: center; margin-top: auto; padding-top: 16px;}
+.profundizar-btn { background: transparent; border: 1px solid var(--border2); border-radius: 8px; padding: 8px 16px; color: var(--light); font-family: 'Space Grotesk', sans-serif; font-size: 12px; cursor: pointer; transition: all .3s; display: none;}
+.profundizar-btn:hover { border-color: var(--cyan); color: var(--cyan); background: rgba(0,212,255,.05); }
 
 .m1{--mesa-color:#00d4ff}.m2{--mesa-color:#7c3aed}.m3{--mesa-color:#ef4444}.m4{--mesa-color:#f59e0b}.m5{--mesa-color:#ec4899}.m6{--mesa-color:#10b981}
 .m1 .mesa-name{color:#00d4ff}.m2 .mesa-name{color:#7c3aed}.m3 .mesa-name{color:#ef4444}.m4 .mesa-name{color:#f59e0b}.m5 .mesa-name{color:#ec4899}.m6 .mesa-name{color:#10b981}
@@ -176,6 +181,41 @@ header{display:flex;align-items:center;justify-content:space-between;padding:32p
 .modal-cancel:hover{color:var(--white)}
 .warning{font-size:12px;color:var(--amber);margin-top:12px;line-height:1.5}
 .error-msg{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:10px;padding:12px 16px;font-size:13px;color:#fca5a5;margin-bottom:16px;display:none}
+
+/* --- ESTILOS PANEL LATERAL (SIDEBAR) --- */
+.sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 999; display: none; opacity: 0; transition: opacity 0.3s ease; }
+.sidebar-overlay.open { display: block; opacity: 1; }
+
+.sidebar { position: fixed; top: 0; right: -500px; width: 450px; max-width: 100vw; height: 100vh; background: var(--bg2); border-left: 1px solid var(--border); box-shadow: -10px 0 30px rgba(0,0,0,0.5); z-index: 1000; transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1); display: flex; flex-direction: column; }
+.sidebar.open { right: 0; }
+
+.sidebar-header { padding: 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--bg3); }
+.sidebar-title-wrap { display: flex; flex-direction: column; }
+.sidebar-eyebrow { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--cyan); margin-bottom: 4px; }
+.sidebar-title { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; color: var(--white); }
+.sidebar-close { background: transparent; border: none; color: var(--gray); font-size: 24px; cursor: pointer; transition: color 0.2s; }
+.sidebar-close:hover { color: var(--white); }
+
+.sidebar-chat { flex: 1; padding: 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; }
+
+.chat-bubble { padding: 16px; border-radius: 12px; font-size: 14px; line-height: 1.6; max-width: 90%; }
+.chat-bubble.user { background: var(--bg4); align-self: flex-end; border-bottom-right-radius: 4px; color: var(--white); }
+.chat-bubble.ai { background: rgba(0,212,255,.05); border: 1px solid rgba(0,212,255,.1); align-self: flex-start; border-bottom-left-radius: 4px; color: var(--light); }
+.chat-bubble.ai strong { color: var(--cyan); }
+.chat-bubble.ai ul, .chat-bubble.ai ol { margin-left: 20px; margin-top: 8px; margin-bottom: 8px; }
+.chat-bubble.ai li { margin-bottom: 4px; }
+
+.chat-loading { display: none; align-self: flex-start; padding: 16px; }
+.chat-loading .loading-line { height: 8px; width: 60px; margin-bottom: 0; background: linear-gradient(90deg,var(--bg4) 0%,var(--bg5) 50%,var(--bg4) 100%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+
+.sidebar-input-area { padding: 20px; border-top: 1px solid var(--border); background: var(--bg3); }
+.sidebar-input-wrap { display: flex; gap: 8px; }
+.sidebar-input { flex: 1; background: var(--bg); border: 1px solid var(--border2); border-radius: 8px; padding: 12px 16px; color: var(--white); font-family: 'Space Grotesk', sans-serif; font-size: 14px; outline: none; transition: border-color 0.2s; resize: none; height: 45px; }
+.sidebar-input:focus { border-color: var(--cyan); }
+.sidebar-send-btn { background: var(--cyan); color: var(--bg); border: none; border-radius: 8px; padding: 0 16px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+.sidebar-send-btn:hover { background: #00b8e6; }
+.sidebar-send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
 footer{text-align:center;padding:40px 0;border-top:1px solid var(--border)}
 .footer-logo{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;letter-spacing:-1px;margin-bottom:4px}
 .footer-credit{font-size:12px;color:var(--dark)}
@@ -210,28 +250,25 @@ footer{text-align:center;padding:40px 0;border-top:1px solid var(--border)}
 <div class="error-msg" id="errorMsg"></div>
 </div>
 
-<!-- ORQUESTADOR BEZOS -->
 <div class="orchestrator-section" id="orchestratorSection">
-  <div class="orchestrator-badge">DIRECCIÓN GENERAL (ORQUESTADO POR BEZOS)</div>
-  <div class="orchestrator-content" id="orchestratorContent">
-    <div class="loading-line"></div><div class="loading-line" style="width: 70%;"></div>
-  </div>
+  <div class="orchestrator-badge">DIRECCIÓN GENERAL (ORQUESTADO POR BEZOS)</div>
+  <div class="orchestrator-content" id="orchestratorContent">
+    <div class="loading-line"></div><div class="loading-line" style="width: 70%;"></div>
+  </div>
 </div>
 
-<!-- BOTÓN DEBATE -->
 <div class="debate-trigger" id="debateTrigger">
-  <button class="debate-btn" id="debateBtn" onclick="startDebate()">Convocar Debate Inter-Mesas →</button>
+  <button class="debate-btn" id="debateBtn" onclick="startDebate()">Convocar Debate Inter-Mesas →</button>
 </div>
 
-<!-- DEBATE INTER-MESAS -->
 <div class="debate-section" id="debateSection">
-  <div class="debate-header">
-    <div class="debate-header-dot"></div>
-    <div class="debate-header-text">Debate Inter-Mesas — Confrontación de Posiciones</div>
-  </div>
-  <div id="debateContent">
-    <div class="loading-line"></div><div class="loading-line" style="width:80%"></div><div class="loading-line" style="width:65%"></div>
-  </div>
+  <div class="debate-header">
+    <div class="debate-header-dot"></div>
+    <div class="debate-header-text">Debate Inter-Mesas — Confrontación de Posiciones</div>
+  </div>
+  <div id="debateContent">
+    <div class="loading-line"></div><div class="loading-line" style="width:80%"></div><div class="loading-line" style="width:65%"></div>
+  </div>
 </div>
 
 <div class="mesas-grid" id="mesasGrid">
@@ -252,6 +289,7 @@ footer{text-align:center;padding:40px 0;border-top:1px solid var(--border)}
 <div class="loading-line"></div><div class="loading-line"></div>
 </div>
 <div class="voices" id="voices-0"></div>
+<div class="profundizar-btn-container"><button class="profundizar-btn" id="profundizar-0" onclick="openSidebar(0)">🔬 Profundizar</button></div>
 </div>
 </div>
 
@@ -271,6 +309,7 @@ footer{text-align:center;padding:40px 0;border-top:1px solid var(--border)}
 <div class="loading-line"></div><div class="loading-line"></div>
 </div>
 <div class="voices" id="voices-1"></div>
+<div class="profundizar-btn-container"><button class="profundizar-btn" id="profundizar-1" onclick="openSidebar(1)">🔬 Profundizar</button></div>
 </div>
 </div>
 
@@ -290,6 +329,7 @@ footer{text-align:center;padding:40px 0;border-top:1px solid var(--border)}
 <div class="loading-line"></div><div class="loading-line"></div>
 </div>
 <div class="voices" id="voices-2"></div>
+<div class="profundizar-btn-container"><button class="profundizar-btn" id="profundizar-2" onclick="openSidebar(2)">🔬 Profundizar</button></div>
 </div>
 </div>
 
@@ -309,6 +349,7 @@ footer{text-align:center;padding:40px 0;border-top:1px solid var(--border)}
 <div class="loading-line"></div><div class="loading-line"></div>
 </div>
 <div class="voices" id="voices-3"></div>
+<div class="profundizar-btn-container"><button class="profundizar-btn" id="profundizar-3" onclick="openSidebar(3)">🔬 Profundizar</button></div>
 </div>
 </div>
 
@@ -328,6 +369,7 @@ footer{text-align:center;padding:40px 0;border-top:1px solid var(--border)}
 <div class="loading-line"></div><div class="loading-line"></div>
 </div>
 <div class="voices" id="voices-4"></div>
+<div class="profundizar-btn-container"><button class="profundizar-btn" id="profundizar-4" onclick="openSidebar(4)">🔬 Profundizar</button></div>
 </div>
 </div>
 
@@ -347,6 +389,7 @@ footer{text-align:center;padding:40px 0;border-top:1px solid var(--border)}
 <div class="loading-line"></div><div class="loading-line"></div>
 </div>
 <div class="voices" id="voices-5"></div>
+<div class="profundizar-btn-container"><button class="profundizar-btn" id="profundizar-5" onclick="openSidebar(5)">🔬 Profundizar</button></div>
 </div>
 </div>
 
@@ -379,6 +422,29 @@ footer{text-align:center;padding:40px 0;border-top:1px solid var(--border)}
 </div>
 </div>
 
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-title-wrap">
+      <div class="sidebar-eyebrow">INTERROGATORIO</div>
+      <div class="sidebar-title" id="sidebarTitle">Mesa de Estrategia</div>
+    </div>
+    <button class="sidebar-close" onclick="closeSidebar()">×</button>
+  </div>
+  <div class="sidebar-chat" id="sidebarChat">
+    <div class="chat-bubble ai">Hazme cualquier pregunta sobre el dictamen o pídemelo en detalle. No tengo límite de palabras.</div>
+  </div>
+  <div class="chat-loading" id="sidebarLoading">
+    <div class="loading-line"></div>
+  </div>
+  <div class="sidebar-input-area">
+    <div class="sidebar-input-wrap">
+      <textarea class="sidebar-input" id="sidebarInput" placeholder="Ej: Desarrollame el Excel de pricing..." rows="1" onkeydown="handleSidebarEnter(event)"></textarea>
+      <button class="sidebar-send-btn" id="sidebarSendBtn" onclick="sendSidebarMessage()">➤</button>
+    </div>
+  </div>
+</div>
+
 <script>
 // ============================================================
 // SYSTEM PROMPTS — 6 MESAS (ARQUITECTURA "MODELO ICEBERG")
@@ -390,8 +456,8 @@ const MESA_TOKENS = [2500, 1500, 2200, 1500, 1500, 1500];
 
 const MESAS = [
 {
-  name: 'Estrategia & IA',
-  systemPrompt: `Eres la "Mesa de Estrategia & IA" de CuartaOla (agencia líder de IA en LATAM).
+  name: 'Estrategia & IA',
+  systemPrompt: `Eres la "Mesa de Estrategia & IA" de CuartaOla (agencia líder de IA en LATAM).
 ESTRUCTURA ICEBERG (OBLIGATORIA):
 Debes "pensar en voz alta" dentro de una etiqueta <[nombre]_laboratorio> oculta. Luego, extrae una sola oración letal para la etiqueta _diagnostico visible.
 
@@ -419,18 +485,18 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML (LOS 4 BLOQUES SON OBLIGATORIOS):
 <accion_renuncia>1 bullet point de acción o renuncia inmediata.</accion_renuncia>
 
 RECUERDA: Los laboratorios deben ser BREVES (2-3 oraciones máximo cada uno). Lo importante es que LOS 4 MIEMBROS aparezcan.`,
-  voices: [
-    {tag:'suleyman_diagnostico', name:'Suleyman', initials:'MS'},
-    {tag:'thompson_diagnostico', name:'Thompson', initials:'BT'},
-    {tag:'mollick_diagnostico', name:'Mollick', initials:'EM'},
-    {tag:'rumelt_diagnostico', name:'Rumelt', initials:'RR'},
-    {tag:'veredicto_estrategia', name:'Veredicto', initials:'⚖️', isVerdict:true},
-    {tag:'accion_renuncia', name:'Renunciar a:', initials:'↯', isAction:true}
-  ]
+  voices: [
+    {tag:'suleyman_diagnostico', name:'Suleyman', initials:'MS', labTag:'suleyman_laboratorio'},
+    {tag:'thompson_diagnostico', name:'Thompson', initials:'BT', labTag:'thompson_laboratorio'},
+    {tag:'mollick_diagnostico', name:'Mollick', initials:'EM', labTag:'mollick_laboratorio'},
+    {tag:'rumelt_diagnostico', name:'Rumelt', initials:'RR', labTag:'rumelt_laboratorio'},
+    {tag:'veredicto_estrategia', name:'Veredicto', initials:'⚖️', isVerdict:true},
+    {tag:'accion_renuncia', name:'Renunciar a:', initials:'↯', isAction:true}
+  ]
 },
 {
-  name: 'Capital & Mercados',
-  systemPrompt: `Eres la "Mesa de Capital" de CuartaOla.
+  name: 'Capital & Mercados',
+  systemPrompt: `Eres la "Mesa de Capital" de CuartaOla.
 ESTRUCTURA ICEBERG (OBLIGATORIA): Razona en <_laboratorio>, escupe la conclusión en <_diagnostico>.
 
 - Tavel (Benchmark): Odia servicios pesados. Habla de LTV/CAC, retención y startups muertas.
@@ -445,16 +511,16 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
 
 <veredicto_capital>🟢 LEVANTAR CAPITAL | 🟡 BOOTSTRAP OBLIGATORIO | 🔴 DESTRUCTOR DE VALOR</veredicto_capital>
 <mecanismo_financiamiento>1 bala accionable sobre cómo fondear o cobrar esto mañana.</mecanismo_financiamiento>`,
-  voices: [
-    {tag:'tavel_diagnostico', name:'Tavel', initials:'ST'},
-    {tag:'casares_diagnostico', name:'Casares', initials:'WC'},
-    {tag:'veredicto_capital', name:'Veredicto Capital', initials:'$', isVerdict:true},
-    {tag:'mecanismo_financiamiento', name:'Financiar así:', initials:'→', isAction:true}
-  ]
+  voices: [
+    {tag:'tavel_diagnostico', name:'Tavel', initials:'ST', labTag:'tavel_laboratorio'},
+    {tag:'casares_diagnostico', name:'Casares', initials:'WC', labTag:'casares_laboratorio'},
+    {tag:'veredicto_capital', name:'Veredicto Capital', initials:'$', isVerdict:true},
+    {tag:'mecanismo_financiamiento', name:'Financiar así:', initials:'→', isAction:true}
+  ]
 },
 {
-  name: 'Estrategia Pura',
-  systemPrompt: `Eres la "Mesa de Estrategia Pura" de CuartaOla. Tu rol es desarmar problemas tecnológicos modernos (SaaS, APIs, IA B2B) aplicando los marcos mentales de dominación absoluta y supervivencia extrema de líderes históricos. 
+  name: 'Estrategia Pura',
+  systemPrompt: `Eres la "Mesa de Estrategia Pura" de CuartaOla. Tu rol es desarmar problemas tecnológicos modernos (SaaS, APIs, IA B2B) aplicando los marcos mentales de dominación absoluta y supervivencia extrema de líderes históricos. 
 ESTRUCTURA ICEBERG (OBLIGATORIA): Piensa en el <_laboratorio> y escupe una orden en el <_diagnostico>.
 
 Hay 3 miembros en esta mesa. LOS 3 DEBEN HABLAR OBLIGATORIAMENTE.
@@ -477,17 +543,17 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML (LOS 3 BLOQUES SON OBLIGATORIOS):
 <milagro_guerra>1 bullet point con el movimiento corporativo letal y definitivo.</milagro_guerra>
 
 RECUERDA: Los laboratorios deben ser BREVES (2-3 oraciones máximo). Lo importante es que LOS 3 MIEMBROS aparezcan.`,
-  voices: [
-    {tag:'carlsen_diagnostico', name:'Carlsen', initials:'MC'},
-    {tag:'gengis_diagnostico', name:'Gengis Kan', initials:'GK'},
-    {tag:'churchill_diagnostico', name:'Churchill', initials:'WC'},
-    {tag:'veredicto_sangre', name:'Veredicto', initials:'⚔', isVerdict:true},
-    {tag:'milagro_guerra', name:'Movimiento Letal:', initials:'☩', isAction:true}
-  ]
+  voices: [
+    {tag:'carlsen_diagnostico', name:'Carlsen', initials:'MC', labTag:'carlsen_laboratorio'},
+    {tag:'gengis_diagnostico', name:'Gengis Kan', initials:'GK', labTag:'gengis_laboratorio'},
+    {tag:'churchill_diagnostico', name:'Churchill', initials:'WC', labTag:'churchill_laboratorio'},
+    {tag:'veredicto_sangre', name:'Veredicto', initials:'⚔', isVerdict:true},
+    {tag:'milagro_guerra', name:'Movimiento Letal:', initials:'☩', isAction:true}
+  ]
 },
 {
-  name: 'Monetización',
-  systemPrompt: `Eres Charlie Munger, Mesa de Monetización de CuartaOla.
+  name: 'Monetización',
+  systemPrompt: `Eres Charlie Munger, Mesa de Monetización de CuartaOla.
 ESTRUCTURA ICEBERG: Razonas cruzando modelos (biología, física, incentivos) en la etiqueta oculta, y escupes tu cinismo en la visible. Buscas ventajas compuestas; odias el autoengaño del software libre sin modelo de retención.
 
 REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
@@ -496,16 +562,16 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
 
 <veredicto_monetizacion>🟢 FINANCIABLE | 🟡 REQUIERE PIVOTE | 🔴 AUTOENGAÑO ABSOLUTO</veredicto_monetizacion>
 <pivote_munger>1 bullet point con el pivote exacto de precio o modelo de negocio.</pivote_munger>`,
-  voices: [
-    {tag:'munger_diagnostico', name:'Munger', initials:'CM'},
-    {tag:'veredicto_monetizacion', name:'Veredicto', initials:'$', isVerdict:true},
-    {tag:'pivote_munger', name:'El movimiento:', initials:'→', isAction:true}
-  ]
+  voices: [
+    {tag:'munger_diagnostico', name:'Munger', initials:'CM', labTag:'munger_laboratorio'},
+    {tag:'veredicto_monetizacion', name:'Veredicto', initials:'$', isVerdict:true},
+    {tag:'pivote_munger', name:'El movimiento:', initials:'→', isAction:true}
+  ]
 },
 {
-  name: 'Marketing & Creatividad',
-  systemPrompt: `Eres la "Mesa de Marketing" de CuartaOla. 
-ESTRUCTURA ICEBERG: 
+  name: 'Marketing & Creatividad',
+  systemPrompt: `Eres la "Mesa de Marketing" de CuartaOla. 
+ESTRUCTURA ICEBERG: 
 - Seth Godin: Define el posicionamiento. ¿Para qué tribu B2B es esto y para quién NO ES?
 - Agulla & Baccetti: Pensamiento lateral. Aplican la irreverencia publicitaria LATAM para destruir lo corporativo aburrido.
 
@@ -518,16 +584,16 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
 
 <veredicto_marketing>🟢 VACA PÚRPURA | 🟡 RUIDO B2B | 🔴 INVISIBLE</veredicto_marketing>
 <sintesis_3s>Slogan o titular crudo y callejero (La regla publicitaria de los 3 segundos).</sintesis_3s>`,
-  voices: [
-    {tag:'godin_diagnostico', name:'Seth Godin', initials:'SG'},
-    {tag:'ab_diagnostico', name:'Agulla & Baccetti', initials:'A&B'},
-    {tag:'veredicto_marketing', name:'Veredicto', initials:'★', isVerdict:true},
-    {tag:'sintesis_3s', name:'3 segundos:', initials:'»', isAction:true}
-  ]
+  voices: [
+    {tag:'godin_diagnostico', name:'Seth Godin', initials:'SG', labTag:'godin_laboratorio'},
+    {tag:'ab_diagnostico', name:'Agulla & Baccetti', initials:'A&B', labTag:'ab_laboratorio'},
+    {tag:'veredicto_marketing', name:'Veredicto', initials:'★', isVerdict:true},
+    {tag:'sintesis_3s', name:'3 segundos:', initials:'»', isAction:true}
+  ]
 },
 {
-  name: 'Síntesis & Tech',
-  systemPrompt: `Eres la "Mesa de Síntesis y Tech" de CuartaOla.
+  name: 'Síntesis & Tech',
+  systemPrompt: `Eres la "Mesa de Síntesis y Tech" de CuartaOla.
 ESTRUCTURA ICEBERG:
 - Karpathy: Auditoría anti-humo. Evalúa latencia, alucinaciones y compute HOY.
 - Bezos: Working Backwards. Construye el "Flywheel". Si Karpathy avisa que la IA falla, Bezos exige inventar un workaround humano.
@@ -541,12 +607,12 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
 
 <veredicto_tech>🟢 LISTO PARA INGENIERÍA | 🟡 REQUIERE WORKAROUND | 🔴 FICCIÓN TÉCNICA</veredicto_tech>
 <press_release>1 titular (Press Release interno) estilo Amazon anunciando el lanzamiento.</press_release>`,
-  voices: [
-    {tag:'karpathy_diagnostico', name:'Karpathy', initials:'AK'},
-    {tag:'bezos_diagnostico', name:'Bezos', initials:'JB'},
-    {tag:'veredicto_tech', name:'Veredicto Técnico', initials:'⚙', isVerdict:true},
-    {tag:'press_release', name:'Press Release:', initials:'📰', isAction:true}
-  ]
+  voices: [
+    {tag:'karpathy_diagnostico', name:'Karpathy', initials:'AK', labTag:'karpathy_laboratorio'},
+    {tag:'bezos_diagnostico', name:'Bezos', initials:'JB', labTag:'bezos_laboratorio'},
+    {tag:'veredicto_tech', name:'Veredicto Técnico', initials:'⚙', isVerdict:true},
+    {tag:'press_release', name:'Press Release:', initials:'📰', isAction:true}
+  ]
 }
 ];
 
@@ -558,84 +624,106 @@ let history = JSON.parse(localStorage.getItem('co_history') || '[]');
 let lastQuestion = '';
 let lastRecopilacion = '';
 
+// MEMORIA SECUESTRADA PARA CADA MESA
+let mesasMemory = [null, null, null, null, null, null]; 
+// HISTORIAL DEL CHAT POR MESA PARA MANTENER CONVERSACIÓN
+let sidebarChats = [[], [], [], [], [], []];
+let currentSidebarMesa = null;
+
 function openApiModal(){
-  document.getElementById('apiKeyInput').value = apiKey;
-  document.getElementById('apiModal').classList.add('open');
+  document.getElementById('apiKeyInput').value = apiKey;
+  document.getElementById('apiModal').classList.add('open');
 }
 function closeApiModal(){document.getElementById('apiModal').classList.remove('open')}
 function saveApiKey(){
-  apiKey = document.getElementById('apiKeyInput').value.trim();
-  localStorage.setItem('co_api_key', apiKey);
-  closeApiModal();
+  apiKey = document.getElementById('apiKeyInput').value.trim();
+  localStorage.setItem('co_api_key', apiKey);
+  closeApiModal();
 }
 
 // ============================================================
 // MAIN: CONSULT BOARD (LLAMADAS EN PARALELO)
 // ============================================================
 async function consultBoard(){
-  const question = document.getElementById('questionInput').value.trim();
-  const context = document.getElementById('contextInput').value.trim();
-  if(!question){alert('Ingresá una pregunta para el board.');return}
-  if(!apiKey){openApiModal();return}
+  const question = document.getElementById('questionInput').value.trim();
+  const context = document.getElementById('contextInput').value.trim();
+  if(!question){alert('Ingresá una pregunta para el board.');return}
+  if(!apiKey){openApiModal();return}
 
-  const btn = document.getElementById('submitBtn');
-  btn.disabled = true;
-  document.getElementById('errorMsg').style.display='none';
-  
-  // Ocultar orquestador, debate y botón al inicio
-  const orchestratorSection = document.getElementById('orchestratorSection');
-  const orchestratorContent = document.getElementById('orchestratorContent');
-  orchestratorSection.style.display = 'none';
-  document.getElementById('debateTrigger').style.display = 'none';
-  document.getElementById('debateSection').style.display = 'none';
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  document.getElementById('errorMsg').style.display='none';
+  
+  // Ocultar orquestador, debate y botón al inicio
+  const orchestratorSection = document.getElementById('orchestratorSection');
+  const orchestratorContent = document.getElementById('orchestratorContent');
+  orchestratorSection.style.display = 'none';
+  document.getElementById('debateTrigger').style.display = 'none';
+  document.getElementById('debateSection').style.display = 'none';
 
-  // Reset mesas
-  MESAS.forEach((_,i)=>{
-    document.getElementById(`mesa-${i}`).classList.add('active');
-    document.querySelector(`#mesa-${i} .mesa-placeholder`).style.display='none';
-    document.getElementById(`loading-${i}`).style.display='block';
-    document.getElementById(`voices-${i}`).style.display='none';
-    document.getElementById(`voices-${i}`).innerHTML='';
-    document.getElementById(`verdict-${i}`).textContent='⏳';
-  });
+  // Limpiar memoria de chats anteriores
+  mesasMemory = [null, null, null, null, null, null];
+  sidebarChats = [[], [], [], [], [], []];
 
-  const userMsg = `${context ? `CONTEXTO DEL RADAR SEMANAL:\n${context}\n\n` : ''}CONSULTA DEL CEO:\n${question}`;
+  // Reset mesas
+  MESAS.forEach((_,i)=>{
+    document.getElementById(`mesa-${i}`).classList.add('active');
+    document.querySelector(`#mesa-${i} .mesa-placeholder`).style.display='none';
+    document.getElementById(`loading-${i}`).style.display='block';
+    document.getElementById(`voices-${i}`).style.display='none';
+    document.getElementById(`voices-${i}`).innerHTML='';
+    document.getElementById(`verdict-${i}`).textContent='⏳';
+    document.getElementById(`profundizar-${i}`).style.display='none';
+  });
 
-  // Guardar para el debate
-  lastQuestion = question;
+  const userMsg = `${context ? `CONTEXTO DEL RADAR SEMANAL:\n${context}\n\n` : ''}CONSULTA DEL CEO:\n${question}`;
 
-  // 1. Llamar a las 6 mesas en paralelo con tokens dinámicos
-  const promises = MESAS.map((mesa,i) => callClaude(mesa.systemPrompt, userMsg, MESA_TOKENS[i]));
-  const results = await Promise.allSettled(promises);
+  // Guardar para el debate
+  lastQuestion = question;
 
-  let recopilacionParaOrquestador = "";
+  // 1. Llamar a las 6 mesas en paralelo con tokens dinámicos
+  const promises = MESAS.map((mesa,i) => callClaude(mesa.systemPrompt, userMsg, MESA_TOKENS[i]));
+  const results = await Promise.allSettled(promises);
 
-  results.forEach((result,i)=>{
-    document.getElementById(`loading-${i}`).style.display='none';
-    if(result.status==='fulfilled'){
-      renderMesa(i, result.value);
+  let recopilacionParaOrquestador = "";
+
+  results.forEach((result,i)=>{
+    document.getElementById(`loading-${i}`).style.display='none';
+    if(result.status==='fulfilled'){
+      renderMesa(i, result.value);
+      document.getElementById(`profundizar-${i}`).style.display='inline-block'; // Mostrar botón
       
-      recopilacionParaOrquestador += `\n--- MESA: ${MESAS[i].name} ---\n`;
+      // GUARDAR EL RAZONAMIENTO OCULTO PARA EL CHAT LATERAL (Secuestro de Memoria)
+      let memoryDump = `--- RAZONAMIENTO ORIGINAL DE LA MESA ---\n`;
       MESAS[i].voices.forEach(v => {
-        const val = extractXML(result.value, v.tag);
-        if(val) recopilacionParaOrquestador += `${v.name}: ${val}\n`;
+        if(v.labTag) {
+          const labContent = extractXML(result.value, v.labTag);
+          if(labContent) memoryDump += `Análisis de ${v.name}: ${labContent}\n`;
+        }
       });
+      mesasMemory[i] = memoryDump;
 
-    } else {
-      document.getElementById(`verdict-${i}`).textContent='❌';
-      document.getElementById(`voices-${i}`).innerHTML=`<div style="font-size:13px;color:#fca5a5;padding:8px 0">Error de API. Verificá tu API key o saldo.</div>`;
-      document.getElementById(`voices-${i}`).style.display='flex';
-    }
-  });
+      recopilacionParaOrquestador += `\n--- MESA: ${MESAS[i].name} ---\n`;
+      MESAS[i].voices.forEach(v => {
+        const val = extractXML(result.value, v.tag);
+        if(val) recopilacionParaOrquestador += `${v.name}: ${val}\n`;
+      });
 
-  // 2. Ejecutar al Orquestador Supremo
-  if(recopilacionParaOrquestador.trim() !== ""){
-    lastRecopilacion = recopilacionParaOrquestador;
+    } else {
+      document.getElementById(`verdict-${i}`).textContent='❌';
+      document.getElementById(`voices-${i}`).innerHTML=`<div style="font-size:13px;color:#fca5a5;padding:8px 0">Error de API. Verificá tu API key o saldo.</div>`;
+      document.getElementById(`voices-${i}`).style.display='flex';
+    }
+  });
 
-    orchestratorSection.style.display = 'block';
-    orchestratorContent.innerHTML = '<div class="loading-line"></div><div class="loading-line" style="width:70%"></div>';
+  // 2. Ejecutar al Orquestador Supremo
+  if(recopilacionParaOrquestador.trim() !== ""){
+    lastRecopilacion = recopilacionParaOrquestador;
 
-    const bezosSystemPrompt = `Eres Jeff Bezos, CEO Orquestador del Board de CuartaOla (la futura agencia líder de Marketing Predictivo en LATAM).
+    orchestratorSection.style.display = 'block';
+    orchestratorContent.innerHTML = '<div class="loading-line"></div><div class="loading-line" style="width:70%"></div>';
+
+    const bezosSystemPrompt = `Eres Jeff Bezos, CEO Orquestador del Board de CuartaOla (la futura agencia líder de Marketing Predictivo en LATAM).
 Tu trabajo es realizar una SÍNTESIS ESTRATÉGICA DE ALTO NIVEL cruzando los diagnósticos de las 6 mesas:
 1) Cruce de Modelos: Analiza cómo las perspectivas se complementan. Si una mesa exige agresividad comercial y otra detecta un riesgo técnico/financiero, encuentra el MECANISMO ESTRATÉGICO que resuelve el dilema.
 2) Decisión Final Absoluta: Define la dirección corporativa innegociable.
@@ -644,57 +732,167 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
 <sintesis_directiva>2 párrafos de análisis cruzado profundo. Destila el valor real de las opiniones de la junta, identifica el punto de apalancamiento y genera una estrategia superior para LATAM.</sintesis_directiva>
 <orquestador_decision>1 párrafo ejecutivo y brutalmente claro (máx 60 palabras) con la decisión final del Board y el primer paso innegociable a ejecutar en la agencia mañana a las 8 AM.</orquestador_decision>`;
 
-    const bezosUserMsg = `El CEO de CuartaOla propuso esto:\n"${question}"\n\nAquí están los dictámenes de las mesas tras su análisis:\n${recopilacionParaOrquestador}\n\nJeff, realiza la síntesis estratégica cruzada y danos el dictamen final.`;
+    const bezosUserMsg = `El CEO de CuartaOla propuso esto:\n"${question}"\n\nAquí están los dictámenes de las mesas tras su análisis:\n${recopilacionParaOrquestador}\n\nJeff, realiza la síntesis estratégica cruzada y danos el dictamen final.`;
 
-    try {
-      const orquestadorResponse = await callClaude(bezosSystemPrompt, bezosUserMsg, 1500);
-      const sintesis = extractXML(orquestadorResponse, 'sintesis_directiva') || 'No se pudo generar la síntesis.';
-      const decisionFinal = extractXML(orquestadorResponse, 'orquestador_decision') || 'El orquestador no pudo generar el dictamen.';
-      
-      orchestratorContent.innerHTML = `
-        <div style="margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.06);">
-          <div style="font-size:10px; letter-spacing:2px; color:var(--amber); margin-bottom:12px; font-weight:700;">SÍNTESIS ESTRATÉGICA DEL BOARD</div>
-          <div style="font-size:14px; color:var(--light); line-height:1.7;">${sintesis.replace(/\n/g, '<br><br>')}</div>
-        </div>
-        <div>
-          <div style="font-size:10px; letter-spacing:2px; color:var(--cyan); margin-bottom:12px; font-weight:700;">DICTAMEN FINAL DEL CEO</div>
-          <div style="font-size:16px; color:var(--white); line-height:1.7;">${decisionFinal}</div>
-        </div>
-      `;
+    try {
+      const orquestadorResponse = await callClaude(bezosSystemPrompt, bezosUserMsg, 1500);
+      const sintesis = extractXML(orquestadorResponse, 'sintesis_directiva') || 'No se pudo generar la síntesis.';
+      const decisionFinal = extractXML(orquestadorResponse, 'orquestador_decision') || 'El orquestador no pudo generar el dictamen.';
+      
+      orchestratorContent.innerHTML = `
+        <div style="margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.06);">
+          <div style="font-size:10px; letter-spacing:2px; color:var(--amber); margin-bottom:12px; font-weight:700;">SÍNTESIS ESTRATÉGICA DEL BOARD</div>
+          <div style="font-size:14px; color:var(--light); line-height:1.7;">${sintesis.replace(/\n/g, '<br><br>')}</div>
+        </div>
+        <div>
+          <div style="font-size:10px; letter-spacing:2px; color:var(--cyan); margin-bottom:12px; font-weight:700;">DICTAMEN FINAL DEL CEO</div>
+          <div style="font-size:16px; color:var(--white); line-height:1.7;">${decisionFinal}</div>
+        </div>
+      `;
 
-      // Mostrar botón de debate después de la síntesis
-      document.getElementById('debateTrigger').style.display = 'block';
+      // Mostrar botón de debate después de la síntesis
+      document.getElementById('debateTrigger').style.display = 'block';
 
-    } catch(e) {
-      orchestratorContent.innerHTML = `<span style="color:#fca5a5">Error al orquestar: ${e.message}</span>`;
-    }
+    } catch(e) {
+      orchestratorContent.innerHTML = `<span style="color:#fca5a5">Error al orquestar: ${e.message}</span>`;
+    }
+  }
+
+  // Guardar historial
+  const entry = {q:question,time:new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'})};
+  history.unshift(entry);
+  if(history.length>10)history.pop();
+  localStorage.setItem('co_history',JSON.stringify(history));
+  renderHistory();
+
+  btn.disabled=false;
+}
+
+// ============================================================
+// PANEL LATERAL (SIDEBAR) - LÓGICA DE CHAT
+// ============================================================
+function openSidebar(mesaIndex) {
+  currentSidebarMesa = mesaIndex;
+  document.getElementById('sidebarTitle').textContent = MESAS[mesaIndex].name;
+  
+  // Limpiar chat o restaurar historial de esta mesa
+  const chatContainer = document.getElementById('sidebarChat');
+  chatContainer.innerHTML = '';
+  
+  if (sidebarChats[mesaIndex].length === 0) {
+    chatContainer.innerHTML = `<div class="chat-bubble ai">Hazme cualquier pregunta sobre el dictamen o pídemelo en detalle. No tengo límite de palabras.</div>`;
+  } else {
+    sidebarChats[mesaIndex].forEach(msg => {
+      chatContainer.innerHTML += `<div class="chat-bubble ${msg.role === 'user' ? 'user' : 'ai'}">${msg.content}</div>`;
+    });
   }
 
-  // Guardar historial
-  const entry = {q:question,time:new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'})};
-  history.unshift(entry);
-  if(history.length>10)history.pop();
-  localStorage.setItem('co_history',JSON.stringify(history));
-  renderHistory();
+  document.getElementById('sidebarOverlay').classList.add('open');
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('sidebarInput').focus();
+}
 
-  btn.disabled=false;
+function closeSidebar() {
+  document.getElementById('sidebarOverlay').classList.remove('open');
+  document.getElementById('sidebar').classList.remove('open');
+}
+
+function handleSidebarEnter(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendSidebarMessage();
+  }
+}
+
+async function sendSidebarMessage() {
+  const inputEl = document.getElementById('sidebarInput');
+  const msg = inputEl.value.trim();
+  if(!msg || currentSidebarMesa === null) return;
+
+  const chatContainer = document.getElementById('sidebarChat');
+  const btn = document.getElementById('sidebarSendBtn');
+  const loading = document.getElementById('sidebarLoading');
+
+  // Mostrar mensaje de usuario
+  chatContainer.innerHTML += `<div class="chat-bubble user">${msg.replace(/\n/g, '<br>')}</div>`;
+  sidebarChats[currentSidebarMesa].push({role: 'user', content: msg});
+  
+  inputEl.value = '';
+  btn.disabled = true;
+  loading.style.display = 'block';
+  chatContainer.scrollTop = chatContainer.scrollHeight;
+
+  // Preparar el Prompt Específico para el Sidebar
+  const mesa = MESAS[currentSidebarMesa];
+  const systemPrompt = `Eres la "${mesa.name}" del Board de CuartaOla.
+El CEO te está interrogando sobre el dictamen que acabas de dar.
+A diferencia del dictamen inicial, AHORA NO TIENES LÍMITE DE PALABRAS.
+Responde de forma detallada, cruda y ejecutiva. Si te pide un excel, arma una tabla. Si te pide un mail, redáctalo.
+Actúa en personaje representando las voces de tu mesa: ${mesa.voices.filter(v=>!v.isVerdict && !v.isAction).map(v=>v.name).join(', ')}.
+
+INFORMACIÓN CLAVE (TU MEMORIA):
+Pregunta original del CEO: "${lastQuestion}"
+Este fue tu razonamiento interno oculto que te llevó al veredicto:
+${mesasMemory[currentSidebarMesa]}
+
+Responde directamente en formato Markdown sin etiquetas XML. Usa negritas, listas o tablas si es necesario.`;
+
+  // Construir historial de mensajes para Claude
+  const messages = sidebarChats[currentSidebarMesa].map(m => ({
+    role: m.role === 'ai' ? 'assistant' : 'user',
+    content: m.content
+  }));
+  // La pregunta actual ya está en el historial (agregada arriba), así que solo mandamos el array.
+
+  try {
+    const endpoint = window.location.origin + '/api/board';
+    const response = await fetch(endpoint, {
+      method:'POST',
+      headers:{ 'content-type':'application/json', 'x-api-key': apiKey, 'anthropic-version':'2023-06-01' },
+      body: JSON.stringify({
+        model:'claude-3-5-sonnet-20240620',
+        max_tokens: 1500, // Chat profundo
+        system: systemPrompt,
+        messages: messages
+      })
+    });
+    
+    if(!response.ok) throw new Error('API Error');
+    const data = await response.json();
+    const rawAiResponse = data.content[0].text;
+    
+    // Parse básico de markdown a HTML para la burbuja
+    let htmlAiResponse = rawAiResponse
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\n/g, '<br>');
+    
+    chatContainer.innerHTML += `<div class="chat-bubble ai">${htmlAiResponse}</div>`;
+    sidebarChats[currentSidebarMesa].push({role: 'ai', content: rawAiResponse});
+
+  } catch(e) {
+    chatContainer.innerHTML += `<div class="chat-bubble ai" style="color:#fca5a5">Error de conexión: ${e.message}</div>`;
+  }
+
+  loading.style.display = 'none';
+  btn.disabled = false;
+  chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
 // ============================================================
 // DEBATE INTER-MESAS
 // ============================================================
 async function startDebate(){
-  const debateBtn = document.getElementById('debateBtn');
-  const debateSection = document.getElementById('debateSection');
-  const debateContent = document.getElementById('debateContent');
+  const debateBtn = document.getElementById('debateBtn');
+  const debateSection = document.getElementById('debateSection');
+  const debateContent = document.getElementById('debateContent');
 
-  debateBtn.disabled = true;
-  debateBtn.textContent = 'Debate en curso...';
-  debateSection.style.display = 'block';
-  debateContent.innerHTML = '<div class="loading-line"></div><div class="loading-line" style="width:80%"></div><div class="loading-line" style="width:65%"></div><div class="loading-line" style="width:90%"></div>';
-  debateSection.scrollIntoView({behavior:'smooth'});
+  debateBtn.disabled = true;
+  debateBtn.textContent = 'Debate en curso...';
+  debateSection.style.display = 'block';
+  debateContent.innerHTML = '<div class="loading-line"></div><div class="loading-line" style="width:80%"></div><div class="loading-line" style="width:65%"></div><div class="loading-line" style="width:90%"></div>';
+  debateSection.scrollIntoView({behavior:'smooth'});
 
-  const debateSystemPrompt = `Eres el moderador de una sesión de confrontación estratégica entre 5 directores del Board de CuartaOla. Esta NO es una conversación cordial. Es un debate real donde cada director defiende su posición y ataca las debilidades de los demás.
+  const debateSystemPrompt = `Eres el moderador de una sesión de confrontación estratégica entre 5 directores del Board de CuartaOla. Esta NO es una conversación cordial. Es un debate real donde cada director defiende su posición y ataca las debilidades de los demás.
 
 PARTICIPANTES Y SUS SESGOS:
 - RUMELT (Mesa Estrategia & IA): Auditor estratégico. Destruye ideas sin kernel claro. Exige coherencia lógica.
@@ -718,152 +916,152 @@ FORMATO XML OBLIGATORIO:
 <convergencia>1 párrafo: los 2-3 puntos donde TODOS coinciden y la 1 tensión principal que no se resuelve.</convergencia>
 <veredicto_debate>1 párrafo ejecutivo (máx 80 palabras): la conclusión estratégica refinada que incorpora las objeciones del debate. Debe ser más precisa y accionable que la síntesis inicial de Bezos.</veredicto_debate>`;
 
-  const debateUserMsg = `PREGUNTA ORIGINAL DEL CEO:\n"${lastQuestion}"\n\nPOSICIONES DE LAS 6 MESAS:\n${lastRecopilacion}\n\nInicia el debate. Cada director debe atacar directamente la posición de otro basándose en los dictámenes anteriores.`;
+  const debateUserMsg = `PREGUNTA ORIGINAL DEL CEO:\n"${lastQuestion}"\n\nPOSICIONES DE LAS 6 MESAS:\n${lastRecopilacion}\n\nInicia el debate. Cada director debe atacar directamente la posición de otro basándose en los dictámenes anteriores.`;
 
-  try {
-    const response = await callClaude(debateSystemPrompt, debateUserMsg, 2500);
+  try {
+    const response = await callClaude(debateSystemPrompt, debateUserMsg, 2500);
 
-    const debateVoices = [
-      {tag:'rumelt_debate', name:'Rumelt', mesa:'Estrategia & IA', cssClass:'tag-rumelt'},
-      {tag:'munger_debate', name:'Munger', mesa:'Monetización', cssClass:'tag-munger'},
-      {tag:'gengis_debate', name:'Gengis Kan', mesa:'Estrategia Pura', cssClass:'tag-gengis'},
-      {tag:'karpathy_debate', name:'Karpathy', mesa:'Síntesis & Tech', cssClass:'tag-karpathy'},
-      {tag:'godin_debate', name:'Godin', mesa:'Marketing', cssClass:'tag-godin'},
-    ];
+    const debateVoices = [
+      {tag:'rumelt_debate', name:'Rumelt', mesa:'Estrategia & IA', cssClass:'tag-rumelt'},
+      {tag:'munger_debate', name:'Munger', mesa:'Monetización', cssClass:'tag-munger'},
+      {tag:'gengis_debate', name:'Gengis Kan', mesa:'Estrategia Pura', cssClass:'tag-gengis'},
+      {tag:'karpathy_debate', name:'Karpathy', mesa:'Síntesis & Tech', cssClass:'tag-karpathy'},
+      {tag:'godin_debate', name:'Godin', mesa:'Marketing', cssClass:'tag-godin'},
+    ];
 
-    let html = '<div class="debate-exchange">';
-    debateVoices.forEach(v => {
-      const text = extractXML(response, v.tag);
-      if(!text) return;
-      html += `
-        <div class="debate-voice-entry">
-          <div class="debate-voice-label">
-            <span class="debate-voice-tag ${v.cssClass}">${v.name}</span>
-            <span class="debate-voice-mesa">${v.mesa}</span>
-          </div>
-          <div class="debate-voice-text">${text}</div>
-        </div>`;
-    });
-    html += '</div>';
+    let html = '<div class="debate-exchange">';
+    debateVoices.forEach(v => {
+      const text = extractXML(response, v.tag);
+      if(!text) return;
+      html += `
+        <div class="debate-voice-entry">
+          <div class="debate-voice-label">
+            <span class="debate-voice-tag ${v.cssClass}">${v.name}</span>
+            <span class="debate-voice-mesa">${v.mesa}</span>
+          </div>
+          <div class="debate-voice-text">${text}</div>
+        </div>`;
+    });
+    html += '</div>';
 
-    const convergencia = extractXML(response, 'convergencia');
-    if(convergencia){
-      html += `
-        <div class="debate-convergence">
-          <div class="debate-convergence-label">CONVERGENCIA Y TENSIONES</div>
-          <div class="debate-convergence-text">${convergencia}</div>
-        </div>`;
-    }
+    const convergencia = extractXML(response, 'convergencia');
+    if(convergencia){
+      html += `
+        <div class="debate-convergence">
+          <div class="debate-convergence-label">CONVERGENCIA Y TENSIONES</div>
+          <div class="debate-convergence-text">${convergencia}</div>
+        </div>`;
+    }
 
-    const veredictoDebate = extractXML(response, 'veredicto_debate');
-    if(veredictoDebate){
-      html += `
-        <div class="debate-final">
-          <div class="debate-final-label">VEREDICTO POST-DEBATE</div>
-          <div class="debate-final-text">${veredictoDebate}</div>
-        </div>`;
-    }
+    const veredictoDebate = extractXML(response, 'veredicto_debate');
+    if(veredictoDebate){
+      html += `
+        <div class="debate-final">
+          <div class="debate-final-label">VEREDICTO POST-DEBATE</div>
+          <div class="debate-final-text">${veredictoDebate}</div>
+        </div>`;
+    }
 
-    debateContent.innerHTML = html;
+    debateContent.innerHTML = html;
 
-  } catch(e) {
-    debateContent.innerHTML = `<span style="color:#fca5a5">Error en el debate: ${e.message}</span>`;
-  }
+  } catch(e) {
+    debateContent.innerHTML = `<span style="color:#fca5a5">Error en el debate: ${e.message}</span>`;
+  }
 
-  debateBtn.disabled = false;
-  debateBtn.textContent = 'Convocar Debate Inter-Mesas →';
+  debateBtn.disabled = false;
+  debateBtn.textContent = 'Convocar Debate Inter-Mesas →';
 }
 
 // ============================================================
 // CLAUDE API CALL (tokens dinámicos por mesa)
 // ============================================================
 async function callClaude(systemPrompt, userMessage, maxTokens = 1500){
-  const endpoint = window.location.origin + '/api/board';
+  const endpoint = window.location.origin + '/api/board';
 
-  const response = await fetch(endpoint, {
-    method:'POST',
-    headers:{
-      'content-type':'application/json',
-      'x-api-key': apiKey,
-      'anthropic-version':'2023-06-01'
-    },
-    body: JSON.stringify({
-      model:'claude-sonnet-4-6',
-      max_tokens: maxTokens,
-      system: systemPrompt,
-      messages:[{role:'user',content:userMessage}]
-    })
-  });
-  if(!response.ok){
-    const err = await response.json();
-    throw new Error(err.error?.message || 'API Error');
-  }
-  const data = await response.json();
-  return data.content[0].text;
+  const response = await fetch(endpoint, {
+    method:'POST',
+    headers:{
+      'content-type':'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version':'2023-06-01'
+    },
+    body: JSON.stringify({
+      model:'claude-3-5-sonnet-20240620',
+      max_tokens: maxTokens,
+      system: systemPrompt,
+      messages:[{role:'user',content:userMessage}]
+    })
+  });
+  if(!response.ok){
+    const err = await response.json();
+    throw new Error(err.error?.message || 'API Error');
+  }
+  const data = await response.json();
+  return data.content[0].text;
 }
 
 // ============================================================
 // RENDER MESA RESPONSE
 // ============================================================
 function renderMesa(mesaIndex, rawText){
-  const mesa = MESAS[mesaIndex];
-  const container = document.getElementById(`voices-${mesaIndex}`);
-  let html = '';
+  const mesa = MESAS[mesaIndex];
+  const container = document.getElementById(`voices-${mesaIndex}`);
+  let html = '';
 
-  mesa.voices.forEach(voice=>{
-    const content = extractXML(rawText, voice.tag);
-    if(!content) return;
+  mesa.voices.forEach(voice=>{
+    const content = extractXML(rawText, voice.tag);
+    if(!content) return;
 
-    if(voice.isVerdict){
-      const verdictEl = document.getElementById(`verdict-${mesaIndex}`);
-      if(content.includes('🟢'))verdictEl.textContent='🟢';
-      else if(content.includes('🟡'))verdictEl.textContent='🟡';
-      else if(content.includes('🔴'))verdictEl.textContent='🔴';
-      return;
-    }
+    if(voice.isVerdict){
+      const verdictEl = document.getElementById(`verdict-${mesaIndex}`);
+      if(content.includes('🟢'))verdictEl.textContent='🟢';
+      else if(content.includes('🟡'))verdictEl.textContent='🟡';
+      else if(content.includes('🔴'))verdictEl.textContent='🔴';
+      return;
+    }
 
-    if(voice.isAction){
-      html += `<div class="action-block"><div class="action-label">${voice.name}</div>${content}</div>`;
-    } else {
-      html += `
-        <div class="voice">
-          <div class="voice-header">
-            <div class="voice-avatar">${voice.initials}</div>
-            <div class="voice-name">${voice.name}</div>
-          </div>
-          <div class="voice-text">${content}</div>
-        </div>`;
-    }
-  });
+    if(voice.isAction){
+      html += `<div class="action-block"><div class="action-label">${voice.name}</div>${content}</div>`;
+    } else {
+      html += `
+        <div class="voice">
+          <div class="voice-header">
+            <div class="voice-avatar">${voice.initials}</div>
+            <div class="voice-name">${voice.name}</div>
+          </div>
+          <div class="voice-text">${content}</div>
+        </div>`;
+    }
+  });
 
-  container.innerHTML = html;
-  container.style.display = 'flex';
+  container.innerHTML = html;
+  container.style.display = 'flex';
 }
 
 function extractXML(text, tag){
-  const re = new RegExp(`<${tag}>[\\s\\S]*?<\\/${tag}>`, 'i');
-  const match = text.match(re);
-  if(!match)return null;
-  return match[0].replace(new RegExp(`<\\/?${tag}>`, 'gi'), '').trim();
+  const re = new RegExp(`<${tag}>[\\s\\S]*?<\\/${tag}>`, 'i');
+  const match = text.match(re);
+  if(!match)return null;
+  return match[0].replace(new RegExp(`<\\/?${tag}>`, 'gi'), '').trim();
 }
 
 // ============================================================
 // HISTORY & INIT
 // ============================================================
 function renderHistory(){
-  if(!history.length)return;
-  document.getElementById('historySection').style.display='block';
-  const list = document.getElementById('historyList');
-  list.innerHTML = history.map(h=>`
-    <div class="history-item" onclick="loadQuery('${h.q.replace(/'/g,"\\'")}')">
-      <div class="history-q">${h.q}</div>
-      <div class="history-time">${h.time}</div>
-    </div>`).join('');
+  if(!history.length)return;
+  document.getElementById('historySection').style.display='block';
+  const list = document.getElementById('historyList');
+  list.innerHTML = history.map(h=>`
+    <div class="history-item" onclick="loadQuery('${h.q.replace(/'/g,"\\'")}')">
+      <div class="history-q">${h.q}</div>
+      <div class="history-time">${h.time}</div>
+    </div>`).join('');
 }
 
 function loadQuery(q){
-  document.getElementById('questionInput').value = q;
-  document.getElementById('questionInput').scrollIntoView({behavior:'smooth'});
+  document.getElementById('questionInput').value = q;
+  document.getElementById('questionInput').scrollIntoView({behavior:'smooth'});
 }
 
 renderHistory();
