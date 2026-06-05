@@ -1062,8 +1062,17 @@ async function startDebate(){
   debateContent.innerHTML = '<div class="loading-line"></div><div class="loading-line" style="width:80%"></div><div class="loading-line" style="width:65%"></div><div class="loading-line" style="width:90%"></div>';
   debateSection.scrollIntoView({behavior:'smooth'});
 
-  const debateSystemPrompt = `Eres el moderador de una sesión de confrontación estratégica entre 5 directores del Board de CuartaOla. Esta NO es una conversación cordial. Es un debate real donde cada director defiende su posición y ataca las debilidades de los demás.
+const debateSystemPrompt = `Eres el moderador de una sesión de confrontación estratégica entre 5 directores del Board de CuartaOla. Esta NO es una conversación cordial. 
+REGLA DE SUPERVIVENCIA: NADA DE DISCURSOS LARGOS. CADA INTERVENCIÓN TIENE UN LÍMITE ESTRICTO DE 40 PALABRAS. SI TE PASAS, EL SISTEMA COLAPSA.
 
+FORMATO XML OBLIGATORIO:
+<rumelt_debate>MÁXIMO 40 PALABRAS. Ataca la posición de otra mesa.</rumelt_debate>
+<munger_debate>MÁXIMO 40 PALABRAS. Ataca desde los incentivos económicos.</munger_debate>
+<gengis_debate>MÁXIMO 40 PALABRAS. Exige acción y ataca parálisis.</gengis_debate>
+<karpathy_debate>MÁXIMO 40 PALABRAS. Evalúa viabilidad técnica y destruye fantasías.</karpathy_debate>
+<godin_debate>MÁXIMO 40 PALABRAS. Juzga impacto en mercado.</godin_debate>
+<convergencia>MÁXIMO 60 PALABRAS: los puntos donde coinciden y la tensión principal.</convergencia>
+<veredicto_debate>MÁXIMO 60 PALABRAS: conclusión estratégica refinada orientada a acción.</veredicto_debate>`;
 PARTICIPANTES Y SUS SESGOS:
 - RUMELT (Mesa Estrategia & IA): Auditor estratégico. Destruye ideas sin kernel claro. Exige coherencia lógica.
 - MUNGER (Mesa Monetización): Inversor cínico. Solo le importan los incentivos económicos y los fosos defensivos. Desprecia el optimismo sin números.
