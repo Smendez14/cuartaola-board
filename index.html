@@ -44,8 +44,15 @@ header{display:flex;align-items:center;justify-content:space-between;padding:32p
 .hero-sub{font-size:16px;color:var(--gray);max-width:600px;margin:0 auto 40px}
 
 .input-section{max-width:860px;margin:0 auto 56px}
-.input-label{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gray);margin-bottom:12px}
-.context-area{background:var(--bg3);border:1px solid var(--border2);border-radius:16px;padding:20px;margin-bottom:12px;transition:border-color .3s}
+.input-header-row{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:12px}
+.input-label{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gray)}
+
+/* --- BOTÓN SINCRONIZAR RADAR --- */
+.sync-btn{background:rgba(0,212,255,.05);border:1px solid rgba(0,212,255,.2);border-radius:8px;padding:6px 12px;color:var(--cyan);font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;cursor:pointer;transition:all .3s;display:flex;align-items:center;gap:6px;letter-spacing:0.5px;}
+.sync-btn:hover{background:rgba(0,212,255,.1);border-color:var(--cyan);transform:translateY(-1px);}
+.sync-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
+
+.context-area{background:var(--bg3);border:1px solid var(--border2);border-radius:16px;padding:20px;margin-bottom:12px;transition:border-color .3s;position:relative;}
 .context-area:focus-within{border-color:rgba(0,212,255,.3)}
 .context-area textarea{width:100%;background:transparent;border:none;outline:none;color:var(--light);font-family:'Space Grotesk',sans-serif;font-size:14px;resize:none;min-height:60px;line-height:1.6}
 .context-area textarea::placeholder{color:var(--dark)}
@@ -252,9 +259,12 @@ footer{text-align:center;padding:40px 0;border-top:1px solid var(--border)}
 </div>
 
 <div class="input-section">
-<div class="input-label">Contexto semanal (opcional)</div>
+<div class="input-header-row">
+  <div class="input-label">Contexto semanal (opcional)</div>
+  <button class="sync-btn" id="syncRadarBtn" onclick="syncRadar()">📡 Extraer Último Radar</button>
+</div>
 <div class="context-area">
-<textarea id="contextInput" rows="2" placeholder="Pegá aquí el resumen ejecutivo del último CuartaOla... (tendencias, movimientos de competidores, oportunidades)"></textarea>
+<textarea id="contextInput" rows="2" placeholder="Pegá aquí el resumen ejecutivo del último CuartaOla o apretá el botón para extraerlo automáticamente..."></textarea>
 </div>
 <div class="input-label" style="margin-top:16px">Tu pregunta al board</div>
 <div class="question-wrap">
@@ -439,11 +449,15 @@ footer{text-align:center;padding:40px 0;border-top:1px solid var(--border)}
 <div class="api-modal" id="apiModal">
 <div class="api-modal-box">
 <div class="modal-title">Configurar Conexiones</div>
-<div class="modal-sub">Ingresá tu API key de Anthropic para activar el board. Opcionalmente agregá el Webhook para disparar tareas a tu equipo.</div>
+<div class="modal-sub">Ingresá tu API key de Anthropic para activar el board. Configurá los webhooks de entrada (Radar) y salida (Ejecución).</div>
 <input type="password" class="modal-input" id="apiKeyInput" placeholder="sk-ant-api03-..." style="margin-bottom:20px;">
 
 <div class="modal-divider"></div>
-<div class="modal-section-label">Webhook de Ejecución (Make.com)</div>
+<div class="modal-section-label">Webhook de ENTRADA (Sincronizar Radar)</div>
+<input type="text" class="modal-input" id="radarWebhookInput" placeholder="https://hook.us1.make.com/..." style="font-family:'Space Grotesk',sans-serif; margin-bottom: 20px;">
+
+<div class="modal-divider"></div>
+<div class="modal-section-label">Webhook de SALIDA (Ejecutar Dictamen)</div>
 <input type="text" class="modal-input" id="webhookInput" placeholder="https://hook.us1.make.com/..." style="font-family:'Space Grotesk',sans-serif;">
 
 <div class="warning">⚠ Esta es una herramienta interna. No compartas este link públicamente.</div>
@@ -663,6 +677,7 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML (LOS 2 BLOQUES SON OBLIGATORIOS):
 // ============================================================
 let apiKey = localStorage.getItem('co_api_key') || '';
 let webhookUrl = localStorage.getItem('co_webhook_url') || '';
+let radarWebhookUrl = localStorage.getItem('co_radar_webhook_url') || '';
 let history = JSON.parse(localStorage.getItem('co_history') || '[]');
 let lastQuestion = '';
 let lastFullContext = '';
@@ -681,6 +696,8 @@ function openApiModal(){
   document.getElementById('apiKeyInput').value = apiKey;
   const wh = document.getElementById('webhookInput');
   if(wh) wh.value = webhookUrl;
+  const radarWh = document.getElementById('radarWebhookInput');
+  if(radarWh) radarWh.value = radarWebhookUrl;
   document.getElementById('apiModal').classList.add('open');
 }
 function closeApiModal(){document.getElementById('apiModal').classList.remove('open')}
@@ -694,8 +711,58 @@ function saveApiKey(){
     localStorage.setItem('co_webhook_url', webhookUrl);
   }
   
+  const radarWh = document.getElementById('radarWebhookInput');
+  if(radarWh) {
+    radarWebhookUrl = radarWh.value.trim();
+    localStorage.setItem('co_radar_webhook_url', radarWebhookUrl);
+  }
+  
   closeApiModal();
 }
+
+// ============================================================
+// CAMINO B: SINCRONIZAR RADAR (GET A MAKE.COM)
+// ============================================================
+async function syncRadar() {
+  if(!radarWebhookUrl) {
+    alert("Primero configurá la URL del Webhook del Radar en la ruedita de API Key (Abajo a la derecha).");
+    openApiModal();
+    return;
+  }
+  
+  const btn = document.getElementById('syncRadarBtn');
+  const textArea = document.getElementById('contextInput');
+  const originalText = btn.innerHTML;
+  
+  btn.innerHTML = '⏳ Extrayendo tendencias...';
+  btn.disabled = true;
+
+  try {
+    const response = await fetch(radarWebhookUrl, { method: 'GET' });
+    if(!response.ok) throw new Error(`El Webhook respondió ${response.status}`);
+    
+    // Make.com devolverá el texto del Radar como respuesta plana
+    const data = await response.text(); 
+    
+    textArea.value = data;
+    btn.innerHTML = '✅ Radar Sincronizado';
+    textArea.style.borderColor = 'var(--cyan)';
+    setTimeout(() => textArea.style.borderColor = 'var(--border2)', 2000);
+
+  } catch(e) {
+    btn.innerHTML = '❌ Error de Conexión';
+    console.error(e);
+    const errorMsg = document.getElementById('errorMsg');
+    errorMsg.textContent = `Error al sincronizar Radar: ${e.message}`;
+    errorMsg.style.display = 'block';
+  }
+  
+  setTimeout(() => {
+     btn.innerHTML = originalText;
+     btn.disabled = false;
+  }, 4000);
+}
+
 
 // ============================================================
 // MAIN: CONSULT BOARD (LLAMADAS EN PARALELO)
