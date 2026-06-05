@@ -1062,7 +1062,7 @@ async function startDebate(){
   debateContent.innerHTML = '<div class="loading-line"></div><div class="loading-line" style="width:80%"></div><div class="loading-line" style="width:65%"></div><div class="loading-line" style="width:90%"></div>';
   debateSection.scrollIntoView({behavior:'smooth'});
 
-const debateSystemPrompt = `Eres el moderador de una sesión de confrontación estratégica entre 5 directores del Board de CuartaOla. Esta NO es una conversación cordial. 
+  const debateSystemPrompt = `Eres el moderador de una sesión de confrontación estratégica entre 5 directores del Board de CuartaOla. Esta NO es una conversación cordial. 
 REGLA DE SUPERVIVENCIA: NADA DE DISCURSOS LARGOS. CADA INTERVENCIÓN TIENE UN LÍMITE ESTRICTO DE 40 PALABRAS. SI TE PASAS, EL SISTEMA COLAPSA.
 
 FORMATO XML OBLIGATORIO:
@@ -1073,27 +1073,6 @@ FORMATO XML OBLIGATORIO:
 <godin_debate>MÁXIMO 40 PALABRAS. Juzga impacto en mercado.</godin_debate>
 <convergencia>MÁXIMO 60 PALABRAS: los puntos donde coinciden y la tensión principal.</convergencia>
 <veredicto_debate>MÁXIMO 60 PALABRAS: conclusión estratégica refinada orientada a acción.</veredicto_debate>`;
-PARTICIPANTES Y SUS SESGOS:
-- RUMELT (Mesa Estrategia & IA): Auditor estratégico. Destruye ideas sin kernel claro. Exige coherencia lógica.
-- MUNGER (Mesa Monetización): Inversor cínico. Solo le importan los incentivos económicos y los fosos defensivos. Desprecia el optimismo sin números.
-- GENGIS (Mesa Estrategia Pura): Operador implacable. Quiere ejecución inmediata. Desprecia la parálisis por análisis.
-- KARPATHY (Mesa Síntesis & Tech): Ingeniero realista. Evalúa viabilidad técnica. Destruye promesas que la tecnología actual no puede cumplir.
-- GODIN (Mesa Marketing): Estratega de posicionamiento. Le importa para quién es esto y si el mercado lo va a notar.
-
-REGLAS DEL DEBATE:
-1. Cada director DEBE referirse directamente a lo que dijo otro y explicar por qué está equivocado o incompleto.
-2. Los desacuerdos deben ser sobre sustancia: datos, lógica, viabilidad, timing. No retórica vacía.
-3. Después de la confrontación, identificar dónde convergen y dónde la tensión es irresoluble.
-4. El veredicto final debe ser MÁS PRECISO que el de cualquier mesa individual y debe orientarse a un Plan B ejecutable si la idea inicial es rechazada, utilizando las herramientas de WAVE y EVA.
-
-FORMATO XML OBLIGATORIO:
-<rumelt_debate>2-3 oraciones. Ataca la posición más débil de otra mesa. Nombra a quién ataca.</rumelt_debate>
-<munger_debate>2-3 oraciones. Ataca desde los incentivos económicos. Nombra a quién contradice.</munger_debate>
-<gengis_debate>2-3 oraciones. Exige acción concreta y ataca a quien propone esperar. Nombra a quién.</gengis_debate>
-<karpathy_debate>2-3 oraciones. Evalúa qué es técnicamente posible HOY y qué es fantasía. Nombra a quién corrige.</karpathy_debate>
-<godin_debate>2-3 oraciones. Juzga si el mercado va a notar esto o no. Nombra a quién desafía.</godin_debate>
-<convergencia>1 párrafo: los 2-3 puntos donde TODOS coinciden y la 1 tensión principal que no se resuelve.</convergencia>
-<veredicto_debate>1 párrafo ejecutivo (máx 80 palabras): la conclusión estratégica refinada que incorpora las objeciones del debate y plantea una solución real.</veredicto_debate>`;
 
   const debateUserMsg = `CONTEXTO DE LA EMPRESA Y PREGUNTA DEL CEO:\n"${lastFullContext}"\n\nPOSICIONES DE LAS 6 MESAS:\n${lastRecopilacion}\n\nInicia el debate. Cada director debe atacar directamente la posición de otro basándose en los dictámenes anteriores.`;
 
