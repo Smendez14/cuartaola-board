@@ -207,6 +207,29 @@ header{display:flex;align-items:center;justify-content:space-between;padding:32p
 .modal-cancel{background:transparent;border:1px solid var(--border2);border-radius:12px;padding:14px 20px;font-size:14px;color:var(--gray);cursor:pointer;transition:all .3s}
 .modal-cancel:hover{color:var(--white)}
 
+/* --- ESTILOS BOTÓN EJECUTAR DICTAMEN --- */
+.execute-section{display:none;text-align:center;margin-top:24px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.06);}
+.execute-btn{background:transparent;border:2px solid var(--green);border-radius:14px;padding:18px 44px;color:var(--green);font-family:'Syne',sans-serif;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:1px;transition:all .3s;position:relative;overflow:hidden;}
+.execute-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg, rgba(16,185,129,.1), rgba(0,212,255,.05));opacity:0;transition:opacity .3s;}
+.execute-btn:hover::before{opacity:1;}
+.execute-btn:hover{border-color:var(--green);box-shadow:0 0 40px rgba(16,185,129,.2);transform:translateY(-2px);}
+.execute-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none;}
+.execute-btn.success{border-color:var(--green);background:rgba(16,185,129,.15);color:var(--white);}
+.execute-btn.error{border-color:var(--red);color:var(--red);}
+
+.execute-confirm{display:none;margin-top:16px;padding:20px;background:rgba(16,185,129,.05);border:1px solid rgba(16,185,129,.2);border-radius:14px;text-align:left;}
+.execute-confirm-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--green);margin-bottom:12px;letter-spacing:1px;}
+.execute-confirm-list{font-size:13px;color:var(--light);line-height:1.8;margin-bottom:16px;}
+.execute-confirm-actions{display:flex;gap:12px;justify-content:center;}
+.execute-confirm-go{background:var(--green);border:none;border-radius:10px;padding:12px 28px;color:var(--bg);font-family:'Syne',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .3s;}
+.execute-confirm-go:hover{box-shadow:0 10px 20px rgba(16,185,129,.3);transform:translateY(-1px);}
+.execute-confirm-cancel{background:transparent;border:1px solid var(--border2);border-radius:10px;padding:12px 20px;color:var(--gray);font-size:13px;cursor:pointer;transition:all .3s;}
+.execute-confirm-cancel:hover{color:var(--white);border-color:var(--white);}
+
+/* --- WEBHOOK CONFIG EN MODAL --- */
+.modal-divider{height:1px;background:var(--border);margin:20px 0;}
+.modal-section-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-bottom:10px;font-weight:600;}
+
 footer{text-align:center;padding:40px 0;border-top:1px solid var(--border)}
 .footer-logo{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;letter-spacing:-1px;margin-bottom:4px}
 .footer-credit{font-size:12px;color:var(--dark)}
@@ -245,6 +268,19 @@ footer{text-align:center;padding:40px 0;border-top:1px solid var(--border)}
   <div class="orchestrator-badge">DIRECCIÓN GENERAL (ORQUESTADO POR BEZOS)</div>
   <div class="orchestrator-content" id="orchestratorContent">
     <div class="loading-line"></div><div class="loading-line" style="width: 70%;"></div>
+  </div>
+  
+  <div class="execute-section" id="executeSection">
+    <button class="execute-btn" id="executeBtn" onclick="showExecuteConfirm()">🚀 Ejecutar Dictamen</button>
+    <div class="execute-confirm" id="executeConfirm">
+      <div class="execute-confirm-title">CONFIRMAR EJECUCIÓN</div>
+      <div class="execute-confirm-list" id="executePreview">
+        </div>
+      <div class="execute-confirm-actions">
+        <button class="execute-confirm-go" onclick="fireDictamen()">Confirmar y Ejecutar</button>
+        <button class="execute-confirm-cancel" onclick="cancelExecute()">Cancelar</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -402,9 +438,14 @@ footer{text-align:center;padding:40px 0;border-top:1px solid var(--border)}
 </div>
 <div class="api-modal" id="apiModal">
 <div class="api-modal-box">
-<div class="modal-title">Configurar Claude API Key</div>
-<div class="modal-sub">Ingresá tu API key de Anthropic para activar el board. Se guarda localmente en tu navegador.</div>
-<input type="password" class="modal-input" id="apiKeyInput" placeholder="sk-ant-api03-...">
+<div class="modal-title">Configurar Conexiones</div>
+<div class="modal-sub">Ingresá tu API key de Anthropic para activar el board. Opcionalmente agregá el Webhook para disparar tareas a tu equipo.</div>
+<input type="password" class="modal-input" id="apiKeyInput" placeholder="sk-ant-api03-..." style="margin-bottom:20px;">
+
+<div class="modal-divider"></div>
+<div class="modal-section-label">Webhook de Ejecución (Make.com)</div>
+<input type="text" class="modal-input" id="webhookInput" placeholder="https://hook.us1.make.com/..." style="font-family:'Space Grotesk',sans-serif;">
+
 <div class="warning">⚠ Esta es una herramienta interna. No compartas este link públicamente.</div>
 <div class="modal-actions">
 <button class="modal-save" onclick="saveApiKey()">Guardar y Activar</button>
@@ -621,10 +662,14 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML (LOS 2 BLOQUES SON OBLIGATORIOS):
 // API & STATE
 // ============================================================
 let apiKey = localStorage.getItem('co_api_key') || '';
+let webhookUrl = localStorage.getItem('co_webhook_url') || '';
 let history = JSON.parse(localStorage.getItem('co_history') || '[]');
 let lastQuestion = '';
 let lastFullContext = '';
 let lastRecopilacion = '';
+let lastSintesis = '';
+let lastDecision = '';
+let lastVeredictoDebate = '';
 
 // MEMORIA SECUESTRADA PARA CADA MESA (RAG LOCAL)
 let mesasMemory = [null, null, null, null, null, null]; 
@@ -634,12 +679,21 @@ let currentSidebarMesa = null;
 
 function openApiModal(){
   document.getElementById('apiKeyInput').value = apiKey;
+  const wh = document.getElementById('webhookInput');
+  if(wh) wh.value = webhookUrl;
   document.getElementById('apiModal').classList.add('open');
 }
 function closeApiModal(){document.getElementById('apiModal').classList.remove('open')}
 function saveApiKey(){
   apiKey = document.getElementById('apiKeyInput').value.trim();
   localStorage.setItem('co_api_key', apiKey);
+  
+  const wh = document.getElementById('webhookInput');
+  if(wh) {
+    webhookUrl = wh.value.trim();
+    localStorage.setItem('co_webhook_url', webhookUrl);
+  }
+  
   closeApiModal();
 }
 
@@ -660,6 +714,7 @@ async function consultBoard(){
   const orchestratorSection = document.getElementById('orchestratorSection');
   const orchestratorContent = document.getElementById('orchestratorContent');
   orchestratorSection.style.display = 'none';
+  document.getElementById('executeSection').style.display = 'none';
   document.getElementById('debateTrigger').style.display = 'none';
   document.getElementById('debateSection').style.display = 'none';
 
@@ -683,6 +738,7 @@ async function consultBoard(){
   
   lastQuestion = question;
   lastFullContext = userMsg;
+  lastVeredictoDebate = ''; // Resetear el debate anterior
 
   // 1. Llamar a las 6 mesas en paralelo con tokens dinámicos
   const promises = MESAS.map((mesa,i) => callClaude(mesa.systemPrompt, userMsg, MESA_TOKENS[i]));
@@ -727,7 +783,6 @@ async function consultBoard(){
     orchestratorSection.style.display = 'block';
     orchestratorContent.innerHTML = '<div class="loading-line"></div><div class="loading-line" style="width:70%"></div>';
 
-    // FIX ANTI-PESIMISMO APLICADO ACÁ:
     const bezosSystemPrompt = `Eres Jeff Bezos, CEO Orquestador del Board de CuartaOla/WAVE.
 Tu trabajo es realizar una SÍNTESIS ESTRATÉGICA DE ALTO NIVEL cruzando los diagnósticos de las 6 mesas y anclándote en el ADN Corporativo.
 1) Cruce de Modelos: Analiza cómo las perspectivas se complementan.
@@ -744,6 +799,10 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
       const sintesis = extractXML(orquestadorResponse, 'sintesis_directiva') || 'No se pudo generar la síntesis.';
       const decisionFinal = extractXML(orquestadorResponse, 'orquestador_decision') || 'El orquestador no pudo generar el dictamen.';
       
+      // Guardar datos para el botón de ejecución
+      lastSintesis = sintesis;
+      lastDecision = decisionFinal;
+
       orchestratorContent.innerHTML = `
         <div style="margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.06);">
           <div style="font-size:10px; letter-spacing:2px; color:var(--amber); margin-bottom:12px; font-weight:700;">SÍNTESIS ESTRATÉGICA DEL BOARD</div>
@@ -754,6 +813,17 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
           <div style="font-size:16px; color:var(--white); line-height:1.7;">${decisionFinal}</div>
         </div>
       `;
+
+      // Mostrar botón de ejecución si hay webhook configurado
+      if(webhookUrl) {
+        document.getElementById('executeSection').style.display = 'block';
+        // Resetear botón por si se había usado
+        const btnExec = document.getElementById('executeBtn');
+        btnExec.style.display = 'inline-block';
+        btnExec.classList.remove('success');
+        btnExec.textContent = '🚀 Ejecutar Dictamen';
+        btnExec.disabled = false;
+      }
 
       // Mostrar botón de debate después de la síntesis
       document.getElementById('debateTrigger').style.display = 'block';
@@ -771,6 +841,85 @@ REGLA DE SALIDA - USA EXCLUSIVAMENTE ESTE XML:
   renderHistory();
 
   btn.disabled=false;
+}
+
+// ============================================================
+// CAMINO C: BOTÓN DE EJECUCIÓN → WEBHOOK A MAKE.COM
+// ============================================================
+function showExecuteConfirm(){
+  const preview = document.getElementById('executePreview');
+  preview.innerHTML = `
+    <div style="margin-bottom:8px;"><strong style="color:var(--cyan);">Pregunta del CEO:</strong> ${lastQuestion}</div>
+    <div style="margin-bottom:8px;"><strong style="color:var(--amber);">Decisión del Board:</strong> ${lastDecision.substring(0, 200)}${lastDecision.length > 200 ? '...' : ''}</div>
+    <div style="margin-bottom:4px; font-size:11px; color:var(--gray); letter-spacing:1px;">SE VA A DISPARAR:</div>
+    <div style="padding-left:12px; border-left:2px solid var(--green);">
+      → Crear ticket en Notion/Trello con el plan de acción<br>
+      → Notificar al equipo en Slack con las directivas<br>
+      → Registrar la decisión del Board con timestamp
+    </div>
+  `;
+  document.getElementById('executeConfirm').style.display = 'block';
+  document.getElementById('executeBtn').style.display = 'none';
+}
+
+function cancelExecute(){
+  document.getElementById('executeConfirm').style.display = 'none';
+  document.getElementById('executeBtn').style.display = 'inline-block';
+}
+
+async function fireDictamen(){
+  const confirmBtn = document.querySelector('.execute-confirm-go');
+  const originalText = confirmBtn.textContent;
+  confirmBtn.textContent = 'Ejecutando...';
+  confirmBtn.disabled = true;
+
+  // Recopilar los veredictos de cada mesa
+  const veredictos = {};
+  MESAS.forEach((mesa, i) => {
+    const verdictEl = document.getElementById(`verdict-${i}`);
+    veredictos[mesa.name] = verdictEl ? verdictEl.textContent : '—';
+  });
+
+  const payload = {
+    timestamp: new Date().toISOString(),
+    pregunta_ceo: lastQuestion,
+    sintesis_estrategica: lastSintesis,
+    decision_final: lastDecision,
+    veredicto_debate: lastVeredictoDebate || 'No se realizó debate',
+    veredictos_por_mesa: veredictos,
+    recopilacion_completa: lastRecopilacion,
+    source: 'cuartaola-board',
+    version: '2.0'
+  };
+
+  try {
+    const response = await fetch(webhookUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    if(!response.ok) throw new Error(`Webhook respondió ${response.status}`);
+
+    // Éxito
+    document.getElementById('executeConfirm').style.display = 'none';
+    const btn = document.getElementById('executeBtn');
+    btn.style.display = 'inline-block';
+    btn.classList.add('success');
+    btn.textContent = '✅ Dictamen ejecutado — Equipo notificado';
+    btn.disabled = true;
+
+  } catch(e) {
+    confirmBtn.textContent = originalText;
+    confirmBtn.disabled = false;
+    
+    const errorDiv = document.createElement('div');
+    errorDiv.style.cssText = 'color:#fca5a5; font-size:12px; margin-top:12px;';
+    errorDiv.textContent = `Error: ${e.message}. Verificá la URL del webhook en ⚙ API Key.`;
+    document.getElementById('executeConfirm').appendChild(errorDiv);
+    
+    setTimeout(() => errorDiv.remove(), 5000);
+  }
 }
 
 // ============================================================
@@ -946,6 +1095,7 @@ FORMATO XML OBLIGATORIO:
 
     const veredictoDebate = extractXML(response, 'veredicto_debate');
     if(veredictoDebate){
+      lastVeredictoDebate = veredictoDebate; // Guardar para webhook
       html += `
         <div class="debate-final">
           <div class="debate-final-label">VEREDICTO POST-DEBATE</div>
