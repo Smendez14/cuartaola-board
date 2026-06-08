@@ -725,6 +725,12 @@ async function consultBoard(){
   const orchestratorContent = document.getElementById('orchestratorContent');
   orchestratorSection.style.display = 'none';
   document.getElementById('executeSection').style.display = 'none';
+  document.getElementById('executeConfirm').style.display = 'none';
+  const btnExecReset = document.getElementById('executeBtn');
+  btnExecReset.style.display = 'inline-block';
+  btnExecReset.classList.remove('success');
+  btnExecReset.textContent = '🚀 Ejecutar Dictamen';
+  btnExecReset.disabled = false;
   document.getElementById('debateTrigger').style.display = 'none';
   document.getElementById('debateSection').style.display = 'none';
 
